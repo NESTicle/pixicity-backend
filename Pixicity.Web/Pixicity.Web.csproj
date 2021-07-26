@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pixicity.Data\Pixicity.Data.csproj" />
+    <ProjectReference Include="..\Pixicity.Domain\Pixicity.Domain.csproj" />
+    <ProjectReference Include="..\Pixicity.Service\Pixicity.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>

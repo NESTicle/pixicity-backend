@@ -1,0 +1,10 @@
+
+.vs/*
+Pixicity.Data/bin/*
+Pixicity.Data/obj/*
+Pixicity.Domain/bin/*
+Pixicity.Domain/obj/*
+Pixicity.Service/bin/*
+Pixicity.Service/obj/*
+Pixicity.Web/bin/*
+Pixicity.Web/obj/*
