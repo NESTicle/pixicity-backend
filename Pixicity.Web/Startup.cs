@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Pixicity.Data.Mappings.AutoMapper;
+using Pixicity.Data.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +42,10 @@ namespace Pixicity.Web
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,11 +53,6 @@ namespace Pixicity.Web
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
 
             app.UseCors(corsPolicyName);
             app.UseHttpsRedirection();
@@ -61,6 +63,11 @@ namespace Pixicity.Web
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseStaticFiles(new StaticFileOptions
             {
