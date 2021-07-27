@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Pixicity.Data.Models.Seguridad;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Seguridad;
+using Pixicity.Service.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pixicity.Web.Controllers.Seguridad
@@ -13,9 +11,16 @@ namespace Pixicity.Web.Controllers.Seguridad
     [ApiController]
     public class UsuariosController : ControllerBase
     {
+        private readonly ISeguridadService _seguridadService;
+
+        public UsuariosController(ISeguridadService seguridadService)
+        {
+            _seguridadService = seguridadService;
+        }
+
         [HttpPost]
         [Route(nameof(RegistrarUsuario))]
-        public async Task<JSONObjectResult> RegistrarUsuario([FromBody] Usuario model)
+        public async Task<JSONObjectResult> RegistrarUsuario([FromBody] UsuarioViewModel model)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -24,7 +29,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                result.Data = model;
+                result.Data = _seguridadService.RegistrarUsuario(model);
             }
             catch (Exception e)
             {

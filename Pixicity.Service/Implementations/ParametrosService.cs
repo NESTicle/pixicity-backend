@@ -63,5 +63,44 @@ namespace Pixicity.Service.Implementations
 
             return model.Id;
         }
+
+        public Rango GetRangoByNombre(string rango)
+        {
+            try
+            {
+                return _dbContext.Rango.FirstOrDefault(x => x.Nombre.ToLower().Equals(rango.Trim().ToLower()) && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long CreateRangoIfNotExists(string nombre)
+        {
+            try
+            {
+                Rango rango = GetRangoByNombre(nombre);
+
+                if (rango != null)
+                    return rango.Id;
+
+                rango = new Rango()
+                {
+                    Id = 0,
+                    Nombre = nombre.Trim(),
+                    Icono = ""
+                };
+
+                _dbContext.Rango.Add(rango);
+                _dbContext.SaveChanges();
+
+                return rango.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

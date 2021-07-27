@@ -46,6 +46,7 @@ namespace Pixicity.Web
             });
 
             services.AddScoped<IParametrosService, ParametrosService>();
+            services.AddScoped<ISeguridadService, SeguridadService>();
 
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 

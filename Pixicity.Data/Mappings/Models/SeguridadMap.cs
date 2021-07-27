@@ -18,7 +18,7 @@ namespace Pixicity.Data.Mappings.Models
                 .IsRequired();
 
             builder.Property(x => x.Password)
-                .HasMaxLength(35);
+                .IsRequired();
 
             builder.Property(x => x.Email)
                 .IsRequired();

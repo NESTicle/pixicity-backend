@@ -33,5 +33,19 @@ namespace Pixicity.Service.Interfaces
         /// <param name="estado"></param>
         /// <returns></returns>
         long SaveEstado(Estado estado);
+
+        /// <summary>
+        /// Obtiene un Rango por el Nombre
+        /// </summary>
+        /// <param name="rango">Nombre del Rango</param>
+        /// <returns></returns>
+        Rango GetRangoByNombre(string rango);
+
+        /// <summary>
+        /// Devuelve el Id del Rango que se va a crear (si no existe) o el Id del Rango ya creado
+        /// </summary>
+        /// <param name="rango">Nombre del Rango</param>
+        /// <returns></returns>
+        long CreateRangoIfNotExists(string rango);
     }
 }
