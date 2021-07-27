@@ -1,15 +1,30 @@
 ﻿using Pixicity.Data.Models.Base;
+using Pixicity.Data.Models.Parametros;
+using Pixicity.Domain.Extensions;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Data.Models.Seguridad
 {
     public class Usuario : PixicityBase
     {
+        public long EstadoId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
         public string FechaNacimiento { get; set; }
-        
+
+        [Column("Genero")]
+        public string GeneroString
+        {
+            get { return Genero.ToString(); }
+            private set { Genero = value.ParseEnum<GenerosEnum>(); }
+        }
+
+        [NotMapped]
+        public GenerosEnum Genero { get; set; }
+
         public int Rango { get; set; } // rango del usuario (admin, mod, user, etc)
         public int Puntos { get; set; }
         public int Comentarios { get; set; }
@@ -23,5 +38,7 @@ namespace Pixicity.Data.Models.Seguridad
 
         public int CambiosDelUserName { get; set; } = 0;
         public bool Baneado { get; set; } = false;
+
+        public virtual Estado Estado { get; set; }
     }
 }

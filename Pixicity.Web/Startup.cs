@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pixicity.Data.Mappings.AutoMapper;
 using Pixicity.Data.Models.Base;
+using Pixicity.Service.Implementations;
+using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,6 +44,8 @@ namespace Pixicity.Web
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            services.AddScoped<IParametrosService, ParametrosService>();
 
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 

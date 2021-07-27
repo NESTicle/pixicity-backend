@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pixicity.Data\Pixicity.Data.csproj" />
+  </ItemGroup>
+
 </Project>

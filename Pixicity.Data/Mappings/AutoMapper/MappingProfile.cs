@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Parametros;
 
 namespace Pixicity.Data.Mappings.AutoMapper
@@ -11,6 +12,9 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Pais, PaisViewModel>()
                 //.ForMember(dest => dest.Nombre, source => source.MapFrom(source => source.Nombre))
                 .ReverseMap();
+
+            CreateMap<Pais, DropdownViewModel>();
+            CreateMap<Estado, DropdownViewModel>();
         }
     }
 }
