@@ -10,6 +10,8 @@ namespace Pixicity.Data.Models.Seguridad
     public class Usuario : PixicityBase
     {
         public long EstadoId { get; set; }
+        public long RangoId { get; set; }
+
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
@@ -25,7 +27,6 @@ namespace Pixicity.Data.Models.Seguridad
         [NotMapped]
         public GenerosEnum Genero { get; set; }
 
-        public int Rango { get; set; } // rango del usuario (admin, mod, user, etc)
         public int Puntos { get; set; }
         public int Comentarios { get; set; }
         public int Seguidores { get; set; }
@@ -35,5 +36,6 @@ namespace Pixicity.Data.Models.Seguridad
         public bool Baneado { get; set; } = false;
 
         public virtual Estado Estado { get; set; }
+        public virtual Rango Rango { get; set; }
     }
 }

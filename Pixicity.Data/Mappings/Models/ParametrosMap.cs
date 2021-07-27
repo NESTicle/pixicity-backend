@@ -46,4 +46,22 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.IdPais);
         }
     }
+
+    public class RangoMap : IEntityTypeConfiguration<Rango>
+    {
+        void IEntityTypeConfiguration<Rango>.Configure(EntityTypeBuilder<Rango> builder)
+        {
+            builder.ToTable("Rangos", "Parametros");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Nombre)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            builder.Property(x => x.Icono)
+                .HasMaxLength(100)
+                .IsRequired();
+        }
+    }
 }

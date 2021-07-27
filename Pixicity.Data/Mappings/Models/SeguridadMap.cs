@@ -22,6 +22,10 @@ namespace Pixicity.Data.Mappings.Models
 
             builder.Property(x => x.Email)
                 .IsRequired();
+
+            builder.HasOne(x => x.Rango)
+                .WithMany(x => x.Usuarios)
+                .HasForeignKey(x => x.RangoId);
         }
     }
 }

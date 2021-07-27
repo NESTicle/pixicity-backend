@@ -13,6 +13,7 @@ namespace Pixicity.Data.Models.Base
 
         public DbSet<Pais> Pais { get; set; }
         public DbSet<Estado> Estado { get; set; }
+        public DbSet<Rango> Rango { get; set; }
 
         #endregion
 
@@ -27,6 +28,7 @@ namespace Pixicity.Data.Models.Base
             builder.ApplyConfiguration(new PaisMap());
             builder.ApplyConfiguration(new EstadoMap());
             builder.ApplyConfiguration(new UsuarioMap());
+            builder.ApplyConfiguration(new RangoMap());
             
             base.OnModelCreating(builder);
         }
