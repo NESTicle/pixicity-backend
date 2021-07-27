@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data.Mappings.Models;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Seguridad;
 
 namespace Pixicity.Data.Models.Base
 {
@@ -8,14 +9,25 @@ namespace Pixicity.Data.Models.Base
     {
         public PixicityDbContext(DbContextOptions<PixicityDbContext> options) : base(options) { }
 
+        #region Parametros
+
         public DbSet<Pais> Pais { get; set; }
         public DbSet<Estado> Estado { get; set; }
+
+        #endregion
+
+        #region Seguridad
+
+        public DbSet<Usuario> Usuario { get; set; }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new PaisMap());
             builder.ApplyConfiguration(new EstadoMap());
-
+            builder.ApplyConfiguration(new UsuarioMap());
+            
             base.OnModelCreating(builder);
         }
     }

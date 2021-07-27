@@ -23,7 +23,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 return _dbContext.Pais.AsNoTracking()
-                    .Where(x => x.Activo)
+                    .Where(x => x.Eliminado == false)
                     .OrderBy(x => x.Nombre)
                     .ToList();
             }
@@ -46,7 +46,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 return _dbContext.Estado.AsNoTracking()
-                    .Where(x => x.IdPais == IdPais && x.Activo)
+                    .Where(x => x.IdPais == IdPais && x.Eliminado == false)
                     .OrderBy(x => x.Nombre)
                     .ToList();
             }

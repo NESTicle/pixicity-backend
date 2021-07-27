@@ -1,7 +1,6 @@
 ﻿using Pixicity.Data.Models.Base;
-using System;
+using Pixicity.Data.Models.Seguridad;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pixicity.Data.Models.Parametros
 {
@@ -11,5 +10,6 @@ namespace Pixicity.Data.Models.Parametros
         public string Nombre { get; set; }
 
         public virtual Pais Pais { get; set; }
+        public virtual ICollection<Usuario> Usuarios { get; set; } = new HashSet<Usuario>();
     }
 }

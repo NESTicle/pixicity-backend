@@ -29,14 +29,9 @@ namespace Pixicity.Data.Models.Seguridad
         public int Puntos { get; set; }
         public int Comentarios { get; set; }
         public int Seguidores { get; set; }
-        public int PuntosPorDar { get; set; }
 
-        public DateTime SiguientesPuntos { get; set; }
-
-        public DateTime UltimaConexion { get; set; }
+        public DateTime? UltimaConexion { get; set; }
         public string UltimaIP { get; set; }
-
-        public int CambiosDelUserName { get; set; } = 0;
         public bool Baneado { get; set; } = false;
 
         public virtual Estado Estado { get; set; }

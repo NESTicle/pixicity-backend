@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Import;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -92,7 +94,33 @@ namespace Pixicity.Web.Controllers.Parametros
 
             try
             {
+                var myJsonString = System.IO.File.ReadAllText("Populate/paises.json");
+                var myJsonObject = JsonConvert.DeserializeObject<List<PaisImport>>(myJsonString);
 
+                foreach (var currentPais in myJsonObject)
+                {
+                    Pais pais = new Pais()
+                    {
+                        Nombre = currentPais.country,
+                        ISO2 = currentPais.country.Substring(0, 2),
+                        ISO3 = currentPais.country.Substring(0, 3),
+                        UsuarioRegistra = "Pixicity"
+                    };
+
+                    pais.Id = _parametrosService.SavePais(pais);
+
+                    foreach (var currentEstado in currentPais.states)
+                    {
+                        Estado estado = new Estado()
+                        {
+                            Nombre = currentEstado,
+                            IdPais = pais.Id,
+                            UsuarioRegistra = "Pixicity"
+                        };
+
+                        _parametrosService.SaveEstado(estado);
+                    }
+                }
             }
             catch (Exception e)
             {
