@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pixicity.Data.Mappings.AutoMapper;
 using Pixicity.Data.Models.Base;
+using Pixicity.Domain.AppSettings;
 using Pixicity.Service.Implementations;
 using Pixicity.Service.Interfaces;
 using System;
@@ -47,10 +48,14 @@ namespace Pixicity.Web
 
             services.AddScoped<IParametrosService, ParametrosService>();
             services.AddScoped<ISeguridadService, SeguridadService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(typeof(MappingProfile));
+
+
+            services.Configure<KeysAppSettingsViewModel>(Configuration.GetSection("Keys"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
