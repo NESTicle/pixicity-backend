@@ -32,7 +32,7 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                return _dbContext.Usuario.FirstOrDefault(x => x.UserName.ToLower().Equals(userName.Trim().ToLower()) && x.Eliminado == false);
+                return _dbContext.Usuario.AsNoTracking().FirstOrDefault(x => x.UserName.ToLower().Equals(userName.Trim().ToLower()) && x.Eliminado == false);
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                return _dbContext.Usuario.FirstOrDefault(x => x.Email.ToLower().Equals(email.Trim().ToLower()) && x.Eliminado == false);
+                return _dbContext.Usuario.AsNoTracking().FirstOrDefault(x => x.Email.ToLower().Equals(email.Trim().ToLower()) && x.Eliminado == false);
             }
             catch (Exception e)
             {

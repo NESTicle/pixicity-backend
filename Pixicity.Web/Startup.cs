@@ -1,21 +1,20 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Pixicity.Data.Mappings.AutoMapper;
 using Pixicity.Data.Models.Base;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.AppSettings;
 using Pixicity.Service.Implementations;
 using Pixicity.Service.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Pixicity.Web
@@ -30,6 +29,7 @@ namespace Pixicity.Web
         private readonly string corsPolicyName = "CorsPixicityPolicy";
 
         public IConfiguration Configuration { get; }
+        public Usuario Usuario { get; set; } = new Usuario();
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -54,8 +54,45 @@ namespace Pixicity.Web
 
             services.AddAutoMapper(typeof(MappingProfile));
 
-
             services.Configure<KeysAppSettingsViewModel>(Configuration.GetSection("Keys"));
+
+            // Configuración del JWT
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<ISeguridadService>();
+
+                        var userName = context.Principal.Identity.Name;
+                        var user = userService.GetUsuarioByUserName(userName);
+
+                        if (user == null)
+                            context.Fail("Unauthorized");
+
+                        Usuario.UserName = user.UserName;
+                        Usuario.Id = user.Id;
+
+                        return Task.CompletedTask;
+                    }
+                };
+
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Keys:JWT"))),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

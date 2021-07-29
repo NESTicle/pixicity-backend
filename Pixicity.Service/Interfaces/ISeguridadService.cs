@@ -6,6 +6,13 @@ namespace Pixicity.Service.Interfaces
     public interface ISeguridadService
     {
         /// <summary>
+        /// Obtiene un usuario filtrado por el uerName
+        /// </summary>
+        /// <param name="userName">UserName</param>
+        /// <returns></returns>
+        Usuario GetUsuarioByUserName(string userName);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="usuario"></param>
