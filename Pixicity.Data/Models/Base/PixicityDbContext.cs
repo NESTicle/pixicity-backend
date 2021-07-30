@@ -15,13 +15,19 @@ namespace Pixicity.Data.Models.Base
         public DbSet<Pais> Pais { get; set; }
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Rango> Rango { get; set; }
-        public DbSet<Afiliado> Afiliado { get; set; }
+        public DbSet<Categoria> Categoria { get; set; }
 
         #endregion
 
         #region Seguridad
 
         public DbSet<Usuario> Usuario { get; set; }
+
+        #endregion
+
+        #region Web
+
+        public DbSet<Afiliado> Afiliado { get; set; }
 
         #endregion
 
@@ -32,6 +38,7 @@ namespace Pixicity.Data.Models.Base
             builder.ApplyConfiguration(new UsuarioMap());
             builder.ApplyConfiguration(new RangoMap());
             builder.ApplyConfiguration(new AfiliadoMap());
+            builder.ApplyConfiguration(new CategoriaMap());
 
             base.OnModelCreating(builder);
         }

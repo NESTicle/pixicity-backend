@@ -64,4 +64,26 @@ namespace Pixicity.Data.Mappings.Models
                 .IsRequired();
         }
     }
+
+    public class CategoriaMap : IEntityTypeConfiguration<Categoria>
+    {
+        void IEntityTypeConfiguration<Categoria>.Configure(EntityTypeBuilder<Categoria> builder)
+        {
+            builder.ToTable("Categorias", "Parametros");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Nombre)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(x => x.Slug)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(x => x.Icono)
+                .HasMaxLength(50)
+                .IsRequired();
+        }
+    }
 }
