@@ -49,7 +49,8 @@ namespace Pixicity.Web
             services.AddScoped<IParametrosService, ParametrosService>();
             services.AddScoped<ISeguridadService, SeguridadService>();
             services.AddScoped<IJwtService, JwtService>();
-
+            services.AddScoped<IWebService, WebService>();
+            
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(typeof(MappingProfile));
