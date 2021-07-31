@@ -102,5 +102,43 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<Categoria> GetCategoriasDropdown()
+        {
+            try
+            {
+                return _dbContext.Categoria
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false)
+                    .OrderBy(x => x.Nombre)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long SaveCategoria(Categoria model)
+        {
+            try
+            {
+                Categoria categoria = new Categoria()
+                {
+                    Nombre = model.Nombre.Trim(),
+                    SEO = model.SEO.Trim().ToLower(),
+                    Icono = model.Icono
+                };
+
+                _dbContext.Categoria.Add(categoria);
+                _dbContext.SaveChanges();
+
+                return categoria.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

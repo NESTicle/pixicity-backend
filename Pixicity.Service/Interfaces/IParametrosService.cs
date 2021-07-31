@@ -47,5 +47,18 @@ namespace Pixicity.Service.Interfaces
         /// <param name="rango">Nombre del Rango</param>
         /// <returns></returns>
         long CreateRangoIfNotExists(string rango);
+
+        /// <summary>
+        /// Obtiene la lista completa de Categorias
+        /// </summary>
+        /// <returns></returns>
+        List<Categoria> GetCategoriasDropdown();
+
+        /// <summary>
+        /// Guarda la categoria
+        /// </summary>
+        /// <param name="model">Entidad Categoria</param>
+        /// <returns></returns>
+        long SaveCategoria(Categoria model);
     }
 }

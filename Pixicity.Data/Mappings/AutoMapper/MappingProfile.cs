@@ -15,6 +15,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Pais, DropdownViewModel>();
             CreateMap<Estado, DropdownViewModel>();
+            CreateMap<Categoria, DropdownViewModel>();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pixicity.Data.Models.Base;
@@ -9,9 +10,10 @@ using Pixicity.Data.Models.Base;
 namespace Pixicity.Data.Migrations
 {
     [DbContext(typeof(PixicityDbContext))]
-    partial class PixicityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210730235818_rename-categoria__slugToSEO")]
+    partial class renamecategoria__slugToSEO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

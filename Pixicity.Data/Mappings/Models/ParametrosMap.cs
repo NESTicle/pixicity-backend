@@ -77,7 +77,7 @@ namespace Pixicity.Data.Mappings.Models
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Property(x => x.Slug)
+            builder.Property(x => x.SEO)
                 .HasMaxLength(50)
                 .IsRequired();
 
