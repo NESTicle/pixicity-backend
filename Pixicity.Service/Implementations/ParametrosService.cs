@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pixicity.Data.Models.Base;
+using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Pixicity.Service.Implementations
 {

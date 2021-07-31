@@ -1,7 +1,9 @@
 ﻿using Pixicity.Data.Models.Base;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Posts;
 using Pixicity.Domain.Extensions;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Pixicity.Domain.Enums.Enums;
 
@@ -37,5 +39,7 @@ namespace Pixicity.Data.Models.Seguridad
 
         public virtual Estado Estado { get; set; }
         public virtual Rango Rango { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
 }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data.Mappings.Models;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 
-namespace Pixicity.Data.Models.Base
+namespace Pixicity.Data
 {
     public class PixicityDbContext : DbContext
     {
@@ -16,6 +17,12 @@ namespace Pixicity.Data.Models.Base
         public DbSet<Estado> Estado { get; set; }
         public DbSet<Rango> Rango { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
+
+        #endregion
+
+        #region Post
+
+        public DbSet<Post> Post { get; set; }
 
         #endregion
 
@@ -39,6 +46,7 @@ namespace Pixicity.Data.Models.Base
             builder.ApplyConfiguration(new RangoMap());
             builder.ApplyConfiguration(new AfiliadoMap());
             builder.ApplyConfiguration(new CategoriaMap());
+            builder.ApplyConfiguration(new PostMap());
 
             base.OnModelCreating(builder);
         }

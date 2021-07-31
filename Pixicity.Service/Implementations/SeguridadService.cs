@@ -1,17 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Pixicity.Data.Models.Base;
+using Pixicity.Data;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Enums;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace Pixicity.Service.Implementations
 {

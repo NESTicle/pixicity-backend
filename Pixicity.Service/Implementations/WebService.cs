@@ -1,10 +1,8 @@
-﻿using Pixicity.Data.Models.Base;
+﻿using Pixicity.Data;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Service.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pixicity.Service.Implementations
 {
