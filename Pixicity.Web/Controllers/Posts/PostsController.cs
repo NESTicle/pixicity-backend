@@ -73,6 +73,42 @@ namespace Pixicity.Web.Controllers.Posts
             return await Task.FromResult(result);
         }
 
+        [HttpGet]
+        [Route(nameof(GetStickyPosts))]
+        public async Task<JSONObjectResult> GetStickyPosts()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.GetStickyPosts();
+                var mapped = data.Select(x => new
+                {
+                    x.Id,
+                    x.Titulo,
+                    categoria = new
+                    {
+                        icono = x.Categoria.Icono,
+                        nombre = x.Categoria.Nombre,
+                        seo = x.Categoria.SEO
+                    },
+                    x.Sticky
+                });
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpPost]
         [Route(nameof(SavePost))]
         public async Task<JSONObjectResult> SavePost([FromBody] Post model)

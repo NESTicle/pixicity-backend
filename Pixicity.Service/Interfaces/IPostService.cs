@@ -17,6 +17,12 @@ namespace Pixicity.Service.Interfaces
         List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtiene una lista de posts fijados por los administradores
+        /// </summary>
+        /// <returns></returns>
+        List<Post> GetStickyPosts();
+
+        /// <summary>
         /// Guarda el Post en el Sistema
         /// </summary>
         /// <param name="model"></param>

@@ -26,7 +26,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Eliminado == false);
+                    .Where(x => x.Eliminado == false && x.Sticky == false);
 
                 totalCount = posts.Count();
 
@@ -34,6 +34,22 @@ namespace Pixicity.Service.Implementations
                     .OrderByDescending(x => x.FechaRegistro)
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Post> GetStickyPosts()
+        {
+            try
+            {
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Where(x => x.Eliminado == false && x.Sticky == true)
                     .ToList();
             }
             catch (Exception e)
