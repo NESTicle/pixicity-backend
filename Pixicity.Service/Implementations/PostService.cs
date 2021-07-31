@@ -31,9 +31,9 @@ namespace Pixicity.Service.Implementations
                 totalCount = posts.Count();
 
                 return posts
+                    .OrderByDescending(x => x.FechaRegistro)
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
-                    .OrderByDescending(x => x.FechaRegistro)
                     .ToList();
             }
             catch (Exception e)

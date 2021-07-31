@@ -40,9 +40,13 @@ namespace Pixicity.Web.Controllers.Posts
                 var data = _postService.GetPosts(queryParameters, out long totalCount);
                 var mapped = data.Select(x => new
                 {
+                    x.Id,
                     x.Titulo,
-                    categoria = x.Categoria.Nombre,
-                    icono = x.Categoria.Icono
+                    categoria = new {
+                        icono = x.Categoria.Icono,
+                        nombre = x.Categoria.Nombre,
+                        seo = x.Categoria.SEO
+                    }
                 });
 
                 var paginationMetadata = new
