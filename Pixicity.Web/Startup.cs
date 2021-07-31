@@ -50,6 +50,7 @@ namespace Pixicity.Web
             services.AddScoped<ISeguridadService, SeguridadService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IWebService, WebService>();
+            services.AddScoped<IPostService, PostService>();
             
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 

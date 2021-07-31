@@ -16,7 +16,7 @@ namespace Pixicity.Data.Mappings.Models
             builder.HasIndex(x => x.Id).IsUnique();
 
             builder.Property(x => x.Titulo)
-                .HasMaxLength(60)
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder.Property(x => x.Contenido)
