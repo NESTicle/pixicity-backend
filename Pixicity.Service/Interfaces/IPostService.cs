@@ -23,6 +23,13 @@ namespace Pixicity.Service.Interfaces
         List<Post> GetStickyPosts();
 
         /// <summary>
+        /// Obtiene un post filtrado por el Id
+        /// </summary>
+        /// <param name="postId">Id del Post</param>
+        /// <returns></returns>
+        Post GetPostById(long postId);
+
+        /// <summary>
         /// Guarda el Post en el Sistema
         /// </summary>
         /// <param name="model"></param>

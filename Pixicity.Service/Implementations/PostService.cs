@@ -58,6 +58,22 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Post GetPostById(long postId)
+        {
+            try
+            {
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.Usuario)
+                    .FirstOrDefault(x => x.Id == postId && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SavePost(Post model)
         {
             try

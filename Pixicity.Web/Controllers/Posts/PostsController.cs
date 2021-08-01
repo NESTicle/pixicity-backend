@@ -5,6 +5,7 @@ using Pixicity.Data.Models.Posts;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,31 @@ namespace Pixicity.Web.Controllers.Posts
                     },
                     x.Sticky
                 });
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(GetPostById))]
+        public async Task<JSONObjectResult> GetPostById([FromQuery] long postId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.GetPostById(postId);
+                var mapped = _mapper.Map<PostViewModel>(data);
 
                 result.Data = mapped;
             }
