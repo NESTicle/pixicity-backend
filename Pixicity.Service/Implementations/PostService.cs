@@ -156,5 +156,23 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<Comentario> GetComentariosRecientes()
+        {
+            try
+            {
+                return _dbContext.Comentario
+                    .AsNoTracking()
+                    .Include(x => x.Usuario)
+                    .Where(x => x.Eliminado == false)
+                    .OrderByDescending(x => x.Id)
+                    .Take(10)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

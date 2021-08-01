@@ -189,6 +189,35 @@ namespace Pixicity.Web.Controllers.Posts
             return await Task.FromResult(result);
         }
 
+        [HttpGet]
+        [Route(nameof(GetComentariosRecientes))]
+        public async Task<JSONObjectResult> GetComentariosRecientes()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.GetComentariosRecientes();
+                var mapped = data.Select(x => new
+                {
+                    userName = x.Usuario.UserName,
+                    x.Contenido
+                });
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpPost]
         [Route(nameof(AddComentario))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]

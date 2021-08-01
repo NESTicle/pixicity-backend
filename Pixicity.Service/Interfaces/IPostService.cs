@@ -55,5 +55,11 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Comentario</param>
         /// <returns></returns>
         long AddComentario(Comentario model);
+
+        /// <summary>
+        /// Obtener la lista de los últimos comentarios
+        /// </summary>
+        /// <returns></returns>
+        List<Comentario> GetComentariosRecientes();
     }
 }
