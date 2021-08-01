@@ -11,6 +11,7 @@ using Pixicity.Data;
 using Pixicity.Data.Mappings.AutoMapper;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.AppSettings;
+using Pixicity.Domain.Transversal;
 using Pixicity.Service.Implementations;
 using Pixicity.Service.Interfaces;
 using System.IO;
@@ -94,6 +95,11 @@ namespace Pixicity.Web
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            services.AddScoped<IAppPrincipal>(provider =>
+            {
+                return new AppPrincipal(0, "Unknown", false);
             });
         }
 

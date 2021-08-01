@@ -37,6 +37,7 @@ namespace Pixicity.Web.Controllers.Parametros
             {
                 var data = _parametrosService.GetCategoriasDropdown();
                 var mapped = data.Select(x => new {
+                    x.Id,
                     x.Nombre,
                     x.SEO,
                     x.Icono

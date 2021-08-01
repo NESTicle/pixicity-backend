@@ -2,6 +2,7 @@
 using Pixicity.Data;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.Transversal;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace Pixicity.Service.Implementations
     public class PostService : IPostService
     {
         private readonly PixicityDbContext _dbContext;
+        private IAppPrincipal _currentUser { get; }
 
-        public PostService(PixicityDbContext dbContext)
+        public PostService(PixicityDbContext dbContext, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
+            _currentUser = currentUser;
         }
 
         public List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount)
@@ -90,6 +93,8 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
+                model.UsuarioId = _currentUser.Id;
+
                 _dbContext.Post.Add(model);
                 _dbContext.SaveChanges();
 
