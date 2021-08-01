@@ -125,7 +125,15 @@ namespace Pixicity.Web.Controllers.Posts
                 var data = _postService.GetPostById(postId);
                 var mapped = _mapper.Map<PostViewModel>(data);
 
-                result.Data = mapped;
+                result.Data = new {
+                    post = mapped,
+                    usuario = new
+                    {
+                        userName = data.Usuario.UserName,
+                        genero = data.Usuario.GeneroString,
+                        pais = data.Usuario.Estado.Pais.ISO2
+                    }
+                };
             }
             catch (Exception e)
             {
