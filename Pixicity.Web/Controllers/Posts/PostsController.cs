@@ -156,5 +156,27 @@ namespace Pixicity.Web.Controllers.Posts
 
             return await Task.FromResult(result);
         }
+
+        [HttpDelete]
+        [Route(nameof(DeletePost))]
+        public async Task<JSONObjectResult> DeletePost([FromBody] Post model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _postService.DeletePost(model.Id);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }

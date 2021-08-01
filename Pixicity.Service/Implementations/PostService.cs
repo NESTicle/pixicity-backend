@@ -74,6 +74,18 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Post GetPostSimpleById(long postId)
+        {
+            try
+            {
+                return _dbContext.Post.AsNoTracking().FirstOrDefault(x => x.Id == postId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SavePost(Post model)
         {
             try
@@ -82,6 +94,28 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool DeletePost(long postId)
+        {
+            try
+            {
+                Post post = GetPostSimpleById(postId);
+
+                if (post == null)
+                    return false;
+
+                post.Eliminado = true;
+
+                _dbContext.Update(post);
+                _dbContext.SaveChanges();
+
+                return post.Eliminado;
             }
             catch (Exception e)
             {

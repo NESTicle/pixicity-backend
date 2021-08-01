@@ -35,5 +35,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model"></param>
         /// <returns></returns>
         long SavePost(Post model);
+
+        /// <summary>
+        /// Cambia el estado de Eliminado de un Post
+        /// </summary>
+        /// <param name="postId">Id del Post</param>
+        /// <returns></returns>
+        bool DeletePost(long postId);
     }
 }
