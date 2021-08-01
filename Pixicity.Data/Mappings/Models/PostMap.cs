@@ -37,4 +37,28 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioId);
         }
     }
+
+    public class ComentarioMap : IEntityTypeConfiguration<Comentario>
+    {
+        void IEntityTypeConfiguration<Comentario>.Configure(EntityTypeBuilder<Comentario> builder)
+        {
+            builder.ToTable("Comentarios", "Post");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Contenido)
+                .IsRequired();
+
+            builder.Property(x => x.IP)
+                .HasMaxLength(15);
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Comentarios)
+                .HasForeignKey(x => x.UsuarioId);
+
+            builder.HasOne(x => x.Post)
+                .WithMany(x => x.Comentarios)
+                .HasForeignKey(x => x.PostId);
+        }
+    }
 }

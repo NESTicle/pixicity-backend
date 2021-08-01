@@ -9,7 +9,7 @@ namespace Pixicity.Domain.ViewModels.Posts
         public string Etiquetas { get; set; }
 
         public int Puntos { get; set; }
-        public int Comentarios { get; set; }
+        public int CantidadComentarios { get; set; }
         public int Favoritos { get; set; }
         public int Visitantes { get; set; }
 

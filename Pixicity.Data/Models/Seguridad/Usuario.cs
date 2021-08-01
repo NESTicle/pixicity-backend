@@ -30,7 +30,7 @@ namespace Pixicity.Data.Models.Seguridad
         public GenerosEnum Genero { get; set; }
 
         public int Puntos { get; set; }
-        public int Comentarios { get; set; }
+        public int CantidadComentarios { get; set; }
         public int Seguidores { get; set; }
 
         public DateTime? UltimaConexion { get; set; }
@@ -41,5 +41,6 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual Rango Rango { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
+        public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
     }
 }

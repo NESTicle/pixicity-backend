@@ -26,6 +26,18 @@ namespace Pixicity.Service.Implementations
             _jwtService = jwtService;
         }
 
+        public long CountUsuarios()
+        {
+            try
+            {
+                return _dbContext.Usuario.Count();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Usuario GetUsuarioByUserName(string userName)
         {
             try

@@ -22,6 +22,18 @@ namespace Pixicity.Service.Implementations
             _currentUser = currentUser;
         }
 
+        public long CountPosts()
+        {
+            try
+            {
+                return _dbContext.Post.Where(x => x.Eliminado == false).Count();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount)
         {
             try
@@ -121,6 +133,23 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return post.Eliminado;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long AddComentario(Comentario model)
+        {
+            try
+            {
+                model.UsuarioId = _currentUser.Id;
+
+                _dbContext.Comentario.Add(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
             }
             catch (Exception e)
             {

@@ -6,6 +6,12 @@ namespace Pixicity.Service.Interfaces
     public interface ISeguridadService
     {
         /// <summary>
+        /// Obtiene la cantidad de Usuarios registrados en el sistema
+        /// </summary>
+        /// <returns></returns>
+        long CountUsuarios();
+
+        /// <summary>
         /// Obtiene un usuario filtrado por el uerName
         /// </summary>
         /// <param name="userName">UserName</param>

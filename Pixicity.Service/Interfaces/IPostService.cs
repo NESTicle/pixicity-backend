@@ -9,6 +9,12 @@ namespace Pixicity.Service.Interfaces
     public interface IPostService
     {
         /// <summary>
+        /// Obtiene la cantidad de posts publicados en la Comunidad
+        /// </summary>
+        /// <returns></returns>
+        long CountPosts();
+
+        /// <summary>
         /// Obtiene la lista de posts paginada
         /// </summary>
         /// <param name="queryParameters">Helper utilizado para la paginación</param>
@@ -42,5 +48,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="postId">Id del Post</param>
         /// <returns></returns>
         bool DeletePost(long postId);
+
+        /// <summary>
+        /// Método para agregar comentario al Post
+        /// </summary>
+        /// <param name="model">Entidad Comentario</param>
+        /// <returns></returns>
+        long AddComentario(Comentario model);
     }
 }

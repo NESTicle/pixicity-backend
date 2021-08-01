@@ -1,9 +1,7 @@
 ﻿using Pixicity.Data.Models.Base;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Seguridad;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Pixicity.Data.Models.Posts
 {
@@ -17,7 +15,7 @@ namespace Pixicity.Data.Models.Posts
         public string Etiquetas { get; set; }
         
         public int Puntos { get; set; }
-        public int Comentarios { get; set; }
+        public int CantidadComentarios { get; set; }
         public int Favoritos { get; set; }
         public int Visitantes { get; set; }
 
@@ -28,5 +26,7 @@ namespace Pixicity.Data.Models.Posts
 
         public virtual Categoria Categoria { get; set; }
         public virtual Usuario Usuario { get; set; }
+
+        public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
     }
 }
