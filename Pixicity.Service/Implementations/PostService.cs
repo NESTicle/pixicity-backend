@@ -183,7 +183,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Usuario)
                     .Where(x => x.Eliminado == false && x.PostId == postId)
-                    .OrderByDescending(x => x.FechaComentario)
+                    .OrderBy(x => x.FechaComentario)
                     .ToList();
             }
             catch (Exception e)
