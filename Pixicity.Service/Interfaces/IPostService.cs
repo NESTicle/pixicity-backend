@@ -61,5 +61,12 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <returns></returns>
         List<Comentario> GetComentariosRecientes();
+
+        /// <summary>
+        /// Obtener la lista de comentarios por post
+        /// </summary>
+        /// <param name="postId">Id del Post</param>
+        /// <returns></returns>
+        List<Comentario> GetComentariosByPostId(long postId);
     }
 }
