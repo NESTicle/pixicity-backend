@@ -118,6 +118,30 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long UpdatePost(Post model)
+        {
+            try
+            {
+                Post post = GetPostSimpleById(model.Id);
+                post.Contenido = model.Contenido;
+                post.CategoriaId = model.CategoriaId;
+                post.EsPrivado = model.EsPrivado;
+                post.Smileys = model.Smileys;
+                post.Titulo = model.Titulo;
+                post.FechaActualiza = DateTime.Now;
+                post.UsuarioActualiza = _currentUser.UserName;
+
+                _dbContext.Update(post);
+                _dbContext.SaveChanges();
+
+                return post.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public bool DeletePost(long postId)
         {
             try
@@ -125,7 +149,10 @@ namespace Pixicity.Service.Implementations
                 Post post = GetPostSimpleById(postId);
 
                 if (post == null)
-                    return false;
+                    throw new Exception("Un error ha ocurrido al tratar de eliminar un post");
+
+                if(post.UsuarioId != _currentUser.Id) // TODO: Poder eliminar los posts si eres un Administrador
+                    throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
                 post.Eliminado = true;
 

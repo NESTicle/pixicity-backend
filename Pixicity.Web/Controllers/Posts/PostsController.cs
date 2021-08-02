@@ -125,15 +125,23 @@ namespace Pixicity.Web.Controllers.Posts
                 var data = _postService.GetPostById(postId);
                 var mapped = _mapper.Map<PostViewModel>(data);
 
-                result.Data = new {
-                    post = mapped,
-                    usuario = new
+                if (mapped != null)
+                {
+                    result.Data = new
                     {
-                        userName = data.Usuario.UserName,
-                        genero = data.Usuario.GeneroString,
-                        pais = data.Usuario.Estado.Pais.ISO2
-                    }
-                };
+                        post = mapped,
+                        usuario = new
+                        {
+                            userName = data.Usuario.UserName,
+                            genero = data.Usuario.GeneroString,
+                            pais = data.Usuario.Estado.Pais.ISO2
+                        }
+                    };
+                }
+                else
+                {
+                    result.Data = null;
+                }
             }
             catch (Exception e)
             {
@@ -167,9 +175,10 @@ namespace Pixicity.Web.Controllers.Posts
             return await Task.FromResult(result);
         }
 
-        [HttpDelete]
-        [Route(nameof(DeletePost))]
-        public async Task<JSONObjectResult> DeletePost([FromBody] Post model)
+        [HttpPut]
+        [Route(nameof(UpdatePost))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> UpdatePost([FromBody] Post model)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -178,7 +187,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                result.Data = _postService.DeletePost(model.Id);
+                result.Data = _postService.UpdatePost(model);
             }
             catch (Exception e)
             {
@@ -262,6 +271,29 @@ namespace Pixicity.Web.Controllers.Posts
             try
             {
                 result.Data = _postService.AddComentario(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpDelete]
+        [Route(nameof(DeletePost))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> DeletePost([FromQuery] long postId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _postService.DeletePost(postId);
             }
             catch (Exception e)
             {

@@ -43,6 +43,13 @@ namespace Pixicity.Service.Interfaces
         long SavePost(Post model);
 
         /// <summary>
+        /// Actualizar el Post en el Sistema
+        /// </summary>
+        /// <param name="model">Entidad Post</param>
+        /// <returns></returns>
+        long UpdatePost(Post model);
+
+        /// <summary>
         /// Cambia el estado de Eliminado de un Post
         /// </summary>
         /// <param name="postId">Id del Post</param>
