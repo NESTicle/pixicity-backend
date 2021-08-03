@@ -19,6 +19,13 @@ namespace Pixicity.Service.Interfaces
         Usuario GetUsuarioByUserName(string userName);
 
         /// <summary>
+        /// Obtiene un usuario filtrado por el Id
+        /// </summary>
+        /// <param name="id">Id del Usuario</param>
+        /// <returns></returns>
+        Usuario GetUsuarioById(long id);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="usuario"></param>

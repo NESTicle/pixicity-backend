@@ -50,6 +50,18 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Usuario GetUsuarioById(long id)
+        {
+            try
+            {
+                return _dbContext.Usuario.AsNoTracking().FirstOrDefault(x => x.Id == id && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Usuario GetUsuarioByEmail(string email)
         {
             try

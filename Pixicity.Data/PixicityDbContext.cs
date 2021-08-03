@@ -24,6 +24,7 @@ namespace Pixicity.Data
 
         public DbSet<Post> Post { get; set; }
         public DbSet<Comentario> Comentario { get; set; }
+        public DbSet<Voto> Voto { get; set; }
 
         #endregion
 
@@ -49,6 +50,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new CategoriaMap());
             builder.ApplyConfiguration(new PostMap());
             builder.ApplyConfiguration(new ComentarioMap());
+            builder.ApplyConfiguration(new VotoMap());
 
             base.OnModelCreating(builder);
         }

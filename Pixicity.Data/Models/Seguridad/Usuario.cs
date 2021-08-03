@@ -42,5 +42,6 @@ namespace Pixicity.Data.Models.Seguridad
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
         public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
+        public virtual ICollection<Voto> Votos { get; set; } = new HashSet<Voto>();
     }
 }

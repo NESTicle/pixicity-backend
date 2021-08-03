@@ -25,5 +25,13 @@ namespace Pixicity.Domain.Enums
             [Display(Name = "Usuario")]
             Baneado = 666
         }
+
+        public enum VotosTypeEnum
+        {
+            [Display(Name = "Posts")]
+            Posts = 1,
+            [Display(Name = "Fotos")]
+            Fotos = 2
+        }
     }
 }

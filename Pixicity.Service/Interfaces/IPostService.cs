@@ -3,6 +3,7 @@ using Pixicity.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Service.Interfaces
 {
@@ -82,5 +83,28 @@ namespace Pixicity.Service.Interfaces
         /// <param name="postId">Id del Post</param>
         /// <returns></returns>
         List<Comentario> GetComentariosByPostId(long postId);
+
+        /// <summary>
+        /// Asignar votos al post o a las fotos
+        /// </summary>
+        /// <returns></returns>
+        long SetVoto(Voto model);
+
+        List<Voto> GetVotosByUsuarioId(long usuarioId);
+
+        /// <summary>
+        /// Obtiene los votos del día de hoy del usuario actual
+        /// </summary>
+        /// <param name="usuarioId">Id del Usuario</param>
+        /// <param name="type">Tipo de Voto (Posts o Fotos)</param>
+        /// <returns></returns>
+        List<Voto> GetCurrentVotosByUsuarioId(long usuarioId, string type);
+
+        /// <summary>
+        /// Obtiene los votos que le quedan por realizar al día al usuario
+        /// </summary>
+        /// <param name="type">Tipo de Voto (Posts o Fotos)</param>
+        /// <returns></returns>
+        int GetAvailableVotos(VotosTypeEnum type);
     }
 }

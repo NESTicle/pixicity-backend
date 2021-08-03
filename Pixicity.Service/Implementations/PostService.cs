@@ -8,17 +8,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Service.Implementations
 {
     public class PostService : IPostService
     {
         private readonly PixicityDbContext _dbContext;
+        private readonly ISeguridadService _seguridadService;
         private IAppPrincipal _currentUser { get; }
 
-        public PostService(PixicityDbContext dbContext, IAppPrincipal currentUser)
+        public PostService(PixicityDbContext dbContext, ISeguridadService seguridadService, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
+            _seguridadService = seguridadService;
             _currentUser = currentUser;
         }
 
@@ -106,6 +109,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 model.UsuarioId = _currentUser.Id;
+                model.Puntos = 0;
 
                 _dbContext.Post.Add(model);
                 _dbContext.SaveChanges();
@@ -135,6 +139,21 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return post.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long UpdatePostEF(Post model)
+        {
+            try
+            {
+                _dbContext.Update(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
             }
             catch (Exception e)
             {
@@ -173,7 +192,7 @@ namespace Pixicity.Service.Implementations
                 if (post == null)
                     throw new Exception("Un error ha ocurrido al tratar de eliminar un post");
 
-                if(post.UsuarioId != _currentUser.Id) // TODO: Poder eliminar los posts si eres un Administrador
+                if (post.UsuarioId != _currentUser.Id) // TODO: Poder eliminar los posts si eres un Administrador
                     throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
                 post.Eliminado = true;
@@ -234,6 +253,96 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false && x.PostId == postId)
                     .OrderBy(x => x.FechaComentario)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long SetVoto(Voto model)
+        {
+            try
+            {
+                var usuario = _seguridadService.GetUsuarioById(_currentUser.Id);
+
+                if (usuario == null)
+                    throw new Exception("Error al tratar de sumar un voto ya que el usuario no existe");
+
+                if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
+                    throw new Exception("Ya no tienes puntos para sumar");
+
+                Voto voto = new Voto()
+                {
+                    UsuarioId = _currentUser.Id,
+                    Cantidad = model.Cantidad,
+                    TypeId = model.TypeId,
+                    VotosType = model.VotosType
+                };
+
+                _dbContext.Voto.Add(voto);
+                _dbContext.SaveChanges();
+
+                if(model.VotosType == VotosTypeEnum.Posts)
+                {
+                    Post post = GetPostSimpleById(model.TypeId);
+
+                    if(post != null)
+                    {
+                        post.Puntos += model.Cantidad;
+                        UpdatePostEF(post);
+                    }
+                }
+
+                return voto.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Voto> GetVotosByUsuarioId(long usuarioId)
+        {
+            try
+            {
+                return _dbContext.Voto.Where(x => x.UsuarioId == usuarioId).ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Voto> GetCurrentVotosByUsuarioId(long usuarioId, string type)
+        {
+            try
+            {
+                var finalDia = DateTime.Now.Date.AddHours(23).AddMinutes(59).AddSeconds(59).AddMilliseconds(999);
+                var inicioDia = DateTime.Now.Date; // .AddTicks(-1)
+
+                var votos = _dbContext.Voto.Where(x => x.UsuarioId == usuarioId && x.TipoString == type && x.Fecha.Date >= inicioDia && x.Fecha.Date <= finalDia);
+                return votos.ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int GetAvailableVotos(VotosTypeEnum type)
+        {
+            try
+            {
+                var votos = GetCurrentVotosByUsuarioId(_currentUser.Id, type.ToString());
+
+                if (votos == null || votos.Count < 1)
+                    return 10; // TODO: 10 puntos disponibles por dias, seria interesante poderlo parametrizar desde el panel administrativo
+
+                int sumVotos = votos.Sum(x => x.Cantidad);
+                int currentVotos = 10 - sumVotos;
+
+                return currentVotos < 0 ? 0 : currentVotos;
             }
             catch (Exception e)
             {

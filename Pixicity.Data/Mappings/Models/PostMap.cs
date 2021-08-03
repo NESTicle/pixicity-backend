@@ -27,7 +27,7 @@ namespace Pixicity.Data.Mappings.Models
 
             builder.Property(x => x.IP)
                 .HasMaxLength(15);
-            
+
             builder.HasOne(x => x.Categoria)
                 .WithMany(x => x.Posts)
                 .HasForeignKey(x => x.CategoriaId);
@@ -59,6 +59,20 @@ namespace Pixicity.Data.Mappings.Models
             builder.HasOne(x => x.Post)
                 .WithMany(x => x.Comentarios)
                 .HasForeignKey(x => x.PostId);
+        }
+    }
+
+    public class VotoMap : IEntityTypeConfiguration<Voto>
+    {
+        void IEntityTypeConfiguration<Voto>.Configure(EntityTypeBuilder<Voto> builder)
+        {
+            builder.ToTable("Votos", "Post");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Votos)
+                .HasForeignKey(x => x.UsuarioId);
         }
     }
 }
