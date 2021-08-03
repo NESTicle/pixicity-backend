@@ -142,6 +142,28 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long ChangeStickyPost(long postId)
+        {
+            try
+            {
+                Post post = GetPostSimpleById(postId);
+
+                if (post == null)
+                    throw new Exception("Un error ha ocurrido obteniendo el post");
+
+                post.Sticky = !post.Sticky;
+                _dbContext.Update(post);
+                _dbContext.SaveChanges();
+
+                return postId;
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public bool DeletePost(long postId)
         {
             try

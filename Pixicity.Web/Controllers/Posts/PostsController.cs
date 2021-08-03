@@ -198,6 +198,29 @@ namespace Pixicity.Web.Controllers.Posts
             return await Task.FromResult(result);
         }
 
+        [HttpPut]
+        [Route(nameof(ChangeStickyPost))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> ChangeStickyPost([FromBody] Post model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _postService.ChangeStickyPost(model.Id);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpGet]
         [Route(nameof(GetComentariosRecientes))]
         public async Task<JSONObjectResult> GetComentariosRecientes()

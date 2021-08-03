@@ -50,6 +50,13 @@ namespace Pixicity.Service.Interfaces
         long UpdatePost(Post model);
 
         /// <summary>
+        /// Cambiar el estado de sticky para 
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        long ChangeStickyPost(long postId);
+
+        /// <summary>
         /// Cambia el estado de Eliminado de un Post
         /// </summary>
         /// <param name="postId">Id del Post</param>
