@@ -264,17 +264,22 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                var usuario = _seguridadService.GetUsuarioById(_currentUser.Id);
-
-                if (usuario == null)
-                    throw new Exception("Error al tratar de sumar un voto ya que el usuario no existe");
+                model.UsuarioId = _currentUser.Id;
 
                 if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
                     throw new Exception("Ya no tienes puntos para sumar");
 
+                if (GetPostSimpleById(model.UsuarioId).UsuarioId == model.UsuarioId)
+                    throw new Exception("No es posible votar a tu mismo post");
+
+                var votos = GetVotosByUsuarioTypeId(model);
+
+                if (votos != null && votos.Count > 0)
+                    throw new Exception("No es posible votar a un mismo post más de una vez");
+
                 Voto voto = new Voto()
                 {
-                    UsuarioId = _currentUser.Id,
+                    UsuarioId = model.UsuarioId,
                     Cantidad = model.Cantidad,
                     TypeId = model.TypeId,
                     VotosType = model.VotosType
@@ -283,11 +288,11 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Voto.Add(voto);
                 _dbContext.SaveChanges();
 
-                if(model.VotosType == VotosTypeEnum.Posts)
+                if (model.VotosType == VotosTypeEnum.Posts)
                 {
                     Post post = GetPostSimpleById(model.TypeId);
 
-                    if(post != null)
+                    if (post != null)
                     {
                         post.Puntos += model.Cantidad;
                         UpdatePostEF(post);
@@ -343,6 +348,19 @@ namespace Pixicity.Service.Implementations
                 int currentVotos = 10 - sumVotos;
 
                 return currentVotos < 0 ? 0 : currentVotos;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Voto> GetVotosByUsuarioTypeId(Voto voto)
+        {
+            try
+            {
+                var votos = _dbContext.Voto.Where(x => x.UsuarioId == voto.UsuarioId && x.TypeId == voto.TypeId);
+                return votos.ToList();
             }
             catch (Exception e)
             {
