@@ -1,4 +1,5 @@
 ﻿using Pixicity.Domain.ViewModels.Parametros;
+using System;
 
 namespace Pixicity.Domain.ViewModels.Posts
 {
@@ -15,6 +16,8 @@ namespace Pixicity.Domain.ViewModels.Posts
 
         public bool Sticky { get; set; }
         public bool Smileys { get; set; }
+
+        public DateTime FechaRegistro { get; set; }
 
         public CategoriaViewModel Categoria { get; set; }
     }

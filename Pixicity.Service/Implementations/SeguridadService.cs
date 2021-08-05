@@ -166,5 +166,30 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public int SumarPuntosUsuario(long usuarioId, int puntos)
+        {
+            try
+            {
+                Usuario usuario = GetUsuarioById(usuarioId);
+
+                if (usuario == null)
+                    throw new Exception("Un error ha ocurrido tratando de sumar puntos para el usuario ya que no se ha encontrado mediante el id del usuario");
+
+                if (usuario.Puntos <= 0)
+                    usuario.Puntos = 0;
+
+                usuario.Puntos += puntos;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return usuario.Puntos;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

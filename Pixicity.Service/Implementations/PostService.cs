@@ -299,6 +299,8 @@ namespace Pixicity.Service.Implementations
                     }
                 }
 
+                _seguridadService.SumarPuntosUsuario(model.UsuarioId, model.Cantidad);
+
                 return voto.Id;
             }
             catch (Exception e)

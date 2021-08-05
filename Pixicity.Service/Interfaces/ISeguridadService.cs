@@ -45,5 +45,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model"></param>
         /// <returns></returns>
         string GenerarJWT(Usuario model);
+
+        /// <summary>
+        /// Sumar puntos para el Usuario
+        /// </summary>
+        /// <param name="usuarioId">Id del Usuario</param>
+        /// <param name="puntos">Puntos que quieres sumarle al Usuario</param>
+        /// <returns></returns>
+        int SumarPuntosUsuario(long usuarioId, int puntos);
     }
 }
