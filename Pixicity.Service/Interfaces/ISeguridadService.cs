@@ -1,10 +1,20 @@
 ﻿using Pixicity.Data.Models.Seguridad;
+using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
+using System.Collections.Generic;
 
 namespace Pixicity.Service.Interfaces
 {
     public interface ISeguridadService
     {
+        /// <summary>
+        /// Obtiene una lista de usuarios
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount);
+
         /// <summary>
         /// Obtiene la cantidad de Usuarios registrados en el sistema
         /// </summary>

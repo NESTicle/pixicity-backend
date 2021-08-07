@@ -7,6 +7,7 @@ using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -24,6 +25,29 @@ namespace Pixicity.Service.Implementations
             _dbContext = dbContext;
             _parametrosService = parametrosService;
             _jwtService = jwtService;
+        }
+
+        public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Usuario
+                    .AsNoTracking()
+                    .Include(x => x.Estado.Pais)
+                    .Where(x => x.Eliminado == false && x.Baneado == false);
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public long CountUsuarios()

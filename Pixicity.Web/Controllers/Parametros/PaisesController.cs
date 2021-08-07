@@ -45,7 +45,11 @@ namespace Pixicity.Web.Controllers.Parametros
             try
             {
                 var data = _parametrosService.GetPaisesDropdown();
-                var mapped = _mapper.Map<List<DropdownViewModel>>(data);
+                var mapped = data.Select(x => new {
+                    id = x.Id,
+                    iso2 = x.ISO2,
+                    nombre = x.Nombre
+                });
 
                 result.Data = mapped;
             }
