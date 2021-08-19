@@ -49,7 +49,8 @@ namespace Pixicity.Web.Controllers.Posts
                         nombre = x.Categoria.Nombre,
                         seo = x.Categoria.SEO
                     },
-                    x.Sticky
+                    x.Sticky,
+                    x.EsPrivado
                 });
 
                 var paginationMetadata = new

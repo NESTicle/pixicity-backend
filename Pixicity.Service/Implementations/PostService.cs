@@ -46,6 +46,9 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Where(x => x.Eliminado == false && x.Sticky == false);
 
+                if (!string.IsNullOrEmpty(queryParameters.Query))
+                    posts = posts.Where(x => x.Categoria.SEO == queryParameters.Query);
+
                 totalCount = posts.Count();
 
                 return posts
