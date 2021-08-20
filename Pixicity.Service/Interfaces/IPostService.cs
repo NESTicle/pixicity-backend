@@ -37,6 +37,20 @@ namespace Pixicity.Service.Interfaces
         Post GetPostById(long postId);
 
         /// <summary>
+        /// Obtener el siguiente post a partir de un id
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        Post NextPost(long postId);
+
+        /// <summary>
+        /// Obtener el anterior post a partir de un id
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        Post PreviousPost(long postId);
+
+        /// <summary>
         /// Guarda el Post en el Sistema
         /// </summary>
         /// <param name="model"></param>

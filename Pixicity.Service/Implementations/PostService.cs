@@ -95,6 +95,40 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Post NextPost(long postId)
+        {
+            try
+            {
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.Usuario.Estado.Pais)
+                    .FirstOrDefault(x => x.Id > postId && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Post PreviousPost(long postId)
+        {
+            try
+            {
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.Usuario.Estado.Pais)
+                    .Where(x => x.Id < postId && x.Eliminado == false)
+                    .OrderByDescending(y => y.Id)
+                    .FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Post GetPostSimpleById(long postId)
         {
             try

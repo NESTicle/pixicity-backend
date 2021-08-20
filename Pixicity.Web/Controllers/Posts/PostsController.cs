@@ -154,6 +154,56 @@ namespace Pixicity.Web.Controllers.Posts
         }
 
         [HttpPost]
+        [Route(nameof(NextPost))]
+        public async Task<JSONObjectResult> NextPost([FromBody] Post model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.NextPost(model.Id);
+                var mapped = _mapper.Map<PostViewModel>(data);
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(PreviousPost))]
+        public async Task<JSONObjectResult> PreviousPost([FromBody] Post model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.PreviousPost(model.Id);
+                var mapped = _mapper.Map<PostViewModel>(data);
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
         [Route(nameof(SavePost))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> SavePost([FromBody] Post model)
