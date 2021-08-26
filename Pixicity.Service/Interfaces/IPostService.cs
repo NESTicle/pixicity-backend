@@ -51,6 +51,13 @@ namespace Pixicity.Service.Interfaces
         Post PreviousPost(long postId);
 
         /// <summary>
+        /// Obtener un post en aleatorio
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        Post RandomPost(long postId);
+
+        /// <summary>
         /// Guarda el Post en el Sistema
         /// </summary>
         /// <param name="model"></param>

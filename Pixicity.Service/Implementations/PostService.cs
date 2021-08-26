@@ -129,6 +129,29 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Post RandomPost(long postId)
+        {
+            try
+            {
+                Random rand = new Random();
+                int toSkip = rand.Next(0, _dbContext.Post.Count());
+                
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.Usuario.Estado.Pais)
+                    .Where(x => x.Id < postId && x.Eliminado == false)
+                    .OrderBy(r => Guid.NewGuid())
+                    .Skip(toSkip)
+                    .Take(1)
+                    .FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Post GetPostSimpleById(long postId)
         {
             try
