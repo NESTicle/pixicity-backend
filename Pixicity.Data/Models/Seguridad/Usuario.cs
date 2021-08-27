@@ -1,6 +1,7 @@
 ﻿using Pixicity.Data.Models.Base;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Extensions;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,6 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
         public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
         public virtual ICollection<Voto> Votos { get; set; } = new HashSet<Voto>();
+        public virtual ICollection<Denuncia> Denuncias { get; set; } = new HashSet<Denuncia>();
     }
 }

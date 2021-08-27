@@ -33,4 +33,26 @@ namespace Pixicity.Data.Mappings.Models
                 .IsRequired();
         }
     }
+
+    public class DenunciaMap : IEntityTypeConfiguration<Denuncia>
+    {
+        void IEntityTypeConfiguration<Denuncia>.Configure(EntityTypeBuilder<Denuncia> builder)
+        {
+            builder.ToTable("Denuncias", "Web");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Comentarios)
+                .HasMaxLength(800)
+                .IsRequired();
+
+            builder.HasOne(x => x.Post)
+                .WithMany(x => x.Denuncias)
+                .HasForeignKey(x => x.PostId);
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Denuncias)
+                .HasForeignKey(x => x.UsuarioDenunciaId);
+        }
+    }
 }
