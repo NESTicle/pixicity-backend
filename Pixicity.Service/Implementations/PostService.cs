@@ -140,7 +140,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Usuario.Estado.Pais)
-                    .Where(x => x.Id < postId && x.Eliminado == false)
+                    .Where(x => x.Id != postId && x.Eliminado == false)
                     .OrderBy(r => Guid.NewGuid())
                     .Skip(toSkip)
                     .Take(1)
