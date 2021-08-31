@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
 using Pixicity.Service.Interfaces;
@@ -423,6 +424,29 @@ namespace Pixicity.Service.Implementations
             {
                 var votos = _dbContext.Voto.Where(x => x.UsuarioId == voto.UsuarioId && x.TypeId == voto.TypeId);
                 return votos.ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long DenunciaPost(Denuncia model)
+        {
+            try
+            {
+                Denuncia denuncia = new Denuncia() {
+                    UsuarioDenunciaId = _currentUser.Id,
+                    PostId = model.PostId,
+                    RazonDenunciaId = model.RazonDenunciaId,
+                    Comentarios = model.Comentarios,
+                    UsuarioRegistra = _currentUser.UserName
+                };
+
+                _dbContext.Denuncia.Add(denuncia);
+                _dbContext.SaveChanges();
+
+                return denuncia.Id;
             }
             catch (Exception e)
             {

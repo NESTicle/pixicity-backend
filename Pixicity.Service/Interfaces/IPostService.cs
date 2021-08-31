@@ -1,4 +1,5 @@
 ﻿using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using System;
 using System.Collections.Generic;
@@ -127,5 +128,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="type">Tipo de Voto (Posts o Fotos)</param>
         /// <returns></returns>
         int GetAvailableVotos(VotosTypeEnum type);
+
+        /// <summary>
+        /// Registrar una nueva denuncia para el post
+        /// </summary>
+        /// <param name="denuncia">Entidad de denuncia</param>
+        /// <returns></returns>
+        long DenunciaPost(Denuncia denuncia);
     }
 }
