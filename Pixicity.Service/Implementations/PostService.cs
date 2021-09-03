@@ -136,7 +136,7 @@ namespace Pixicity.Service.Implementations
             {
                 Random rand = new Random();
                 int toSkip = rand.Next(0, _dbContext.Post.Count());
-                
+
                 return _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
@@ -435,7 +435,8 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                Denuncia denuncia = new Denuncia() {
+                Denuncia denuncia = new Denuncia()
+                {
                     UsuarioDenunciaId = _currentUser.Id,
                     PostId = model.PostId,
                     RazonDenunciaId = model.RazonDenunciaId,
@@ -447,6 +448,52 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return denuncia.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public FavoritoPost SearchFavoritoPost(FavoritoPost model)
+        {
+            try
+            {
+                var query = _dbContext.FavoritoPost.AsQueryable();
+
+                if (model.PostId > 0)
+                    query = query.Where(x => x.PostId == model.PostId);
+
+                if (model.UsuarioId > 0)
+                    query = query.Where(x => x.UsuarioId == model.UsuarioId);
+
+                return query.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long AddFavoritePost(long postId)
+        {
+            try
+            {
+                FavoritoPost favoritoPost = new FavoritoPost()
+                {
+                    PostId = postId,
+                    UsuarioId = _currentUser.Id
+                };
+
+                FavoritoPost search = SearchFavoritoPost(favoritoPost);
+
+                if(search != null)
+                    return 0;
+
+                _dbContext.FavoritoPost.Add(favoritoPost);
+                _dbContext.SaveChanges();
+
+                return favoritoPost.Id;
             }
             catch (Exception e)
             {

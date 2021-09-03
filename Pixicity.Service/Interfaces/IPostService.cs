@@ -135,5 +135,19 @@ namespace Pixicity.Service.Interfaces
         /// <param name="denuncia">Entidad de denuncia</param>
         /// <returns></returns>
         long DenunciaPost(Denuncia denuncia);
+
+        /// <summary>
+        /// Buscar un favorito post
+        /// </summary>
+        /// <param name="model">Entidad de FavoritoPost</param>
+        /// <returns></returns>
+        FavoritoPost SearchFavoritoPost(FavoritoPost model);
+
+        /// <summary>
+        /// Agrega el post a favoritos
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        long AddFavoritePost(long postId);
     }
 }

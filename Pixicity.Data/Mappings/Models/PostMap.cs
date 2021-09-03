@@ -75,4 +75,22 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioId);
         }
     }
+
+    public class FavoritoPostMap : IEntityTypeConfiguration<FavoritoPost>
+    {
+        void IEntityTypeConfiguration<FavoritoPost>.Configure(EntityTypeBuilder<FavoritoPost> builder)
+        {
+            builder.ToTable("FavoritosPost", "Post");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.FavoritosPosts)
+                .HasForeignKey(x => x.UsuarioId);
+
+            builder.HasOne(x => x.Post)
+                .WithMany(x => x.FavoritosPosts)
+                .HasForeignKey(x => x.PostId);
+        }
+    }
 }
