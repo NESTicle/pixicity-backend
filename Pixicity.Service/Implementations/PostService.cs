@@ -500,5 +500,31 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.FavoritoPost
+                    .AsNoTracking()
+                    .Include(x => x.Post.Categoria)
+                    .Where(x => x.UsuarioId == _currentUser.Id && x.Post.Eliminado == false);
+
+                if (!string.IsNullOrEmpty(queryParameters.Query))
+                    posts = posts.Where(x => x.Post.Titulo.Contains(queryParameters.Query));
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

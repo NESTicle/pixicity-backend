@@ -149,5 +149,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="postId">Id del post</param>
         /// <returns></returns>
         long AddFavoritePost(long postId);
+
+        /// <summary>
+        /// Obtener la lista de posts en favoritos del usuario
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount);
     }
 }

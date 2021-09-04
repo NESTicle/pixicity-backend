@@ -9,7 +9,7 @@ namespace Pixicity.Data.Models.Posts
         public long UsuarioId { get; set; }
         public long PostId { get; set; }
 
-        public DateTime FechaRegistro { get; set; }
+        public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
         public virtual Usuario Usuario { get; set; }
         public virtual Post Post { get; set; }

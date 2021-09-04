@@ -21,6 +21,9 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Pais, DropdownViewModel>();
             CreateMap<Estado, DropdownViewModel>();
             CreateMap<Categoria, DropdownViewModel>();
+            CreateMap<FavoritoPost, FavoritosViewModel>()
+                .ForMember(des => des.FechaRegistro, source => source.MapFrom(s => s.FechaRegistro))
+                .ForMember(des => des.Post, source => source.MapFrom(s => s.Post));
         }
     }
 }
