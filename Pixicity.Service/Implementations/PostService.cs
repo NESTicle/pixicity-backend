@@ -488,7 +488,14 @@ namespace Pixicity.Service.Implementations
                 FavoritoPost search = SearchFavoritoPost(favoritoPost);
 
                 if(search != null)
-                    return 0;
+                {
+                    if (search.Eliminado == false)
+                        return 0;
+                    else
+                    {
+                        ChangeDeleteFavorito(search.Id);
+                    }
+                }
 
                 _dbContext.FavoritoPost.Add(favoritoPost);
                 _dbContext.SaveChanges();
@@ -508,7 +515,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.FavoritoPost
                     .AsNoTracking()
                     .Include(x => x.Post.Categoria)
-                    .Where(x => x.UsuarioId == _currentUser.Id && x.Post.Eliminado == false);
+                    .Where(x => x.UsuarioId == _currentUser.Id && x.Post.Eliminado == false && x.Eliminado == false);
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                     posts = posts.Where(x => x.Post.Titulo.Contains(queryParameters.Query));
@@ -520,6 +527,33 @@ namespace Pixicity.Service.Implementations
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool ChangeDeleteFavorito(long favoritoId)
+        {
+            try
+            {
+                FavoritoPost favorito = _dbContext.FavoritoPost.FirstOrDefault(x => x.Id == favoritoId);
+
+                if (favorito == null)
+                    throw new Exception("No se ha podido cambiar el estado al favorito ya que no existe el registro");
+
+                if (favorito.UsuarioId != _currentUser.Id)
+                    throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
+
+                favorito.Eliminado = !favorito.Eliminado;
+                favorito.FechaElimina = DateTime.Now;
+                favorito.UsuarioElimina = _currentUser.UserName;
+
+                _dbContext.Update(favorito);
+                _dbContext.SaveChanges();
+
+                return favorito.Eliminado;
             }
             catch (Exception e)
             {

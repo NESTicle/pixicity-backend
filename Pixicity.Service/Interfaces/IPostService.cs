@@ -157,5 +157,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Eliminar o restaura el favorito del 
+        /// </summary>
+        /// <param name="favoritoId"></param>
+        /// <returns></returns>
+        bool ChangeDeleteFavorito(long favoritoId);
     }
 }

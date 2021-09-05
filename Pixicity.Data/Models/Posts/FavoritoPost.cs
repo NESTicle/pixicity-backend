@@ -1,15 +1,12 @@
-﻿using Pixicity.Data.Models.Seguridad;
-using System;
+﻿using Pixicity.Data.Models.Base;
+using Pixicity.Data.Models.Seguridad;
 
 namespace Pixicity.Data.Models.Posts
 {
-    public class FavoritoPost
+    public class FavoritoPost : PixicityBase
     {
-        public long Id { get; set; }
         public long UsuarioId { get; set; }
         public long PostId { get; set; }
-
-        public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
         public virtual Usuario Usuario { get; set; }
         public virtual Post Post { get; set; }

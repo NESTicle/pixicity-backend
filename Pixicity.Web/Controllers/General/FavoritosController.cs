@@ -65,5 +65,31 @@ namespace Pixicity.Web.Controllers.General
 
             return await Task.FromResult(result);
         }
+
+        [HttpDelete]
+        [Route(nameof(DeleteFavorito))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> DeleteFavorito([FromQuery] long favoritoId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = new {
+                    favoritoId,
+                    eliminado = _postService.ChangeDeleteFavorito(favoritoId)
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }
