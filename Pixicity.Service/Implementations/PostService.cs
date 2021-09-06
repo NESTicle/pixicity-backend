@@ -494,6 +494,7 @@ namespace Pixicity.Service.Implementations
                     else
                     {
                         ChangeDeleteFavorito(search.Id);
+                        return search.Id;
                     }
                 }
 
@@ -549,6 +550,9 @@ namespace Pixicity.Service.Implementations
                 favorito.Eliminado = !favorito.Eliminado;
                 favorito.FechaElimina = DateTime.Now;
                 favorito.UsuarioElimina = _currentUser.UserName;
+
+                if (favorito.Eliminado == false)
+                    favorito.FechaRegistro = DateTime.Now;
 
                 _dbContext.Update(favorito);
                 _dbContext.SaveChanges();
