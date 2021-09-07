@@ -519,7 +519,7 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.UsuarioId == _currentUser.Id && x.Post.Eliminado == false && x.Eliminado == false);
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
-                    posts = posts.Where(x => x.Post.Titulo.Contains(queryParameters.Query));
+                    posts = posts.Where(x => x.Post.Titulo.ToLower().Contains(queryParameters.Query.ToLower()));
 
                 totalCount = posts.Count();
 
