@@ -536,6 +536,29 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<FavoritoPost> GetLastFavoritos(int count)
+        {
+            try
+            {
+                var posts = _dbContext.FavoritoPost
+                    .AsNoTracking()
+                    .Include(x => x.Post.Categoria)
+                    .Where(x => x.UsuarioId == _currentUser.Id && x.Post.Eliminado == false && x.Eliminado == false);
+
+                if (count > 50)
+                    count = 50;
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Take(count)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public bool ChangeDeleteFavorito(long favoritoId)
         {
             try

@@ -73,7 +73,33 @@ namespace Pixicity.Web.Controllers.General
 
             return await Task.FromResult(result);
         }
-        
+
+        [HttpGet]
+        [Route(nameof(GetLastFavoritos))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetLastFavoritos([FromQuery] int count)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.GetLastFavoritos(count);
+                var mapped = _mapper.Map<List<FavoritosViewModel>>(data);
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpDelete]
         [Route(nameof(DeleteFavorito))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
