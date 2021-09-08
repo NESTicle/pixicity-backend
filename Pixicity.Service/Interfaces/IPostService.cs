@@ -1,4 +1,5 @@
-﻿using Pixicity.Data.Models.Posts;
+﻿using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using System;
@@ -157,7 +158,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount);
-
+        
         /// <summary>
         /// Eliminar o restaura el favorito del 
         /// </summary>

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
@@ -43,6 +45,11 @@ namespace Pixicity.Web.Controllers.General
                 var data = _postService.GetFavoritos(queryParameters, out long totalCount);
                 var mapped = _mapper.Map<List<FavoritosViewModel>>(data);
 
+                var categorias = mapped.GroupBy(x => x.Post.Categoria, (key, g) => new {
+                    categoria = key,
+                    count = g.Count()
+                }).ToList();
+
                 var paginationMetadata = new
                 {
                     totalCount,
@@ -54,6 +61,7 @@ namespace Pixicity.Web.Controllers.General
                 result.Data = new
                 {
                     favoritos = mapped,
+                    categorias,
                     pagination = paginationMetadata
                 };
             }
@@ -65,7 +73,7 @@ namespace Pixicity.Web.Controllers.General
 
             return await Task.FromResult(result);
         }
-
+        
         [HttpDelete]
         [Route(nameof(DeleteFavorito))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]

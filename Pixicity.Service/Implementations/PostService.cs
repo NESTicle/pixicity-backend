@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
+using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
