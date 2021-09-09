@@ -157,7 +157,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="queryParameters"></param>
         /// <param name="totalCount"></param>
         /// <returns></returns>
-        List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount);
+        List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, long categoriaId, out long totalCount);
 
         /// <summary>
         /// Obtener la lista de favoritos

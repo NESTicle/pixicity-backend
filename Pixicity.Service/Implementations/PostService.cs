@@ -510,7 +510,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, out long totalCount)
+        public List<FavoritoPost> GetFavoritos(QueryParamsHelper queryParameters, long categoriaId, out long totalCount)
         {
             try
             {
@@ -521,6 +521,9 @@ namespace Pixicity.Service.Implementations
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                     posts = posts.Where(x => x.Post.Titulo.ToLower().Contains(queryParameters.Query.ToLower()));
+
+                if (categoriaId > 0)
+                    posts = posts.Where(x => x.Post.Categoria.Id == categoriaId);
 
                 totalCount = posts.Count();
 

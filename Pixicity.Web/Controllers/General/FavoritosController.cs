@@ -33,7 +33,7 @@ namespace Pixicity.Web.Controllers.General
         [HttpGet]
         [Route(nameof(GetFavoritos))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> GetFavoritos([FromQuery] QueryParamsHelper queryParameters)
+        public async Task<JSONObjectResult> GetFavoritos([FromQuery] QueryParamsHelper queryParameters, [FromQuery] long categoriaId)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -42,7 +42,7 @@ namespace Pixicity.Web.Controllers.General
 
             try
             {
-                var data = _postService.GetFavoritos(queryParameters, out long totalCount);
+                var data = _postService.GetFavoritos(queryParameters, categoriaId, out long totalCount);
                 var mapped = _mapper.Map<List<FavoritosViewModel>>(data);
 
                 var categorias = mapped.GroupBy(x => new { x.Post.Categoria.Id, x.Post.Categoria.Icono, x.Post.Categoria.Nombre }, (key, g) => new {
