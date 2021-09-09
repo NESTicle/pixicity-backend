@@ -45,7 +45,7 @@ namespace Pixicity.Web.Controllers.General
                 var data = _postService.GetFavoritos(queryParameters, out long totalCount);
                 var mapped = _mapper.Map<List<FavoritosViewModel>>(data);
 
-                var categorias = mapped.GroupBy(x => x.Post.Categoria, (key, g) => new {
+                var categorias = mapped.GroupBy(x => new { x.Post.Categoria.Id, x.Post.Categoria.Icono, x.Post.Categoria.Nombre }, (key, g) => new {
                     categoria = key,
                     count = g.Count()
                 }).ToList();
