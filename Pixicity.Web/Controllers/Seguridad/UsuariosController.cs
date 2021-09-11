@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +18,12 @@ namespace Pixicity.Web.Controllers.Seguridad
     public class UsuariosController : ControllerBase
     {
         private readonly ISeguridadService _seguridadService;
+        private readonly IMapper _mapper;
 
-        public UsuariosController(ISeguridadService seguridadService)
+        public UsuariosController(ISeguridadService seguridadService, IMapper mapper)
         {
             _seguridadService = seguridadService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -117,6 +121,32 @@ namespace Pixicity.Web.Controllers.Seguridad
                         },
                         Token = _seguridadService.GenerarJWT(loggedUser)
                     };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(GetLoggedUserByJwt))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetLoggedUserByJwt()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var loggedUser = _seguridadService.GetLoggedUserByJwt();
+                var mapped = _mapper.Map<UsuarioViewModel>(loggedUser);
+
+                result.Data = mapped;
             }
             catch (Exception e)
             {

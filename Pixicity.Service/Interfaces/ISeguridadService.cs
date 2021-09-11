@@ -63,5 +63,11 @@ namespace Pixicity.Service.Interfaces
         /// <param name="puntos">Puntos que quieres sumarle al Usuario</param>
         /// <returns></returns>
         int SumarPuntosUsuario(long usuarioId, int puntos);
+
+        /// <summary>
+        /// Obtener el usuario logeado
+        /// </summary>
+        /// <returns></returns>
+        Usuario GetLoggedUserByJwt();
     }
 }

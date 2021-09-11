@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Domain.ViewModels.Posts;
+using Pixicity.Domain.ViewModels.Seguridad;
 
 namespace Pixicity.Data.Mappings.AutoMapper
 {
@@ -24,6 +26,10 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<FavoritoPost, FavoritosViewModel>()
                 .ForMember(des => des.FechaRegistro, source => source.MapFrom(s => s.FechaRegistro))
                 .ForMember(des => des.Post, source => source.MapFrom(s => s.Post));
+
+            CreateMap<Usuario, UsuarioViewModel>()
+                .ForMember(des => des.PaisId, source => source.MapFrom(s => s.Estado != null ? s.Estado.IdPais : (long?)null))
+                .ForMember(des => des.Password, source => source.Ignore());
         }
     }
 }

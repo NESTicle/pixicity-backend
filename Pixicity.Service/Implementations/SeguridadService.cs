@@ -4,6 +4,7 @@ using Pixicity.Data;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Enums;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.Transversal;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
 using System;
@@ -19,12 +20,14 @@ namespace Pixicity.Service.Implementations
         private readonly PixicityDbContext _dbContext;
         private readonly IParametrosService _parametrosService;
         private readonly IJwtService _jwtService;
+        private IAppPrincipal _currentUser { get; }
 
-        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService)
+        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
             _parametrosService = parametrosService;
             _jwtService = jwtService;
+            _currentUser = currentUser;
         }
 
         public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount)
@@ -209,6 +212,21 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return usuario.Puntos;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Usuario GetLoggedUserByJwt()
+        {
+            try
+            {
+                return _dbContext.Usuario
+                    .AsNoTracking()
+                    .Include(x => x.Estado)
+                    .FirstOrDefault(x => x.Id == _currentUser.Id);
             }
             catch (Exception e)
             {
