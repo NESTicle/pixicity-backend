@@ -156,6 +156,9 @@ namespace Pixicity.Service.Implementations
 
                 usuario.Genero = model.Genero;
                 usuario.EstadoId = model.EstadoId;
+                usuario.FechaNacimiento = model.FechaNacimiento;
+                usuario.Email = model.Email;
+
                 usuario.FechaActualiza = DateTime.Now;
                 usuario.UsuarioActualiza = _currentUser.UserName;
 
