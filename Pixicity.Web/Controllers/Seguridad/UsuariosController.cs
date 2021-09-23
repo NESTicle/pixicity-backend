@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.Transversal;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
@@ -19,11 +20,13 @@ namespace Pixicity.Web.Controllers.Seguridad
     {
         private readonly ISeguridadService _seguridadService;
         private readonly IMapper _mapper;
+        private IAppPrincipal _currentUser { get; }
 
-        public UsuariosController(ISeguridadService seguridadService, IMapper mapper)
+        public UsuariosController(ISeguridadService seguridadService, IMapper mapper, IAppPrincipal currentUser)
         {
             _seguridadService = seguridadService;
             _mapper = mapper;
+            _currentUser = currentUser;
         }
 
         [HttpGet]
@@ -85,6 +88,32 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 result.Data = _seguridadService.RegistrarUsuario(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(UpdateUsuario))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> UpdateUsuario([FromBody] UsuarioViewModel model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                Usuario usuario = _mapper.Map<Usuario>(model);
+                usuario.Id = _currentUser.Id;
+
+                result.Data = _seguridadService.UpdateUsuario(usuario);
             }
             catch (Exception e)
             {

@@ -17,8 +17,11 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 //.ForMember(dest => dest.Nombre, source => source.MapFrom(source => source.Nombre))
                 .ReverseMap();
 
-            CreateMap<Post, PostViewModel>();
-            CreateMap<Categoria, CategoriaViewModel>();
+            CreateMap<Post, PostViewModel>()
+                .ReverseMap();
+
+            CreateMap<Categoria, CategoriaViewModel>()
+                .ReverseMap();
 
             CreateMap<Pais, DropdownViewModel>();
             CreateMap<Estado, DropdownViewModel>();
@@ -29,7 +32,8 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Usuario, UsuarioViewModel>()
                 .ForMember(des => des.PaisId, source => source.MapFrom(s => s.Estado != null ? s.Estado.IdPais : (long?)null))
-                .ForMember(des => des.Password, source => source.Ignore());
+                .ForMember(des => des.Password, source => source.Ignore())
+                .ReverseMap();
         }
     }
 }
