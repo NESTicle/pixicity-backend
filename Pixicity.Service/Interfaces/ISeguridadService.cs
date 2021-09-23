@@ -36,11 +36,18 @@ namespace Pixicity.Service.Interfaces
         Usuario GetUsuarioById(long id);
 
         /// <summary>
-        /// 
+        /// Crear un nuevo usuario en el sistema
         /// </summary>
         /// <param name="usuario"></param>
         /// <returns></returns>
         long RegistrarUsuario(UsuarioViewModel usuario);
+
+        /// <summary>
+        /// Actualizar usuario en el sistema
+        /// </summary>
+        /// <param name="usuario">Entidad Usuario</param>
+        /// <returns></returns>
+        long UpdateUsuario(Usuario usuario);
 
         /// <summary>
         /// Iniciar sesión con la cuenta del Usuario
@@ -69,5 +76,12 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <returns></returns>
         Usuario GetLoggedUserByJwt();
+
+        /// <summary>
+        /// Cambiar la contraseña actual del usuario
+        /// </summary>
+        /// <param name="model">viewModel ChangePasswordUsuarioViewModel</param>
+        /// <returns></returns>
+        bool ChangeUserPassword(ChangePasswordUsuarioViewModel model);
     }
 }

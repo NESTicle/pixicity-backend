@@ -148,6 +148,28 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long UpdateUsuario(Usuario model)
+        {
+            try
+            {
+                Usuario usuario = GetUsuarioById(model.Id);
+
+                usuario.Genero = model.Genero;
+                usuario.EstadoId = model.EstadoId;
+                usuario.FechaActualiza = DateTime.Now;
+                usuario.UsuarioActualiza = _currentUser.UserName;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return usuario.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Usuario LoginUsuario(UsuarioViewModel model)
         {
             try
@@ -227,6 +249,29 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Estado)
                     .FirstOrDefault(x => x.Id == _currentUser.Id);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool ChangeUserPassword(ChangePasswordUsuarioViewModel model)
+        {
+            try
+            {
+                var usuario = GetUsuarioById(_currentUser.Id);
+
+                if (usuario == null)
+                    throw new Exception($"Hubo un error al tratar de cambiar la contraseña del usuario ya que no existe el usuario con id {_currentUser.Id}");
+
+                if (!PasswordHasher.ValidatePassword(model.CurrentPassword, usuario.Password))
+                    throw new Exception("La contraseña no coincide con la contraseña actual");
+
+                usuario.Password = PasswordHasher.HashPassword(model.NewPassword);
+
+                _dbContext.Update(usuario);
+                return _dbContext.SaveChanges() > 0;
             }
             catch (Exception e)
             {
