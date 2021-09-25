@@ -77,6 +77,20 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Usuario GetUsuarioInfoByUserName(string userName)
+        {
+            try
+            {
+                return _dbContext.Usuario.AsNoTracking()
+                    .Include(x => x.Estado.Pais)
+                    .FirstOrDefault(x => x.UserName.ToLower() == userName.Trim().ToLower() && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public Usuario GetUsuarioById(long id)
         {
             try

@@ -22,11 +22,18 @@ namespace Pixicity.Service.Interfaces
         long CountUsuarios();
 
         /// <summary>
-        /// Obtiene un usuario filtrado por el uerName
+        /// Obtiene un usuario filtrado por el userName
         /// </summary>
         /// <param name="userName">UserName</param>
         /// <returns></returns>
         Usuario GetUsuarioByUserName(string userName);
+
+        /// <summary>
+        /// Obtiene un usuario con la información relacionada, filtrado por el userName
+        /// </summary>
+        /// <param name="userName">Nombre del usuario</param>
+        /// <returns></returns>
+        Usuario GetUsuarioInfoByUserName(string userName);
 
         /// <summary>
         /// Obtiene un usuario filtrado por el Id

@@ -76,6 +76,46 @@ namespace Pixicity.Web.Controllers.Seguridad
             return await Task.FromResult(result);
         }
 
+        [HttpGet]
+        [Route(nameof(GetUserByUserName))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetUserByUserName([FromQuery] string userName)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _seguridadService.GetUsuarioInfoByUserName(userName);
+
+                var mapped = new
+                {
+                    id = data?.Id,
+                    userName = data?.UserName,
+                    genero = data?.GeneroString,
+                    pais = new {
+                        nombre = data?.Estado?.Pais?.Nombre,
+                        iso2 = data?.Estado?.Pais?.ISO2
+                    },
+                    puntos = data?.Puntos,
+                    comentarios = data?.CantidadComentarios,
+                    fechaRegistro = data?.FechaRegistro,
+                    posts = 0 // x.CantidadPosts
+                };
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpPost]
         [Route(nameof(RegistrarUsuario))]
         public async Task<JSONObjectResult> RegistrarUsuario([FromBody] UsuarioViewModel model)
