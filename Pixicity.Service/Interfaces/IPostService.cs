@@ -26,6 +26,14 @@ namespace Pixicity.Service.Interfaces
         List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtiene la lista de posts paginada para la sección de /administracion/posts
+        /// </summary>
+        /// <param name="queryParameters">Helper utilizado para la paginación</param>
+        /// <param name="totalCount">Numero total de Posts en el Sistema</param>
+        /// <returns></returns>
+        List<Post> GetPostsAdmin(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
         /// Obtiene una lista de posts fijados por los administradores
         /// </summary>
         /// <returns></returns>
