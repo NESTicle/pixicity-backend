@@ -67,5 +67,27 @@ namespace Pixicity.Web.Controllers.Web
 
             return await Task.FromResult(result);
         }
+
+        [HttpPut]
+        [Route(nameof(UpdateAds))]
+        public async Task<JSONObjectResult> UpdateAds([FromBody] Configuracion model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _webService.UpdateAds(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }

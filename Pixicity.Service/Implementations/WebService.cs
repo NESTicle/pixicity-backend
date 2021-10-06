@@ -119,5 +119,30 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public int UpdateAds(Configuracion model)
+        {
+            try
+            {
+                Configuracion configuracion = GetConfiguracion();
+
+                if (configuracion == null)
+                    configuracion = CreateConfiguracion(model);
+
+                configuracion.HeaderScript = model.HeaderScript;
+                configuracion.FooterScript = model.FooterScript;
+                configuracion.Banner160x600 = model.Banner160x600;
+                configuracion.Banner300x250 = model.Banner300x250;
+                configuracion.Banner468x60 = model.Banner468x60;
+                configuracion.Banner728x90 = model.Banner728x90;
+
+                _dbContext.Update(configuracion);
+                return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

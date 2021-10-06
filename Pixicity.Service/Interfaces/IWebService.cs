@@ -41,5 +41,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Configuracion</param>
         /// <returns></returns>
         int UpdateConfiguracion(Configuracion model);
+
+        /// <summary>
+        /// Actualiza la información de la publicidad
+        /// </summary>
+        /// <param name="model">Entidad Configuracion</param>
+        /// <returns></returns>
+        int UpdateAds(Configuracion model);
     }
 }
