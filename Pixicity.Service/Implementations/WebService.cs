@@ -1,8 +1,11 @@
-﻿using Pixicity.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Pixicity.Data;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Service.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pixicity.Service.Implementations
 {
@@ -29,6 +32,28 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return model.Codigo;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Afiliado> GetAfiliados(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Afiliado
+                   .AsNoTracking()
+                   .AsQueryable();
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
             }
             catch (Exception e)
             {
