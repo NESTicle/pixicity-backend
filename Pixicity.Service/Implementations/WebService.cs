@@ -60,5 +60,64 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public Configuracion GetConfiguracion()
+        {
+            try
+            {
+                return _dbContext.Configuracion.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Configuracion CreateConfiguracion(Configuracion model)
+        {
+            try
+            {
+                Configuracion config = new Configuracion()
+                {
+                    DateCreated = DateTime.Now,
+                    SiteName = model.SiteName,
+                    Slogan = model.Slogan,
+                    URL = model.URL
+                };
+
+                _dbContext.Configuracion.Add(config);
+                _dbContext.SaveChanges();
+
+                return config;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int UpdateConfiguracion(Configuracion model)
+        {
+            try
+            {
+                Configuracion configuracion = GetConfiguracion();
+
+                if (configuracion == null)
+                    configuracion = CreateConfiguracion(model);
+
+                configuracion.SiteName = model.SiteName;
+                configuracion.Slogan = model.Slogan;
+                configuracion.MaintenanceMode = model.MaintenanceMode;
+                configuracion.MaintenanceMessage = model.MaintenanceMessage;
+                configuracion.OnlineUsersTime = model.OnlineUsersTime;
+
+                _dbContext.Update(configuracion);
+                return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

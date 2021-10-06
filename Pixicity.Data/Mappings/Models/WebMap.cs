@@ -55,4 +55,14 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioDenunciaId);
         }
     }
+
+    public class ConfiguracionMap : IEntityTypeConfiguration<Configuracion>
+    {
+        void IEntityTypeConfiguration<Configuracion>.Configure(EntityTypeBuilder<Configuracion> builder)
+        {
+            builder.ToTable("Configuracion", "Web");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+        }
+    }
 }
