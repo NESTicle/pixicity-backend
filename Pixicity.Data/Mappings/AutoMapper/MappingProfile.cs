@@ -18,6 +18,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ReverseMap();
 
             CreateMap<Post, PostViewModel>()
+                .ForMember(des => des.URL, source => source.MapFrom(s => s.Titulo.ToLower().Replace(" ", "-")))
                 .ReverseMap();
 
             CreateMap<Categoria, CategoriaViewModel>()
@@ -33,6 +34,11 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Usuario, UsuarioViewModel>()
                 .ForMember(des => des.PaisId, source => source.MapFrom(s => s.Estado != null ? s.Estado.IdPais : (long?)null))
                 .ForMember(des => des.Password, source => source.Ignore())
+                .ReverseMap();
+
+            CreateMap<Comentario, ComentarioViewModel>()
+                .ForMember(des => des.Usuario, source => source.MapFrom(s => s.Usuario.UserName))
+                .ForMember(des => des.Post, source => source.MapFrom(s => s.Post))
                 .ReverseMap();
         }
     }

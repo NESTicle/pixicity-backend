@@ -103,6 +103,14 @@ namespace Pixicity.Service.Interfaces
         long AddComentario(Comentario model);
 
         /// <summary>
+        /// Obtiene la lista de todos los comentarios para visualizar en el dashboard
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Comentario> GetComentarios(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
         /// Obtener la lista de los últimos comentarios
         /// </summary>
         /// <returns></returns>

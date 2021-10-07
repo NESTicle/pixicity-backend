@@ -6,6 +6,7 @@ namespace Pixicity.Domain.ViewModels.Posts
     public class PostViewModel
     {
         public long Id { get; set; }
+        public string URL { get; set; }
         public string Titulo { get; set; }
         public string Contenido { get; set; }
         public string Etiquetas { get; set; }

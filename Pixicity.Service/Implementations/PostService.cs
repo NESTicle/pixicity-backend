@@ -316,6 +316,30 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Comentario> GetComentarios(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Comentario
+                    .Include(x => x.Usuario)
+                    .Include(x => x.Post.Categoria)
+                    .AsNoTracking()
+                    .AsQueryable();
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaComentario)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Comentario> GetComentariosRecientes()
         {
             try
