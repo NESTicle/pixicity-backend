@@ -40,7 +40,7 @@ namespace Pixicity.Web.Controllers.General
                     usuariosOnline = 1,
                     usuarios = _seguridadService.CountUsuarios(),
                     posts = _postService.CountPosts(),
-                    comentarios = 0,
+                    comentarios = _postService.CountComentarios(),
                     fotos = 0,
                     comentariosFotos = 0
                 };

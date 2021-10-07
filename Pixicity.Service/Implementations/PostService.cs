@@ -71,6 +71,7 @@ namespace Pixicity.Service.Implementations
             {
                 var posts = _dbContext.Post
                     .AsNoTracking()
+                    .Include(x => x.Usuario)
                     .Include(x => x.Categoria)
                     .AsQueryable();
 
@@ -286,7 +287,7 @@ namespace Pixicity.Service.Implementations
                 if (post.UsuarioId != _currentUser.Id) // TODO: Poder eliminar los posts si eres un Administrador
                     throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
-                post.Eliminado = true;
+                post.Eliminado = !post.Eliminado;
 
                 _dbContext.Update(post);
                 _dbContext.SaveChanges();
@@ -369,6 +370,18 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false && x.PostId == postId)
                     .OrderBy(x => x.FechaComentario)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long CountComentarios()
+        {
+            try
+            {
+                return _dbContext.Comentario.Count();
             }
             catch (Exception e)
             {

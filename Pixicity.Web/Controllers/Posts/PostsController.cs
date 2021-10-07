@@ -103,7 +103,9 @@ namespace Pixicity.Web.Controllers.Posts
                     },
                     x.Etiquetas,
                     x.Sticky,
-                    x.EsPrivado
+                    x.EsPrivado,
+                    x.Eliminado,
+                    x.Usuario.UserName
                 });
 
                 var paginationMetadata = new

@@ -124,6 +124,12 @@ namespace Pixicity.Service.Interfaces
         List<Comentario> GetComentariosByPostId(long postId);
 
         /// <summary>
+        /// Obtener la cantidad de comentarios realizados en la comunidad
+        /// </summary>
+        /// <returns></returns>
+        long CountComentarios();
+
+        /// <summary>
         /// Asignar votos al post o a las fotos
         /// </summary>
         /// <returns></returns>
