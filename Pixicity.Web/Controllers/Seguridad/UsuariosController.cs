@@ -42,6 +42,7 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount);
+
                 var mapped = data.Select(x => new
                 {
                     x.Id,
@@ -51,6 +52,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                     iso2 = x.Estado.Pais.ISO2,
                     puntos = x.Puntos,
                     comentarios = x.CantidadComentarios,
+                    activo = (DateTime.Now - x.Sessions?.FirstOrDefault()?.Activo)?.TotalMinutes,
                     posts = 0 // x.CantidadPosts
                 });
 
@@ -288,6 +290,29 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 result.Data = _seguridadService.ChangeUserPassword(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpDelete]
+        [Route(nameof(DeleteSesion))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> DeleteSesion([FromQuery] long id)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.DeleteSession(id);
             }
             catch (Exception e)
             {

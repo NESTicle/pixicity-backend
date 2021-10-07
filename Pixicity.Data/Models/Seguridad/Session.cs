@@ -9,6 +9,9 @@ namespace Pixicity.Data.Models.Seguridad
         public string Token { get; set; }
         public DateTime FechaExpiracion { get; set; }
 
+        // Para determinar si el Usuario está Online o no
+        public DateTime Activo { get; set; } = DateTime.Now;
+
         public virtual Usuario Usuario { get; set; }
     }
 }

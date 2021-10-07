@@ -1,6 +1,7 @@
 ﻿using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
+using System;
 using System.Collections.Generic;
 
 namespace Pixicity.Service.Interfaces
@@ -100,10 +101,38 @@ namespace Pixicity.Service.Interfaces
         List<Session> GetSesiones(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtener una sesión filtrada por el Id del registro
+        /// </summary>
+        /// <param name="id">Id de la Session</param>
+        /// <returns></returns>
+        Session GetSessionById(long id);
+
+        /// <summary>
+        /// Obtiene una sesión filtrada por el Token
+        /// </summary>
+        /// <param name="token">JWT Token string</param>
+        /// <returns></returns>
+        Session GetSessionByToken(string token);
+
+        /// <summary>
+        /// Actualizar el Campo de Activo de la sesión para determinar si se encuentra o no activo el Usuario
+        /// </summary>
+        /// <param name="model">Entidad Session</param>
+        /// <returns></returns>
+        DateTime UpdateSessionActivoDate(Session model);
+
+        /// <summary>
         /// Guarda la sesión jwt en la base de datos
         /// </summary>
         /// <param name="model">Entidad Session</param>
         /// <returns></returns>
         long SaveUserSession(Session model);
+
+        /// <summary>
+        /// Eliminar la sesión del usuario
+        /// </summary>
+        /// <param name="id">Id de la sesión</param>
+        /// <returns></returns>
+        bool DeleteSession(long id);
     }
 }

@@ -42,8 +42,6 @@ namespace Pixicity.Web.Helpers
                 if (bearer == null || string.IsNullOrEmpty(bearer.ToString()))
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    context.Result = new UnauthorizedResult();
-
                     return;
                 }
 
@@ -52,19 +50,26 @@ namespace Pixicity.Web.Helpers
                 if (jwtUniqueName == null)
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-                    context.Result = new ForbidResult();
-
                     return;
                 }
 
                 var user = _seguridadService.GetUsuarioByUserName(jwtUniqueName);
+                var activeSession = _seguridadService.GetSessionByToken(_jwtService.GetTokenFromJWT(bearer));
+
+                if(activeSession == null || DateTime.Now > activeSession.FechaExpiracion || activeSession.Eliminado == true)
+                {
+                    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Locked;
+                    return;
+                }
+
+                _seguridadService.UpdateSessionActivoDate(activeSession);
 
                 if (_functionality == "Jwt")
                 {
                     if (user == null)
                     {
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        context.Result = new ForbidResult();
+                        return;
                     }
 
                     SetUserInfoToAppPrincipal(user);

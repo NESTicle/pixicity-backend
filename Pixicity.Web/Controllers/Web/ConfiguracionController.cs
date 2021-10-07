@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace Pixicity.Web.Controllers.Web
 
         [HttpPut]
         [Route(nameof(UpdateConfiguracion))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> UpdateConfiguracion([FromBody] Configuracion model)
         {
             JSONObjectResult result = new JSONObjectResult
@@ -70,6 +72,7 @@ namespace Pixicity.Web.Controllers.Web
 
         [HttpPut]
         [Route(nameof(UpdateAds))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> UpdateAds([FromBody] Configuracion model)
         {
             JSONObjectResult result = new JSONObjectResult

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +35,8 @@ namespace Pixicity.Web.Controllers.Parametros
             try
             {
                 var data = _parametrosService.GetCategoriasDropdown();
-                var mapped = data.Select(x => new {
+                var mapped = data.Select(x => new
+                {
                     x.Id,
                     x.Nombre,
                     x.SEO,
@@ -56,6 +56,7 @@ namespace Pixicity.Web.Controllers.Parametros
 
         [HttpPost]
         [Route(nameof(SaveCategoria))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> SaveCategoria([FromBody] Categoria model)
         {
             JSONObjectResult result = new JSONObjectResult

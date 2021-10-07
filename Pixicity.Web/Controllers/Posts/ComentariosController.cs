@@ -6,6 +6,7 @@ using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Pixicity.Web.Controllers.Posts
 
         [HttpGet]
         [Route(nameof(GetComentarios))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> GetComentarios([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult

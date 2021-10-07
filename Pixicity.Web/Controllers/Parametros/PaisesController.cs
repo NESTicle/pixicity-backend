@@ -1,21 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
-using Pixicity.Domain.ViewModels;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Import;
-using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Pixicity.Web.Controllers.Parametros
@@ -37,6 +33,7 @@ namespace Pixicity.Web.Controllers.Parametros
 
         [HttpGet]
         [Route(nameof(GetPaises))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> GetPaises([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult
@@ -83,7 +80,8 @@ namespace Pixicity.Web.Controllers.Parametros
             try
             {
                 var data = _parametrosService.GetPaisesDropdown();
-                var mapped = data.Select(x => new {
+                var mapped = data.Select(x => new
+                {
                     id = x.Id,
                     iso2 = x.ISO2,
                     nombre = x.Nombre

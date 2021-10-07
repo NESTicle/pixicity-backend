@@ -37,6 +37,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.Usuario
                     .AsNoTracking()
                     .Include(x => x.Estado.Pais)
+                    .Include(x => x.Sessions.Where(x => x.Eliminado == false))
                     .Where(x => x.Eliminado == false && x.Baneado == false);
 
                 totalCount = posts.Count();
@@ -303,7 +304,7 @@ namespace Pixicity.Service.Implementations
                 var query = _dbContext.Session
                     .AsNoTracking()
                     .Include(x => x.Usuario)
-                    .Where(x => x.Eliminado == false);
+                    .AsQueryable();
 
                 totalCount = query.Count();
 
@@ -319,6 +320,47 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public Session GetSessionById(long id)
+        {
+            try
+            {
+                return _dbContext.Session.FirstOrDefault(x => x.Id == id);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Session GetSessionByToken(string token)
+        {
+            try
+            {
+                return _dbContext.Session.FirstOrDefault(x => x.Token.Trim().ToLower() == token.Trim().ToLower());
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public DateTime UpdateSessionActivoDate(Session model)
+        {
+            try
+            {
+                model.Activo = DateTime.Now;
+
+                _dbContext.Update(model);
+                _dbContext.SaveChanges();
+
+                return model.Activo;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SaveUserSession(Session model)
         {
             try
@@ -327,6 +369,30 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool DeleteSession(long id)
+        {
+            try
+            {
+                Session session = GetSessionById(id);
+
+                if (session == null)
+                    throw new Exception($"No se ha encontrado una sesión con el id {id}");
+
+                session.UsuarioElimina = _currentUser.UserName;
+                session.FechaElimina = DateTime.Now;
+                session.Eliminado = true;
+
+                _dbContext.Update(session);
+                _dbContext.SaveChanges();
+
+                return session.Eliminado;
             }
             catch (Exception e)
             {
