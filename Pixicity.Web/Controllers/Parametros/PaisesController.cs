@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Import;
+using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,42 @@ namespace Pixicity.Web.Controllers.Parametros
             _webHostEnvironment = webHostEnvironment;
             _parametrosService = parametrosService;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        [Route(nameof(GetPaises))]
+        public async Task<JSONObjectResult> GetPaises([FromQuery] QueryParamsHelper queryParameters)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _parametrosService.GetPaises(queryParameters, out long totalCount);
+
+                var paginationMetadata = new
+                {
+                    totalCount,
+                    pageSize = queryParameters.PageCount,
+                    currentPage = queryParameters.Page,
+                    totalPages = queryParameters.GetTotalPages(totalCount)
+                };
+
+                result.Data = new
+                {
+                    data,
+                    pagination = paginationMetadata
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
         }
 
         [HttpGet]

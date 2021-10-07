@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Domain.Helpers;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,28 @@ namespace Pixicity.Service.Implementations
         public ParametrosService(PixicityDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public List<Pais> GetPaises(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Pais
+                    .AsNoTracking()
+                    .AsQueryable();
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderBy(x => x.Nombre)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public List<Pais> GetPaisesDropdown()

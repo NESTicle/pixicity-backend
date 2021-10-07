@@ -1,4 +1,5 @@
 ﻿using Pixicity.Data.Models.Parametros;
+using Pixicity.Domain.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,13 @@ namespace Pixicity.Service.Interfaces
 {
     public interface IParametrosService
     {
+        /// <summary>
+        /// Obtener la lista de paises para visualizarlos en el dashboard
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <returns></returns>
+        List<Pais> GetPaises(QueryParamsHelper queryParameters, out long totalCount);
+
         /// <summary>
         /// 
         /// </summary>
