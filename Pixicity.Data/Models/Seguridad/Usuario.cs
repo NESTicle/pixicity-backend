@@ -46,5 +46,6 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual ICollection<Voto> Votos { get; set; } = new HashSet<Voto>();
         public virtual ICollection<Denuncia> Denuncias { get; set; } = new HashSet<Denuncia>();
         public virtual ICollection<FavoritoPost> FavoritosPosts { get; set; } = new HashSet<FavoritoPost>();
+        public virtual ICollection<Session> Sessions { get; set; } = new HashSet<Session>();
     }
 }

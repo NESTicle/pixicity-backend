@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data.Mappings.Models;
+using Pixicity.Data.Models.Logs;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
@@ -10,6 +11,12 @@ namespace Pixicity.Data
     public class PixicityDbContext : DbContext
     {
         public PixicityDbContext(DbContextOptions<PixicityDbContext> options) : base(options) { }
+
+        #region Logs
+
+        //public DbSet<SystemLogs> SystemLogs { get; set; }
+
+        #endregion
 
         #region Parametros
 
@@ -31,6 +38,7 @@ namespace Pixicity.Data
 
         #region Seguridad
 
+        public DbSet<Session> Session { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
 
         #endregion
@@ -57,6 +65,8 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new DenunciaMap());
             builder.ApplyConfiguration(new FavoritoPostMap());
             builder.ApplyConfiguration(new ConfiguracionMap());
+            //builder.ApplyConfiguration(new SystemLogsMap());
+            builder.ApplyConfiguration(new SessionMap());
 
             base.OnModelCreating(builder);
         }

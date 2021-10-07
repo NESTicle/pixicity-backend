@@ -14,6 +14,7 @@ using Pixicity.Domain.AppSettings;
 using Pixicity.Domain.Transversal;
 using Pixicity.Service.Implementations;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Middlewares;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,8 @@ namespace Pixicity.Web
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IWebService, WebService>();
             services.AddScoped<IPostService, PostService>();
-            
+            services.AddScoped<ILogsService, LogsService>();
+
             services.AddDbContext<PixicityDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(typeof(MappingProfile));

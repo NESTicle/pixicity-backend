@@ -218,7 +218,7 @@ namespace Pixicity.Service.Implementations
                     {
                     new Claim(ClaimTypes.Name, model.UserName),
                     }),
-                    Expires = DateTime.UtcNow.AddDays(8),
+                    Expires = DateTime.UtcNow.AddDays(15),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_jwtService.GetHashKeyJwt()), SecurityAlgorithms.HmacSha256Signature)
                 };
 
@@ -289,6 +289,44 @@ namespace Pixicity.Service.Implementations
 
                 _dbContext.Update(usuario);
                 return _dbContext.SaveChanges() > 0;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Session> GetSesiones(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var query = _dbContext.Session
+                    .AsNoTracking()
+                    .Include(x => x.Usuario)
+                    .Where(x => x.Eliminado == false);
+
+                totalCount = query.Count();
+
+                return query
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long SaveUserSession(Session model)
+        {
+            try
+            {
+                _dbContext.Session.Add(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
             }
             catch (Exception e)
             {

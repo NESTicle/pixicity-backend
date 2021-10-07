@@ -9,6 +9,7 @@ using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -64,6 +65,43 @@ namespace Pixicity.Web.Controllers.Seguridad
                 result.Data = new
                 {
                     usuarios = mapped,
+                    pagination = paginationMetadata
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(GetSesiones))]
+        public async Task<JSONObjectResult> GetSesiones([FromQuery] QueryParamsHelper queryParameters)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _seguridadService.GetSesiones(queryParameters, out long totalCount);
+                var mapped = _mapper.Map<List<SessionViewModel>>(data);
+
+                var paginationMetadata = new
+                {
+                    totalCount,
+                    pageSize = queryParameters.PageCount,
+                    currentPage = queryParameters.Page,
+                    totalPages = queryParameters.GetTotalPages(totalCount)
+                };
+
+                result.Data = new
+                {
+                    data = mapped,
                     pagination = paginationMetadata
                 };
             }
@@ -180,6 +218,16 @@ namespace Pixicity.Web.Controllers.Seguridad
                 if (loggedUser == null)
                     result.Data = "error";
                 else
+                {
+                    Session session = new Session()
+                    {
+                        UsuarioId = loggedUser.Id,
+                        Token = _seguridadService.GenerarJWT(loggedUser),
+                        FechaExpiracion = DateTime.UtcNow.AddDays(15)
+                    };
+
+                    _seguridadService.SaveUserSession(session);
+
                     result.Data = new
                     {
                         Usuario = new
@@ -188,8 +236,9 @@ namespace Pixicity.Web.Controllers.Seguridad
                             loggedUser.UserName,
                             rango = loggedUser.Rango.Nombre
                         },
-                        Token = _seguridadService.GenerarJWT(loggedUser)
+                        session.Token
                     };
+                }
             }
             catch (Exception e)
             {

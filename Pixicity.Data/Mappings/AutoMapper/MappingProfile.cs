@@ -6,6 +6,7 @@ using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Domain.ViewModels.Seguridad;
+using System;
 
 namespace Pixicity.Data.Mappings.AutoMapper
 {
@@ -39,6 +40,10 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Comentario, ComentarioViewModel>()
                 .ForMember(des => des.Usuario, source => source.MapFrom(s => s.Usuario.UserName))
                 .ForMember(des => des.Post, source => source.MapFrom(s => s.Post))
+                .ReverseMap();
+
+            CreateMap<Session, SessionViewModel>()
+                .ForMember(des => des.Usuario, source => source.MapFrom(s => s.Usuario.UserName))
                 .ReverseMap();
         }
     }

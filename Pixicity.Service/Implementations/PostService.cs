@@ -347,6 +347,7 @@ namespace Pixicity.Service.Implementations
                 return _dbContext.Comentario
                     .AsNoTracking()
                     .Include(x => x.Usuario)
+                    .Include(x => x.Post.Categoria)
                     .Where(x => x.Eliminado == false)
                     .OrderByDescending(x => x.Id)
                     .Take(10)

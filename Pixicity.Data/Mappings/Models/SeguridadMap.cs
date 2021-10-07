@@ -28,4 +28,18 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.RangoId);
         }
     }
+
+    public class SessionMap : IEntityTypeConfiguration<Session>
+    {
+        void IEntityTypeConfiguration<Session>.Configure(EntityTypeBuilder<Session> builder)
+        {
+            builder.ToTable("Sessions", "Seguridad");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+            
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Sessions)
+                .HasForeignKey(x => x.UsuarioId);
+        }
+    }
 }

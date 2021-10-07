@@ -90,5 +90,20 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">viewModel ChangePasswordUsuarioViewModel</param>
         /// <returns></returns>
         bool ChangeUserPassword(ChangePasswordUsuarioViewModel model);
+
+        /// <summary>
+        /// Obtiene la lista de Sessiones creadas para los Usuarios
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Session> GetSesiones(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Guarda la sesión jwt en la base de datos
+        /// </summary>
+        /// <param name="model">Entidad Session</param>
+        /// <returns></returns>
+        long SaveUserSession(Session model);
     }
 }
