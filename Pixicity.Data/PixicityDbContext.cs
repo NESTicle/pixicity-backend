@@ -15,6 +15,7 @@ namespace Pixicity.Data
         #region Logs
 
         //public DbSet<SystemLogs> SystemLogs { get; set; }
+        public DbSet<Monitor> Monitor { get; set; }
 
         #endregion
 
@@ -67,6 +68,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new ConfiguracionMap());
             //builder.ApplyConfiguration(new SystemLogsMap());
             builder.ApplyConfiguration(new SessionMap());
+            builder.ApplyConfiguration(new MonitorMap());
 
             base.OnModelCreating(builder);
         }

@@ -33,5 +33,21 @@ namespace Pixicity.Domain.Enums
             [Display(Name = "Fotos")]
             Fotos = 2
         }
+
+        public enum TipoMonitor
+        {
+            [Display(Name = "Comentario")]
+            Comentario = 1,
+            [Display(Name = "Like")]
+            Like = 2,
+            [Display(Name = "Dislike")]
+            Dislike = 3,
+            [Display(Name = "Favoritos")]
+            Favoritos = 4,
+            [Display(Name = "Puntos")]
+            Puntos = 5,
+            [Display(Name = "Seguir")]
+            Seguir = 6,
+        }
     }
 }

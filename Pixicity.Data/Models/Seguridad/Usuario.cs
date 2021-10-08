@@ -1,4 +1,5 @@
 ﻿using Pixicity.Data.Models.Base;
+using Pixicity.Data.Models.Logs;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Web;
@@ -47,5 +48,7 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual ICollection<Denuncia> Denuncias { get; set; } = new HashSet<Denuncia>();
         public virtual ICollection<FavoritoPost> FavoritosPosts { get; set; } = new HashSet<FavoritoPost>();
         public virtual ICollection<Session> Sessions { get; set; } = new HashSet<Session>();
+        public virtual ICollection<Monitor> Monitors { get; set; } = new HashSet<Monitor>();
+        public virtual ICollection<Monitor> MonitorsUsuarioQueHaceAcciones { get; set; } = new HashSet<Monitor>();
     }
 }
