@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Pixicity.Data.Models.Logs;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Logs;
 using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Domain.ViewModels.Seguridad;
@@ -44,6 +46,10 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Session, SessionViewModel>()
                 .ForMember(des => des.Usuario, source => source.MapFrom(s => s.Usuario.UserName))
+                .ReverseMap();
+
+            CreateMap<Monitor, MonitorViewModel>()
+                .ForMember(des => des.UsuarioQueHaceAccion, source => source.MapFrom(s => s.UsuarioQueHaceAccion.UserName))
                 .ReverseMap();
         }
     }
