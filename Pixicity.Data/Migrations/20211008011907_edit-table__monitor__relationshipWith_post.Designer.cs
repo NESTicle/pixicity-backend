@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pixicity.Data;
@@ -9,9 +10,10 @@ using Pixicity.Data;
 namespace Pixicity.Data.Migrations
 {
     [DbContext(typeof(PixicityDbContext))]
-    partial class PixicityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211008011907_edit-table__monitor__relationshipWith_post")]
+    partial class edittable__monitor__relationshipWith_post
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace Pixicity.Data.Migrations
                     b.Property<string>("Mensaje")
                         .HasColumnType("text");
 
-                    b.Property<long?>("PostId")
+                    b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("TipoString")
@@ -787,7 +789,9 @@ namespace Pixicity.Data.Migrations
                 {
                     b.HasOne("Pixicity.Data.Models.Posts.Post", "Post")
                         .WithMany("MonitorPosts")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Pixicity.Data.Models.Seguridad.Usuario", "Usuario")
                         .WithMany("Monitors")

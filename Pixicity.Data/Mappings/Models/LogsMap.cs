@@ -38,6 +38,10 @@ namespace Pixicity.Data.Mappings.Models
             builder.HasOne(x => x.UsuarioQueHaceAccion)
                 .WithMany(x => x.MonitorsUsuarioQueHaceAcciones)
                 .HasForeignKey(x => x.UsuarioQueHaceAccionId);
+
+            builder.HasOne(x => x.Post)
+                .WithMany(x => x.MonitorPosts)
+                .HasForeignKey(x => x.PostId);
         }
     }
 }

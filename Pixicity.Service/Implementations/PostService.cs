@@ -18,12 +18,14 @@ namespace Pixicity.Service.Implementations
     {
         private readonly PixicityDbContext _dbContext;
         private readonly ISeguridadService _seguridadService;
+        private readonly ILogsService _logsService;
         private IAppPrincipal _currentUser { get; }
 
-        public PostService(PixicityDbContext dbContext, ISeguridadService seguridadService, IAppPrincipal currentUser)
+        public PostService(PixicityDbContext dbContext, ISeguridadService seguridadService, ILogsService logsService, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
             _seguridadService = seguridadService;
+            _logsService = logsService;
             _currentUser = currentUser;
         }
 
@@ -425,6 +427,15 @@ namespace Pixicity.Service.Implementations
                     {
                         post.Puntos += model.Cantidad;
                         UpdatePostEF(post);
+
+                        _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                        {
+                            UsuarioId = post.UsuarioId,
+                            UsuarioQueHaceAccionId = model.UsuarioId,
+                            Tipo = TipoMonitor.Puntos,
+                            Mensaje = $"Dejó <b>{model.Cantidad}</b> puntos en tu post",
+                            PostId = post.Id
+                        });
                     }
                 }
 

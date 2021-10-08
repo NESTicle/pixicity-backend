@@ -1,4 +1,5 @@
-﻿using Pixicity.Data.Models.Seguridad;
+﻿using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,8 @@ namespace Pixicity.Data.Models.Logs
 
         public string Mensaje { get; set; }
 
+        public long? PostId { get; set; }
+
         [Column("Tipo")]
         public string TipoString
         {
@@ -32,5 +35,6 @@ namespace Pixicity.Data.Models.Logs
 
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario UsuarioQueHaceAccion { get; set; }
+        public virtual Post Post { get; set; }
     }
 }
