@@ -14,6 +14,10 @@ namespace Pixicity.Data.Models.Logs
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
         public bool Leido { get; set; }
+        public bool Eliminado { get; set; }
+        public DateTime? FechaElimina { get; set; } = null;
+        public string UsuarioElimina { get; set; } = "";
+
         public string Mensaje { get; set; }
 
         [Column("Tipo")]

@@ -13,5 +13,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad SystemLogs</param>
         /// <returns></returns>
         long CreateSystemLogs(SystemLogs model);
+
+        /// <summary>
+        /// Crea una notificación para el Usuario
+        /// </summary>
+        /// <param name="monitor">Entidad Monitor</param>
+        /// <returns></returns>
+        long SaveMonitor(Monitor monitor);
     }
 }

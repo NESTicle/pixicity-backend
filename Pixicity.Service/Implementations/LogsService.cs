@@ -35,5 +35,20 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public long SaveMonitor(Monitor monitor)
+        {
+            try
+            {
+                _dbContext.Monitor.Add(monitor);
+                _dbContext.SaveChanges();
+
+                return monitor.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
