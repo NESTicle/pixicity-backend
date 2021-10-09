@@ -52,7 +52,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                     iso2 = x.Estado.Pais.ISO2,
                     puntos = x.Puntos,
                     comentarios = x.CantidadComentarios,
-                    activo = (DateTime.Now - x.Sessions?.FirstOrDefault()?.Activo)?.TotalMinutes,
+                    activo = (DateTime.Now - x.Sessions?.OrderBy(x => x.Id)?.LastOrDefault()?.Activo)?.TotalMinutes,
                     posts = 0 // x.CantidadPosts
                 });
 

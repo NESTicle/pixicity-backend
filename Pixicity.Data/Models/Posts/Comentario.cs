@@ -13,7 +13,7 @@ namespace Pixicity.Data.Models.Posts
         public DateTime FechaComentario { get; set; } = DateTime.Now;
         public int Votos { get; set; }
         public string IP { get; set; }
-        
+
         public bool Eliminado { get; set; }
 
         public virtual Post Post { get; set; }

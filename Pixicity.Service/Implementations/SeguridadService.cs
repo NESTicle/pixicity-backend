@@ -361,14 +361,58 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long GetOnlineUsersCount()
+        {
+            try
+            {
+                var query = _dbContext.Session.Where(x => x.Eliminado == false && x.Activo > DateTime.Now.AddMinutes(-15));
+                return query.Count();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SaveUserSession(Session model)
         {
             try
             {
+                DeleteAllSessionsByUsuarioId(model.UsuarioId);
+
                 _dbContext.Session.Add(model);
                 _dbContext.SaveChanges();
 
                 return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long? DeleteAllSessionsByUsuarioId(long usuarioId)
+        {
+            try
+            {
+                if (usuarioId <= 0)
+                    return 0;
+
+                var sessions = _dbContext.Session.Where(x => x.UsuarioId == usuarioId).ToList();
+
+                if(sessions?.Count > 0)
+                {
+                    foreach (var session in sessions)
+                    {
+                        session.Eliminado = true;
+                        session.FechaElimina = DateTime.Now;
+                    }
+
+                    _dbContext.UpdateRange(sessions);
+                    _dbContext.SaveChanges();
+                }
+
+                return sessions?.Count;
             }
             catch (Exception e)
             {

@@ -37,7 +37,7 @@ namespace Pixicity.Web.Controllers.General
             try
             {
                 result.Data = new {
-                    usuariosOnline = 1,
+                    usuariosOnline = _seguridadService.GetOnlineUsersCount(),
                     usuarios = _seguridadService.CountUsuarios(),
                     posts = _postService.CountPosts(),
                     comentarios = _postService.CountComentarios(),

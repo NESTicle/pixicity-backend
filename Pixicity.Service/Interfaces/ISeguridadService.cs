@@ -122,11 +122,24 @@ namespace Pixicity.Service.Interfaces
         DateTime UpdateSessionActivoDate(Session model);
 
         /// <summary>
+        /// Obtiene la cantidad de usuarios online en la comunidad
+        /// </summary>
+        /// <returns></returns>
+        long GetOnlineUsersCount();
+
+        /// <summary>
         /// Guarda la sesión jwt en la base de datos
         /// </summary>
         /// <param name="model">Entidad Session</param>
         /// <returns></returns>
         long SaveUserSession(Session model);
+
+        /// <summary>
+        /// Eliminar todas las sesiones del usuario
+        /// </summary>
+        /// <param name="usuarioId">Id del Usuario</param>
+        /// <returns></returns>
+        long? DeleteAllSessionsByUsuarioId(long usuarioId);
 
         /// <summary>
         /// Eliminar la sesión del usuario

@@ -311,6 +311,20 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Comentario.Add(model);
                 _dbContext.SaveChanges();
 
+                Post post = GetPostSimpleById(model.PostId);
+
+                if (post.UsuarioId != _currentUser.Id)
+                {
+                    _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                    {
+                        UsuarioId = post.UsuarioId,
+                        UsuarioQueHaceAccionId = _currentUser.Id,
+                        Tipo = TipoMonitor.Comentario,
+                        Mensaje = $"Comentó tu post",
+                        PostId = model.PostId
+                    });
+                }
+
                 return model.Id;
             }
             catch (Exception e)
