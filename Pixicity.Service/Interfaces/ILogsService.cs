@@ -23,6 +23,12 @@ namespace Pixicity.Service.Interfaces
         long SaveMonitor(Monitor monitor);
 
         /// <summary>
+        /// Obtener las ultimas 5 notificaciones sin leer del usuario logeado
+        /// </summary>
+        /// <returns></returns>
+        List<Monitor> GetLastNotificacionesByCurrentUser();
+
+        /// <summary>
         /// Obtener la lista de notificaciones del usuario actual
         /// </summary>
         /// <param name="queryParameters">Parámetros para filtrar la tabla</param>

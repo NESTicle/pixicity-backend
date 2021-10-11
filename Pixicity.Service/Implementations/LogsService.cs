@@ -57,6 +57,23 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Monitor> GetLastNotificacionesByCurrentUser()
+        {
+            try
+            {
+                return _dbContext.Monitor
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false && x.Leido == false && x.UsuarioId == _currentUser.Id)
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Take(10)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, out long totalCount)
         {
             try
