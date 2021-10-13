@@ -63,6 +63,9 @@ namespace Pixicity.Service.Implementations
             {
                 return _dbContext.Monitor
                     .AsNoTracking()
+                    .Include(x => x.Usuario)
+                    .Include(x => x.UsuarioQueHaceAccion)
+                    .Include(x => x.Post.Categoria)
                     .Where(x => x.Eliminado == false && x.Leido == false && x.UsuarioId == _currentUser.Id)
                     .OrderByDescending(x => x.FechaRegistro)
                     .Take(10)
