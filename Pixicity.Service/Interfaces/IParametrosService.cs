@@ -16,6 +16,13 @@ namespace Pixicity.Service.Interfaces
         List<Pais> GetPaises(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtener un pais filtrado por el Id
+        /// </summary>
+        /// <param name="id">Id del pais</param>
+        /// <returns></returns>
+        Pais GetPaisById(long id);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -27,6 +34,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="pais"></param>
         /// <returns></returns>
         long SavePais(Pais pais);
+
+        /// <summary>
+        /// Actualizar la entidad Pais
+        /// </summary>
+        /// <param name="pais"></param>
+        /// <returns></returns>
+        long UpdatePais(Pais pais);
 
         /// <summary>
         /// 

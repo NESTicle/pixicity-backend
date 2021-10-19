@@ -2,6 +2,7 @@
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.Transversal;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace Pixicity.Service.Implementations
     public class ParametrosService : IParametrosService
     {
         private readonly PixicityDbContext _dbContext;
+        private IAppPrincipal _currentUser { get; }
 
-        public ParametrosService(PixicityDbContext dbContext)
+        public ParametrosService(PixicityDbContext dbContext, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
+            _currentUser = currentUser;
         }
 
         public List<Pais> GetPaises(QueryParamsHelper queryParameters, out long totalCount)
@@ -33,6 +36,18 @@ namespace Pixicity.Service.Implementations
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Pais GetPaisById(long id)
+        {
+            try
+            {
+                return _dbContext.Pais.FirstOrDefault(x => x.Id == id);
             }
             catch (Exception e)
             {
@@ -61,6 +76,28 @@ namespace Pixicity.Service.Implementations
             _dbContext.SaveChanges();
 
             return model.Id;
+        }
+
+        public long UpdatePais(Pais model)
+        {
+            try
+            {
+                Pais pais = GetPaisById(model.Id);
+                pais.ISO2 = model.ISO2;
+                pais.ISO3 = model.ISO3;
+                pais.Nombre = model.Nombre;
+                pais.FechaActualiza = DateTime.Now;
+                pais.UsuarioActualiza = _currentUser.UserName;
+
+                _dbContext.Update(pais);
+                _dbContext.SaveChanges();
+
+                return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public List<Estado> GetEstadosByPaisId(long IdPais)

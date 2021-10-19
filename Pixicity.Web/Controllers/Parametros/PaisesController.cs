@@ -7,6 +7,7 @@ using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Import;
+using Pixicity.Domain.ViewModels.Parametros;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
@@ -113,6 +114,50 @@ namespace Pixicity.Web.Controllers.Parametros
                 var mapped = _mapper.Map<List<DropdownViewModel>>(data);
 
                 result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(SavePais))]
+        public async Task<JSONObjectResult> SavePais([FromBody] Pais model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _parametrosService.SavePais(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPut]
+        [Route(nameof(UpdatePais))]
+        public async Task<JSONObjectResult> UpdatePais([FromBody] Pais model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _parametrosService.UpdatePais(model);
             }
             catch (Exception e)
             {
