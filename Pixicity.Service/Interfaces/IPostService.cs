@@ -153,6 +153,14 @@ namespace Pixicity.Service.Interfaces
         int GetAvailableVotos(VotosTypeEnum type);
 
         /// <summary>
+        /// Obtiene la lista de denuncias de posts para visualizarlas en el dashboard
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Denuncia> GetDenuncias(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
         /// Registrar una nueva denuncia para el post
         /// </summary>
         /// <param name="denuncia">Entidad de denuncia</param>

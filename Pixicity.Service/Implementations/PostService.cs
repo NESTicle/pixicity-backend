@@ -511,6 +511,28 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Denuncia> GetDenuncias(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var query = _dbContext.Denuncia
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado);
+
+                totalCount = query.Count();
+
+                return query
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Voto> GetVotosByUsuarioTypeId(Voto voto)
         {
             try
