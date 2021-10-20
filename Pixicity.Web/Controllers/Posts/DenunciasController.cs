@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
+using Pixicity.Domain.ViewModels.Web;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
@@ -39,6 +40,7 @@ namespace Pixicity.Web.Controllers.Posts
             try
             {
                 var data = _postService.GetDenuncias(queryParameters, out long totalCount);
+                var mapped = _mapper.Map<List<DenunciaViewModel>>(data);
 
                 var paginationMetadata = new
                 {
@@ -50,7 +52,7 @@ namespace Pixicity.Web.Controllers.Posts
 
                 result.Data = new
                 {
-                    data,
+                    data = mapped,
                     pagination = paginationMetadata
                 };
             }

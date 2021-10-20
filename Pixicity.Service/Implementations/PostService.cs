@@ -517,7 +517,9 @@ namespace Pixicity.Service.Implementations
             {
                 var query = _dbContext.Denuncia
                     .AsNoTracking()
-                    .Where(x => x.Eliminado);
+                    .Include(x => x.Post.Categoria)
+                    .Include(x => x.Usuario)
+                    .Where(x => x.Eliminado == false);
 
                 totalCount = query.Count();
 
