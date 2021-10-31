@@ -29,9 +29,17 @@ namespace Pixicity.Service.Interfaces
         /// Obtiene la lista de posts paginada para la sección de /administracion/posts
         /// </summary>
         /// <param name="queryParameters">Helper utilizado para la paginación</param>
-        /// <param name="totalCount">Numero total de Posts en el Sistema</param>
+        /// <param name="totalCount">Número total de Posts en el Sistema</param>
         /// <returns></returns>
         List<Post> GetPostsAdmin(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Obtiene la lista de posts paginada filtrado por el usuario logeado
+        /// </summary>
+        /// <param name="queryParameters">Helper utilizado para la paginación</param>
+        /// <param name="totalCount">Número total de Posts</param>
+        /// <returns></returns>
+        List<Post> GetPostsByLoggedUser(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
         /// Obtiene una lista de posts fijados por los administradores

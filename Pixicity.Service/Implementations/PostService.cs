@@ -97,6 +97,35 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Post> GetPostsByLoggedUser(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id);
+
+                if (!string.IsNullOrEmpty(queryParameters.Query))
+                {
+                    string query = queryParameters.Query.Trim().ToLower();
+                    posts = posts.Where(x => x.Categoria.Nombre.ToLower().Contains(query) || x.Titulo.ToLower().Contains(query) || x.Contenido.ToLower().Contains(query));
+                }
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Post> GetStickyPosts()
         {
             try
