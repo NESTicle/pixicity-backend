@@ -36,10 +36,28 @@ namespace Pixicity.Data.Mappings.Models
             builder.ToTable("Sessions", "Seguridad");
 
             builder.HasIndex(x => x.Id).IsUnique();
-            
+
             builder.HasOne(x => x.Usuario)
                 .WithMany(x => x.Sessions)
                 .HasForeignKey(x => x.UsuarioId);
+        }
+    }
+
+    public class UsuarioSeguidoresMap : IEntityTypeConfiguration<UsuarioSeguidores>
+    {
+        void IEntityTypeConfiguration<UsuarioSeguidores>.Configure(EntityTypeBuilder<UsuarioSeguidores> builder)
+        {
+            builder.ToTable("UsuarioSeguidores", "Seguridad");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.HasOne(x => x.Seguido)
+                .WithMany(x => x.Seguidos)
+                .HasForeignKey(x => x.SeguidoId);
+
+            builder.HasOne(x => x.Seguidor)
+                .WithMany(x => x.Seguidores)
+                .HasForeignKey(x => x.SeguidorId);
         }
     }
 }

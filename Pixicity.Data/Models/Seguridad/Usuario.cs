@@ -33,7 +33,6 @@ namespace Pixicity.Data.Models.Seguridad
 
         public int Puntos { get; set; }
         public int CantidadComentarios { get; set; }
-        public int Seguidores { get; set; }
 
         public DateTime? UltimaConexion { get; set; }
         public string UltimaIP { get; set; }
@@ -50,5 +49,8 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual ICollection<Session> Sessions { get; set; } = new HashSet<Session>();
         public virtual ICollection<Monitor> Monitors { get; set; } = new HashSet<Monitor>();
         public virtual ICollection<Monitor> MonitorsUsuarioQueHaceAcciones { get; set; } = new HashSet<Monitor>();
+
+        public virtual ICollection<UsuarioSeguidores> Seguidos { get; set; } = new HashSet<UsuarioSeguidores>();
+        public virtual ICollection<UsuarioSeguidores> Seguidores { get; set; } = new HashSet<UsuarioSeguidores>();
     }
 }
