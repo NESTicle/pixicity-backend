@@ -443,5 +443,24 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public UsuarioInfoViewModel GetUsuarioInfo(long usuarioId)
+        {
+            try
+            {
+                UsuarioInfoViewModel info = new UsuarioInfoViewModel
+                {
+                    Seguidores = _dbContext.UsuarioSeguidores.Count(x => x.SeguidoId == usuarioId && x.Eliminado == false),
+                    Posts = _dbContext.Post.Count(x => x.UsuarioId == usuarioId && x.Eliminado == false),
+                    Puntos = _dbContext.Usuario.FirstOrDefault(x => x.Id == usuarioId && x.Eliminado == true)?.Puntos
+                };
+
+                return info;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

@@ -80,6 +80,29 @@ namespace Pixicity.Web.Controllers.Seguridad
         }
 
         [HttpGet]
+        [Route(nameof(GetUsuarioInfo))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetUsuarioInfo(long usuarioId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.GetUsuarioInfo(usuarioId);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
         [Route(nameof(GetSesiones))]
         public async Task<JSONObjectResult> GetSesiones([FromQuery] QueryParamsHelper queryParameters)
         {

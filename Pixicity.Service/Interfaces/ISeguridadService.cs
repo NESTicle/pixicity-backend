@@ -147,5 +147,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="id">Id de la sesión</param>
         /// <returns></returns>
         bool DeleteSession(long id);
+
+        /// <summary>
+        /// Obtener la información del usuario
+        /// </summary>
+        /// <param name="usuarioId">Id del Usuario</param>
+        /// <returns></returns>
+        UsuarioInfoViewModel GetUsuarioInfo(long usuarioId);
     }
 }
