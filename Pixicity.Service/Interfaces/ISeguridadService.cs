@@ -151,8 +151,8 @@ namespace Pixicity.Service.Interfaces
         /// <summary>
         /// Obtener la información del usuario
         /// </summary>
-        /// <param name="usuarioId">Id del Usuario</param>
+        /// <param name="userName">Username</param>
         /// <returns></returns>
-        UsuarioInfoViewModel GetUsuarioInfo(long usuarioId);
+        UsuarioInfoViewModel GetUsuarioInfo(string userName);
     }
 }

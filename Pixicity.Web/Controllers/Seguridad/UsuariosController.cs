@@ -82,7 +82,7 @@ namespace Pixicity.Web.Controllers.Seguridad
         [HttpGet]
         [Route(nameof(GetUsuarioInfo))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> GetUsuarioInfo(long usuarioId)
+        public async Task<JSONObjectResult> GetUsuarioInfo(string userName)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -91,7 +91,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                result.Data = _seguridadService.GetUsuarioInfo(usuarioId);
+                result.Data = _seguridadService.GetUsuarioInfo(userName);
             }
             catch (Exception e)
             {

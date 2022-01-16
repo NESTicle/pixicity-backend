@@ -444,15 +444,20 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public UsuarioInfoViewModel GetUsuarioInfo(long usuarioId)
+        public UsuarioInfoViewModel GetUsuarioInfo(string userName)
         {
             try
             {
+                Usuario usuario = GetUsuarioByUserName(userName);
+
+                if (usuario == null)
+                    throw new Exception($"No se ha encontrado el usuario con el nombre de usuario {userName}");
+
                 UsuarioInfoViewModel info = new UsuarioInfoViewModel
                 {
-                    Seguidores = _dbContext.UsuarioSeguidores.Count(x => x.SeguidoId == usuarioId && x.Eliminado == false),
-                    Posts = _dbContext.Post.Count(x => x.UsuarioId == usuarioId && x.Eliminado == false),
-                    Puntos = _dbContext.Usuario.FirstOrDefault(x => x.Id == usuarioId && x.Eliminado == true)?.Puntos
+                    Seguidores = _dbContext.UsuarioSeguidores.Count(x => x.SeguidoId == usuario.Id && x.Eliminado == false),
+                    Posts = _dbContext.Post.Count(x => x.UsuarioId == usuario.Id && x.Eliminado == false),
+                    Puntos = _dbContext.Usuario.FirstOrDefault(x => x.Id == usuario.Id && x.Eliminado == true)?.Puntos
                 };
 
                 return info;
