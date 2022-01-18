@@ -400,7 +400,7 @@ namespace Pixicity.Service.Implementations
 
                 var sessions = _dbContext.Session.Where(x => x.UsuarioId == usuarioId).ToList();
 
-                if(sessions?.Count > 0)
+                if (sessions?.Count > 0)
                 {
                     foreach (var session in sessions)
                     {
@@ -465,6 +465,72 @@ namespace Pixicity.Service.Implementations
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public long SeguirUsuario(UsuarioSeguidores model)
+        {
+            try
+            {
+                UsuarioSeguidores usuarioSeguidor = null;
+
+                if(model.SeguidorId == 0)
+                {
+                    Usuario usuario = GetUsuarioByUserName(model.UserName);
+
+                    if (usuario == null)
+                        throw new Exception($"No se ha encontrado un usuario con el userName {model.UserName}");
+
+                    model.SeguidoId = usuario.Id;
+                    usuarioSeguidor = _dbContext.UsuarioSeguidores.FirstOrDefault(x => x.SeguidoId == model.SeguidoId && x.SeguidorId == _currentUser.Id);
+                }
+
+                usuarioSeguidor = _dbContext.UsuarioSeguidores.FirstOrDefault(x => x.SeguidoId == model.SeguidoId && x.SeguidorId == _currentUser.Id);
+
+                if (usuarioSeguidor != null)
+                {
+                    usuarioSeguidor.Eliminado = !usuarioSeguidor.Eliminado;
+
+                    _dbContext.Update(usuarioSeguidor);
+                    _dbContext.SaveChanges();
+
+                    return usuarioSeguidor.Id;
+                }
+                else
+                {
+                    UsuarioSeguidores follow = new UsuarioSeguidores()
+                    {
+                        SeguidoId = model.SeguidoId,
+                        SeguidorId = _currentUser.Id,
+                        FechaRegistro = DateTime.Now,
+                        UsuarioRegistra = _currentUser.UserName
+                    };
+
+                    _dbContext.UsuarioSeguidores.Add(follow);
+                    _dbContext.SaveChanges();
+
+                    return follow.Id;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool IsFollowingTheUser(string userName)
+        {
+            try
+            {
+                var follow = _dbContext.UsuarioSeguidores
+                    .Include(x => x.Seguido)
+                    .FirstOrDefault(x => x.Seguido.UserName == userName && x.SeguidorId == _currentUser.Id && x.Eliminado == false);
+
+                return follow != null;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

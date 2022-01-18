@@ -345,5 +345,54 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             return await Task.FromResult(result);
         }
+
+        [HttpPost]
+        [Route(nameof(SeguirUsuario))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> SeguirUsuario([FromBody] UsuarioSeguidores model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                if (model.SeguidorId == 0 && string.IsNullOrEmpty(model.UserName))
+                    throw new Exception("Faltan datos para realizar la petición");
+
+                result.Data = _seguridadService.SeguirUsuario(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(IsFollowingTheUser))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> IsFollowingTheUser([FromQuery] string userName)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.IsFollowingTheUser(userName);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }

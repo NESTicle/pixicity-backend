@@ -154,5 +154,19 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userName">Username</param>
         /// <returns></returns>
         UsuarioInfoViewModel GetUsuarioInfo(string userName);
+
+        /// <summary>
+        /// Seguir/unfollow un usuario
+        /// </summary>
+        /// <param name="model">Entidad UsuarioSeguidores</param>
+        /// <returns></returns>
+        long SeguirUsuario(UsuarioSeguidores model);
+
+        /// <summary>
+        /// Devuelve true si el usuario logeado sigue al usuario
+        /// </summary>
+        /// <param name="userName">Username del usuario</param>
+        /// <returns></returns>
+        bool IsFollowingTheUser(string userName);
     }
 }
