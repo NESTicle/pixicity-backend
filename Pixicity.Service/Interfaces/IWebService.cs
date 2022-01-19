@@ -1,5 +1,6 @@
 ﻿using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.ViewModels.Web;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,5 +49,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Configuracion</param>
         /// <returns></returns>
         int UpdateAds(Configuracion model);
+
+        List<TopUsuarioViewModel> GetTopUsuarios();
     }
 }

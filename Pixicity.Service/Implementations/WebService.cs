@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.ViewModels.Web;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -138,6 +140,31 @@ namespace Pixicity.Service.Implementations
 
                 _dbContext.Update(configuracion);
                 return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<TopUsuarioViewModel> GetTopUsuarios()
+        {
+            try
+            {
+                var users = _dbContext.Usuario
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false)
+                    .OrderByDescending(x => x.Puntos)
+                    .Take(11);
+
+                var data = users.Select(x => new TopUsuarioViewModel()
+                {
+                    Id = x.Id,
+                    UserName = x.UserName,
+                    Puntos = x.Puntos,
+                });
+
+                return data.ToList();
             }
             catch (Exception e)
             {
