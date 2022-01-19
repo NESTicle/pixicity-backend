@@ -3,6 +3,7 @@ using Pixicity.Data;
 using Pixicity.Data.Models.Logs;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
+using Pixicity.Domain.ViewModels.Logs;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,24 @@ namespace Pixicity.Service.Implementations
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public StatsViewModel GetCurrentUserStats()
+        {
+            try
+            {
+                var notifications = _dbContext.Monitor.Count(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id);
+
+                return new StatsViewModel()
+                {
+                    Notifications = notifications,
+                    Messages = 15
+                };
             }
             catch (Exception e)
             {

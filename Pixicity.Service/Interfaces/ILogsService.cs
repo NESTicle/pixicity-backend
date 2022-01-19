@@ -1,5 +1,6 @@
 ﻿using Pixicity.Data.Models.Logs;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.ViewModels.Logs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,5 +36,11 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount">Total de notificaciones</param>
         /// <returns></returns>
         List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Obtener los valores actuales del usuario y visualizarlos en el menu del usuario
+        /// </summary>
+        /// <returns></returns>
+        StatsViewModel GetCurrentUserStats();
     }
 }
