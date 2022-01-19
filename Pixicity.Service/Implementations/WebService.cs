@@ -182,7 +182,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Where(x => x.Eliminado == false)
                     .OrderByDescending(x => x.Puntos)
-                    .Take(11);
+                    .Take(8);
 
                 return posts.ToList();
             }
