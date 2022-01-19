@@ -56,6 +56,9 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Denuncia, DenunciaViewModel>()
                 .ForMember(des => des.UsuarioDenuncia, source => source.MapFrom(s => s.Usuario.UserName));
+
+            CreateMap<Post, TopPostsViewModel>()
+                .ForMember(des => des.URL, source => source.MapFrom(s => s.Titulo.ToLower().Replace(" ", "-")));
         }
     }
 }

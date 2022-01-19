@@ -1,4 +1,5 @@
-﻿using Pixicity.Data.Models.Web;
+﻿using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Web;
 using System;
@@ -51,5 +52,7 @@ namespace Pixicity.Service.Interfaces
         int UpdateAds(Configuracion model);
 
         List<TopUsuarioViewModel> GetTopUsuarios();
+
+        List<Post> GetTopPosts();
     }
 }

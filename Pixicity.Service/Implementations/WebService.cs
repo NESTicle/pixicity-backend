@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
+using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
@@ -155,7 +156,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Where(x => x.Eliminado == false)
                     .OrderByDescending(x => x.Puntos)
-                    .Take(11);
+                    .Take(10);
 
                 var data = users.Select(x => new TopUsuarioViewModel()
                 {
@@ -165,6 +166,25 @@ namespace Pixicity.Service.Implementations
                 });
 
                 return data.ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Post> GetTopPosts()
+        {
+            try
+            {
+                var posts = _dbContext.Post
+                    .Include(x => x.Categoria)
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false)
+                    .OrderByDescending(x => x.Puntos)
+                    .Take(11);
+
+                return posts.ToList();
             }
             catch (Exception e)
             {
