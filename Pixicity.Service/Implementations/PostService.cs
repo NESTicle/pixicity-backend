@@ -736,5 +736,29 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<Post> GetRelatedPosts(long postId)
+        {
+            try
+            {
+                var post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
+
+                if(post == null)
+                    return new List<Post>();
+
+                var relatedPosts = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Where(x => x.Id != post.Id || x.Titulo.ToLower().Contains(post.Titulo.ToLower()))
+                    .Take(5)
+                    .ToList();
+
+                return relatedPosts;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

@@ -210,5 +210,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="favoritoId"></param>
         /// <returns></returns>
         bool ChangeDeleteFavorito(long favoritoId);
+
+        /// <summary>
+        /// Obtener la lista de posts relacionados
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        List<Post> GetRelatedPosts(long postId);
     }
 }
