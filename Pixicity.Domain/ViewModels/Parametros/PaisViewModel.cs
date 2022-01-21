@@ -7,5 +7,6 @@ namespace Pixicity.Domain.ViewModels.Parametros
     public class PaisViewModel
     {
         public string Nombre { get; set; }
+        public string ISO2 { get; set; }
     }
 }

@@ -217,5 +217,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="postId">Id del post</param>
         /// <returns></returns>
         List<Post> GetRelatedPosts(long postId);
+
+        /// <summary>
+        /// Obtiene la cantidad de posts publicados por el usuario
+        /// </summary>
+        /// <param name="userId">Id del usuario</param>
+        /// <returns></returns>
+        int PostsCountByUserId(long userId);
     }
 }

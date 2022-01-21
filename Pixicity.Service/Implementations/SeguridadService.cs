@@ -92,6 +92,42 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long CommentsCountByUserId(long userId)
+        {
+            try
+            {
+                return _dbContext.Comentario.Count(x => x.UsuarioId == userId && x.Eliminado == false);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public int SeguidoresCountByUserId(long userId)
+        {
+            try
+            {
+                return _dbContext.UsuarioSeguidores.Count(x => x.SeguidoId == userId && x.Eliminado == false);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public int SiguiendoCountByUserId(long userId)
+        {
+            try
+            {
+                return _dbContext.UsuarioSeguidores.Count(x => x.SeguidorId == userId && x.Eliminado == false);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public Usuario GetUsuarioById(long id)
         {
             try

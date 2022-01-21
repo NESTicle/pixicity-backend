@@ -760,5 +760,17 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public int PostsCountByUserId(long userId)
+        {
+            try
+            {
+                return _dbContext.Post.Count(x => x.UsuarioId == userId && x.Eliminado == false);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

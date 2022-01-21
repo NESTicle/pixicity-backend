@@ -20,12 +20,14 @@ namespace Pixicity.Web.Controllers.Seguridad
     public class UsuariosController : ControllerBase
     {
         private readonly ISeguridadService _seguridadService;
+        private readonly IPostService _postService;
         private readonly IMapper _mapper;
         private IAppPrincipal _currentUser { get; }
 
-        public UsuariosController(ISeguridadService seguridadService, IMapper mapper, IAppPrincipal currentUser)
+        public UsuariosController(ISeguridadService seguridadService, IPostService postService, IMapper mapper, IAppPrincipal currentUser)
         {
             _seguridadService = seguridadService;
+            _postService = postService;
             _mapper = mapper;
             _currentUser = currentUser;
         }
@@ -151,22 +153,17 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                var data = _seguridadService.GetUsuarioInfoByUserName(userName);
+                var user = _seguridadService.GetUsuarioInfoByUserName(userName);
 
-                var mapped = new
-                {
-                    id = data?.Id,
-                    userName = data?.UserName,
-                    genero = data?.GeneroString,
-                    pais = new {
-                        nombre = data?.Estado?.Pais?.Nombre,
-                        iso2 = data?.Estado?.Pais?.ISO2
-                    },
-                    puntos = data?.Puntos,
-                    comentarios = data?.CantidadComentarios,
-                    fechaRegistro = data?.FechaRegistro,
-                    posts = 0 // x.CantidadPosts
-                };
+                if (user == null)
+                    throw new Exception($"No se ha encontrado el usuario con el nombre de usuario ${user.UserName}");
+
+                var mapped = _mapper.Map<PerfilUsuarioViewModel>(user);
+
+                mapped.ComentariosCount = _seguridadService.CommentsCountByUserId(user.Id);
+                mapped.SeguidoresCount = _seguridadService.SeguidoresCountByUserId(user.Id);
+                mapped.SiguiendoCount = _seguridadService.SiguiendoCountByUserId(user.Id);
+                mapped.PostsCount = _postService.PostsCountByUserId(user.Id);
 
                 result.Data = mapped;
             }

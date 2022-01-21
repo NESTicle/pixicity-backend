@@ -37,6 +37,27 @@ namespace Pixicity.Service.Interfaces
         Usuario GetUsuarioInfoByUserName(string userName);
 
         /// <summary>
+        /// Obtener la cantidad de comentarios realizados por el usuario
+        /// </summary>
+        /// <param name="userId">Id del usuario</param>
+        /// <returns></returns>
+        long CommentsCountByUserId(long userId);
+
+        /// <summary>
+        /// Obtener la cantidad de seguidores por usuario
+        /// </summary>
+        /// <param name="userId">Id del usuario</param>
+        /// <returns></returns>
+        int SeguidoresCountByUserId(long userId);
+
+        /// <summary>
+        /// Obtener la cantidad de usuarios que sigue
+        /// </summary>
+        /// <param name="userId">Id del usuario</param>
+        /// <returns></returns>
+        int SiguiendoCountByUserId(long userId);
+        
+        /// <summary>
         /// Obtiene un usuario filtrado por el Id
         /// </summary>
         /// <param name="id">Id del Usuario</param>
