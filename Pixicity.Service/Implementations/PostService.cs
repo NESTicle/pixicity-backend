@@ -749,7 +749,7 @@ namespace Pixicity.Service.Implementations
                 var relatedPosts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Id != post.Id || x.Titulo.ToLower().Contains(post.Titulo.ToLower()))
+                    .Where(x => x.Id != post.Id && x.Titulo.ToLower().Contains(post.Titulo.ToLower()))
                     .Take(5)
                     .ToList();
 
