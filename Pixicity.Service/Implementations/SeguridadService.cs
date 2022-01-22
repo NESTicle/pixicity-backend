@@ -569,5 +569,34 @@ namespace Pixicity.Service.Implementations
                 throw;
             }
         }
+
+        public List<Usuario> GetFollowingUsersByUserId(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(queryParameters.Query))
+                    throw new Exception("El parámetro query es requerido para esta consulta");
+
+                long userId = long.Parse(queryParameters.Query);
+
+                var usuarios = _dbContext.UsuarioSeguidores
+                    .AsNoTracking()
+                    .Include(x => x.Seguido.Estado.Pais)
+                    .Where(x => x.SeguidorId == userId && x.Eliminado == false)
+                    .Select(x => x.Seguido);
+
+                totalCount = usuarios.Count();
+
+                return usuarios
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

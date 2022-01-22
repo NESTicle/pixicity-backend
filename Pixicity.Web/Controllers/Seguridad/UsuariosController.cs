@@ -391,5 +391,53 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             return await Task.FromResult(result);
         }
+
+        [HttpGet]
+        [Route(nameof(GetFollowingUsersByUserId))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetFollowingUsersByUserId([FromQuery] QueryParamsHelper queryParameters)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _seguridadService.GetFollowingUsersByUserId(queryParameters, out long totalCount);
+                var mapped = data.Select(x => new
+                {
+                    userName = x.UserName,
+                    genero = x.GeneroString,
+                    pais = new
+                    {
+                        nombre = x.Estado?.Pais?.Nombre,
+                        iso2 = x.Estado?.Pais?.ISO2?.ToLower()
+                    },
+                    puntos = x.Puntos
+                });
+
+                var paginationMetadata = new
+                {
+                    totalCount,
+                    pageSize = queryParameters.PageCount,
+                    currentPage = queryParameters.Page,
+                    totalPages = queryParameters.GetTotalPages(totalCount)
+                };
+
+                result.Data = new
+                {
+                    data = mapped,
+                    pagination = paginationMetadata
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }

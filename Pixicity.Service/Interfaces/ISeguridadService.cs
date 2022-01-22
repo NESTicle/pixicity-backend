@@ -189,5 +189,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userName">Username del usuario</param>
         /// <returns></returns>
         bool IsFollowingTheUser(string userName);
+
+        /// <summary>
+        /// Obtener la lista de usuarios que está siguiendo el usuario
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Usuario> GetFollowingUsersByUserId(QueryParamsHelper queryParameters, out long totalCount);
     }
 }
