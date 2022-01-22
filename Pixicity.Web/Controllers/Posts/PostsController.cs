@@ -499,5 +499,54 @@ namespace Pixicity.Web.Controllers.Posts
 
             return await Task.FromResult(result);
         }
+
+        [HttpGet]
+        [Route(nameof(GetPostsByUserId))]
+        public async Task<JSONObjectResult> GetPostsByUserId([FromQuery] QueryParamsHelper queryParameters)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _postService.GetPostsByUserId(queryParameters, out long totalCount);
+                var mapped = data.Select(x => new
+                {
+                    x.Id,
+                    x.Titulo,
+                    categoria = new
+                    {
+                        icono = x.Categoria.Icono,
+                        nombre = x.Categoria.Nombre,
+                        seo = x.Categoria.SEO
+                    },
+                    x.Sticky,
+                    x.EsPrivado
+                });
+
+                var paginationMetadata = new
+                {
+                    totalCount,
+                    pageSize = queryParameters.PageCount,
+                    currentPage = queryParameters.Page,
+                    totalPages = queryParameters.GetTotalPages(totalCount)
+                };
+
+                result.Data = new
+                {
+                    data = mapped,
+                    pagination = paginationMetadata
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }

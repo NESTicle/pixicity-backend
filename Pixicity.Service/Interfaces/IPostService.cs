@@ -26,6 +26,14 @@ namespace Pixicity.Service.Interfaces
         List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtener la lista de usuarios filtrado por el id del usuario
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Post> GetPostsByUserId(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
         /// Obtiene la lista de posts paginada para la sección de /administracion/posts
         /// </summary>
         /// <param name="queryParameters">Helper utilizado para la paginación</param>
