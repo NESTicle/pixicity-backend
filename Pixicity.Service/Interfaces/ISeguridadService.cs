@@ -197,5 +197,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<Usuario> GetFollowingUsersByUserId(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Obtener la lista de usuarios que siguen al usuario id
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Usuario> GetFollowersByUserId(QueryParamsHelper queryParameters, out long totalCount);
     }
 }
