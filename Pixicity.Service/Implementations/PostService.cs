@@ -386,6 +386,35 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Comentario> GetComentariosByUserId(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(queryParameters.Query))
+                    throw new Exception("El parámetro query es requerido para esta consulta");
+
+                long userId = long.Parse(queryParameters.Query);
+
+                var posts = _dbContext.Comentario
+                    .Include(x => x.Usuario)
+                    .Include(x => x.Post.Categoria)
+                    .AsNoTracking()
+                    .Where(x => x.UsuarioId == userId && x.Eliminado == false);
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaComentario)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Comentario> GetComentariosRecientes()
         {
             try

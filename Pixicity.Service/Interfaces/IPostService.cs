@@ -119,6 +119,14 @@ namespace Pixicity.Service.Interfaces
         List<Comentario> GetComentarios(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtiene la lista de comentarios filtrado por el id del usuario
+        /// </summary>
+        /// <param name="queryParameters">Filtros de búsqueda</param>
+        /// <param name="totalCount">Cantidad total de comentarios del usuario</param>
+        /// <returns></returns>
+        List<Comentario> GetComentariosByUserId(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
         /// Obtener la lista de los últimos comentarios
         /// </summary>
         /// <returns></returns>
