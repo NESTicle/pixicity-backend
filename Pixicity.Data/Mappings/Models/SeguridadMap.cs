@@ -60,4 +60,18 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.SeguidorId);
         }
     }
+
+    public class UsuarioPerfilMap : IEntityTypeConfiguration<UsuarioPerfil>
+    {
+        void IEntityTypeConfiguration<UsuarioPerfil>.Configure(EntityTypeBuilder<UsuarioPerfil> builder)
+        {
+            builder.ToTable("UsuarioPerfiles", "Seguridad");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.UsuarioPerfil)
+                .HasForeignKey(x => x.UsuarioId);
+        }
+    }
 }
