@@ -42,6 +42,7 @@ namespace Pixicity.Data
         public DbSet<Session> Session { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<UsuarioSeguidores> UsuarioSeguidores { get; set; }
+        public DbSet<UsuarioPerfil> UsuarioPerfil { get; set; }
 
         #endregion
 
@@ -71,6 +72,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new SessionMap());
             builder.ApplyConfiguration(new MonitorMap());
             builder.ApplyConfiguration(new UsuarioSeguidoresMap());
+            builder.ApplyConfiguration(new UsuarioPerfilMap());
 
             base.OnModelCreating(builder);
         }
