@@ -205,5 +205,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<Usuario> GetFollowersByUserId(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Guardar perfil del usuario
+        /// </summary>
+        /// <param name="model">UsuarioPerfil entidad</param>
+        /// <returns></returns>
+        long SavePerfilInfo(UsuarioPerfil model);
     }
 }

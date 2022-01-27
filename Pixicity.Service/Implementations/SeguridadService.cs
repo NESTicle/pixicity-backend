@@ -627,5 +627,36 @@ namespace Pixicity.Service.Implementations
                 throw;
             }
         }
+
+        public long SavePerfilInfo(UsuarioPerfil model)
+        {
+            try
+            {
+                UsuarioPerfil usuarioPerfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == _currentUser.Id && x.Eliminado == false);
+
+                if(usuarioPerfil == null)
+                {
+                    usuarioPerfil = model;
+                    usuarioPerfil.UsuarioId = _currentUser.Id;
+                    
+                    _dbContext.UsuarioPerfil.Add(usuarioPerfil);
+                }
+                else
+                {
+                    usuarioPerfil.UsuarioId = _currentUser.Id;
+                    
+                    // TODO: Agregar las otras propiedades
+                    usuarioPerfil.Alcohol = model.Alcohol;
+                }
+
+                _dbContext.SaveChanges();
+
+                return usuarioPerfil.Id;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
