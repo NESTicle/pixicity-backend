@@ -52,5 +52,6 @@ namespace Pixicity.Data.Models.Seguridad
 
         public virtual ICollection<UsuarioSeguidores> Seguidos { get; set; } = new HashSet<UsuarioSeguidores>();
         public virtual ICollection<UsuarioSeguidores> Seguidores { get; set; } = new HashSet<UsuarioSeguidores>();
+        public virtual ICollection<UsuarioPerfil> UsuarioPerfil { get; set; } = new HashSet<UsuarioPerfil>();
     }
 }
