@@ -112,7 +112,7 @@ namespace Pixicity.Web
                 app.UseDeveloperExceptionPage();
 
             app.UseCors(corsPolicyName);
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseAuthentication();
