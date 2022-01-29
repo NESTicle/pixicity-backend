@@ -30,8 +30,8 @@ namespace Pixicity.Data.Models.Seguridad
         public string ColorOjos { get; set; }
         public string Complexion { get; set; }
         public string Dieta { get; set; }
-        public string Tatuajes { get; set; }
-        public string Piercings { get; set; }
+        public bool Tatuajes { get; set; }
+        public bool Piercings { get; set; }
         public string Fumo { get; set; }
         public string Alcohol { get; set; }
 
