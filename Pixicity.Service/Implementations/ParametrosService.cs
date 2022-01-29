@@ -427,7 +427,7 @@ namespace Pixicity.Service.Implementations
                     {
                         Nombre = "Recetas y Cocina",
                         SEO = "recetas-cocina",
-                        Icono = "offtopic.png",
+                        Icono = "recetas-cocina.png",
                         UsuarioRegistra = "SYSTEM"
                     },
 
