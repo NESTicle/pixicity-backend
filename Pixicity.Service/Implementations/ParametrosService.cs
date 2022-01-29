@@ -275,7 +275,7 @@ namespace Pixicity.Service.Implementations
                     {
                         Nombre = "Deportes",
                         SEO = "deportes",
-                        Icono = "comics.png",
+                        Icono = "deportes.png",
                         UsuarioRegistra = "SYSTEM"
                     },
 
