@@ -82,5 +82,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Categoria</param>
         /// <returns></returns>
         long SaveCategoria(Categoria model);
+
+        int PopulateCategorias();
     }
 }
