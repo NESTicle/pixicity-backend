@@ -628,6 +628,19 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public UsuarioPerfil GetCurrentPerfilInfo()
+        {
+            try
+            {
+                UsuarioPerfil usuarioPerfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == _currentUser.Id && x.Eliminado == false);
+                return usuarioPerfil;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SavePerfilInfo(UsuarioPerfil model)
         {
             try
@@ -643,10 +656,48 @@ namespace Pixicity.Service.Implementations
                 }
                 else
                 {
-                    usuarioPerfil.UsuarioId = _currentUser.Id;
-                    
-                    // TODO: Agregar las otras propiedades
+                    usuarioPerfil.CompleteName = model.CompleteName;
+                    usuarioPerfil.PersonalMessage = model.PersonalMessage;
+                    usuarioPerfil.Website = model.Website;
+                    usuarioPerfil.Facebook = model.Facebook;
+                    usuarioPerfil.Twitter = model.Twitter;
+                    usuarioPerfil.Tiktok = model.Tiktok;
+                    usuarioPerfil.Youtube = model.Youtube;
+                    usuarioPerfil.Like1 = model.Like1;
+                    usuarioPerfil.Like2 = model.Like2;
+                    usuarioPerfil.Like3 = model.Like3;
+                    usuarioPerfil.Like4 = model.Like4;
+                    usuarioPerfil.Like_All = model.Like_All;
+                    usuarioPerfil.EstadoCivil = model.EstadoCivil;
+                    usuarioPerfil.Hijos = model.Hijos;
+                    usuarioPerfil.VivoCon = model.VivoCon;
+                    usuarioPerfil.Altura = model.Altura;
+                    usuarioPerfil.Peso = model.Peso;
+                    usuarioPerfil.ColorCabello = model.ColorCabello;
+                    usuarioPerfil.ColorOjos = model.ColorOjos;
+                    usuarioPerfil.Complexion = model.Complexion;
+                    usuarioPerfil.Dieta = model.Dieta;
+                    usuarioPerfil.Tatuajes = model.Tatuajes;
+                    usuarioPerfil.Piercings = model.Piercings;
+                    usuarioPerfil.Fumo = model.Fumo;
                     usuarioPerfil.Alcohol = model.Alcohol;
+                    usuarioPerfil.Estudios = model.Estudios;
+                    usuarioPerfil.Profesion = model.Profesion;
+                    usuarioPerfil.Empresa = model.Empresa;
+                    usuarioPerfil.Sector = model.Sector;
+                    usuarioPerfil.InteresesProfesionales = model.InteresesProfesionales;
+                    usuarioPerfil.HabilidadesProfesionales = model.HabilidadesProfesionales;
+                    usuarioPerfil.MisIntereses = model.MisIntereses;
+                    usuarioPerfil.Hobbies = model.Hobbies;
+                    usuarioPerfil.SeriesTV = model.SeriesTV;
+                    usuarioPerfil.MusicaFavorita = model.MusicaFavorita;
+                    usuarioPerfil.DeportesFavoritos = model.DeportesFavoritos;
+                    usuarioPerfil.LibrosFavoritos = model.LibrosFavoritos;
+                    usuarioPerfil.PeliculasFavoritas = model.PeliculasFavoritas;
+                    usuarioPerfil.ComidaFavorita = model.ComidaFavorita;
+                    usuarioPerfil.MisHeroesSon = model.MisHeroesSon;
+
+                    _dbContext.Update(usuarioPerfil);
                 }
 
                 _dbContext.SaveChanges();

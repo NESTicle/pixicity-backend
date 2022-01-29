@@ -207,6 +207,12 @@ namespace Pixicity.Service.Interfaces
         List<Usuario> GetFollowersByUserId(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtener perfil del usuario actual
+        /// </summary>
+        /// <returns></returns>
+        UsuarioPerfil GetCurrentPerfilInfo();
+
+        /// <summary>
         /// Guardar perfil del usuario
         /// </summary>
         /// <param name="model">UsuarioPerfil entidad</param>
