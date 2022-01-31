@@ -93,4 +93,32 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.PostId);
         }
     }
+
+    public class BorradorMap : IEntityTypeConfiguration<Borrador>
+    {
+        void IEntityTypeConfiguration<Borrador>.Configure(EntityTypeBuilder<Borrador> builder)
+        {
+            builder.ToTable("Borradores", "Post");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Titulo)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(x => x.Contenido)
+                .IsRequired();
+
+            builder.Property(x => x.Etiquetas)
+                .IsRequired();
+
+            builder.HasOne(x => x.Categoria)
+                .WithMany(x => x.Borradores)
+                .HasForeignKey(x => x.CategoriaId);
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Borradores)
+                .HasForeignKey(x => x.UsuarioId);
+        }
+    }
 }
