@@ -191,5 +191,29 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public string GetAdsByType(string type)
+        {
+            try
+            {
+                Configuracion configuracion = _dbContext.Configuracion.FirstOrDefault();
+
+                if (configuracion == null)
+                    return string.Empty;
+
+                return type switch
+                {
+                    "160x600" => configuracion.Banner160x600,
+                    "300x250" => configuracion.Banner300x250,
+                    "468x60" => configuracion.Banner468x60,
+                    "728x90" => configuracion.Banner728x90,
+                    _ => configuracion.Banner160x600,
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
