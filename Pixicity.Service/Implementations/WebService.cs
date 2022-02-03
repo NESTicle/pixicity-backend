@@ -154,7 +154,7 @@ namespace Pixicity.Service.Implementations
             {
                 var users = _dbContext.Usuario
                     .AsNoTracking()
-                    .Where(x => x.Eliminado == false)
+                    .Where(x => x.Eliminado == false && x.Puntos > 0)
                     .OrderByDescending(x => x.Puntos)
                     .Take(10);
 
