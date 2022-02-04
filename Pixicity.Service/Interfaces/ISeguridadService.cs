@@ -218,5 +218,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">UsuarioPerfil entidad</param>
         /// <returns></returns>
         long SavePerfilInfo(UsuarioPerfil model);
+
+        /// <summary>
+        /// Obtiene las redes sociales del usuario
+        /// </summary>
+        /// <param name="usuarioId">Id del usuario</param>
+        /// <returns></returns>
+        SocialMediaUsuarioPerfilViewModel GetSocialMediaByUsuarioId(long usuarioId);
     }
 }

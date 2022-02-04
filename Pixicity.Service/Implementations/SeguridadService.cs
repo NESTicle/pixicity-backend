@@ -709,5 +709,28 @@ namespace Pixicity.Service.Implementations
                 throw;
             }
         }
+
+        public SocialMediaUsuarioPerfilViewModel GetSocialMediaByUsuarioId(long usuarioId)
+        {
+            try
+            {
+                UsuarioPerfil perfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == usuarioId && x.Eliminado == false);
+
+                if (perfil == null)
+                    return null;
+
+                return new SocialMediaUsuarioPerfilViewModel()
+                {
+                    Facebook = perfil.Facebook,
+                    Twitter = perfil.Twitter,
+                    Tiktok = perfil.Tiktok,
+                    Youtube = perfil.Youtube
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
