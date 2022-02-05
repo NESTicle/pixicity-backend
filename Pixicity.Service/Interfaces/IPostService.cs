@@ -2,6 +2,7 @@
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.ViewModels.Posts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +25,15 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount">Numero total de Posts en el Sistema</param>
         /// <returns></returns>
         List<Post> GetPosts(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Buscar posts
+        /// </summary>
+        /// <param name="queryParameters">Helper utilizado para la paginación</param>
+        /// <param name="search">Parámetros de búsqueda</param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Post> SearchPosts(QueryParamsHelper queryParameters, PostViewModel search, out long totalCount);
 
         /// <summary>
         /// Obtener la lista de usuarios filtrado por el id del usuario

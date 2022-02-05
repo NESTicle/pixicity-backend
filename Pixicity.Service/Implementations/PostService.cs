@@ -5,6 +5,7 @@ using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
+using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,51 @@ namespace Pixicity.Service.Implementations
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                     posts = posts.Where(x => x.Categoria.SEO == queryParameters.Query);
+
+                totalCount = posts.Count();
+
+                return posts
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Post> SearchPosts(QueryParamsHelper queryParameters, PostViewModel search, out long totalCount)
+        {
+            try
+            {
+                var posts = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.Comentarios)
+                    .Include(x => x.Usuario)
+                    .Where(x => x.Eliminado == false);
+
+                if(search != null)
+                {
+                    search.Search = search.Search?.Trim()?.ToLower();
+
+                    switch (search.SearchType)
+                    {
+                        case "titulo":
+                            posts = posts.Where(x => x.Titulo.ToLower().Contains(search.Search));
+                            break;
+
+                        case "contenido":
+                            posts = posts.Where(x => x.Contenido.ToLower().Contains(search.Search));
+                            break;
+
+                        case "tags":
+                            posts = posts.Where(x => x.Etiquetas.ToLower().Contains(search.Search));
+                            break;
+                    }
+                }
 
                 totalCount = posts.Count();
 

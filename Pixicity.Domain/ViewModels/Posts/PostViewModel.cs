@@ -22,5 +22,12 @@ namespace Pixicity.Domain.ViewModels.Posts
         public DateTime FechaRegistro { get; set; }
 
         public CategoriaViewModel Categoria { get; set; }
+
+        #region Parámetros de búsqueda
+
+        public string Search { get; set; }
+        public string SearchType { get; set; }
+
+        #endregion
     }
 }
