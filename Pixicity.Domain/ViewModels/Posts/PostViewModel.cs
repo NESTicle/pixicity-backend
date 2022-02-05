@@ -1,4 +1,5 @@
 ﻿using Pixicity.Domain.ViewModels.Parametros;
+using Pixicity.Domain.ViewModels.Seguridad;
 using System;
 
 namespace Pixicity.Domain.ViewModels.Posts
@@ -22,6 +23,9 @@ namespace Pixicity.Domain.ViewModels.Posts
         public DateTime FechaRegistro { get; set; }
 
         public CategoriaViewModel Categoria { get; set; }
+        public UsuarioViewModel Usuario { get; set; }
+
+        public int Comentarios { get; set; }
 
         #region Parámetros de búsqueda
 

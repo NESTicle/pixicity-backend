@@ -23,6 +23,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ReverseMap();
 
             CreateMap<Post, PostViewModel>()
+                .ForMember(des => des.Comentarios, source => source.MapFrom(s => s.Comentarios.Count))
                 .ForMember(des => des.URL, source => source.MapFrom(s => s.Titulo.ToLower().Replace(" ", "-")))
                 .ReverseMap();
 

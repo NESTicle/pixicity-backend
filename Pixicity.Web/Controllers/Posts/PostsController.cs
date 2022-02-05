@@ -563,19 +563,7 @@ namespace Pixicity.Web.Controllers.Posts
             try
             {
                 var data = _postService.SearchPosts(queryParameters, viewModel, out long totalCount);
-                var mapped = data.Select(x => new
-                {
-                    x.Id,
-                    x.Titulo,
-                    categoria = new
-                    {
-                        icono = x.Categoria.Icono,
-                        nombre = x.Categoria.Nombre,
-                        seo = x.Categoria.SEO
-                    },
-                    x.Sticky,
-                    x.EsPrivado
-                });
+                var mapped = _mapper.Map<List<PostViewModel>>(data);
 
                 var paginationMetadata = new
                 {
