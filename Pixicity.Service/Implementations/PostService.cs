@@ -97,6 +97,9 @@ namespace Pixicity.Service.Implementations
                             posts = posts.Where(x => x.Etiquetas.ToLower().Contains(search.Search));
                             break;
                     }
+
+                    if(search.CategoriaId.HasValue)
+                        posts = posts.Where(x => x.CategoriaId == search.CategoriaId.Value);
                 }
 
                 totalCount = posts.Count();
