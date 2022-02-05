@@ -143,7 +143,6 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpGet]
         [Route(nameof(GetUserByUserName))]
-        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> GetUserByUserName([FromQuery] string userName)
         {
             JSONObjectResult result = new JSONObjectResult

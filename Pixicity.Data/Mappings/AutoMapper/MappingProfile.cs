@@ -60,7 +60,8 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Post, TopPostsViewModel>()
                 .ForMember(des => des.URL, source => source.MapFrom(s => s.Titulo.ToLower().Replace(" ", "-")));
 
-            CreateMap<Usuario, PerfilUsuarioViewModel>();
+            CreateMap<Usuario, PerfilUsuarioViewModel>()
+                .ForMember(des => des.Pais, source => source.MapFrom(s => s.Estado.Pais));
         }
     }
 }
