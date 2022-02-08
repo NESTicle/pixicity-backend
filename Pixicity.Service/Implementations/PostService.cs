@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
@@ -20,13 +21,15 @@ namespace Pixicity.Service.Implementations
         private readonly PixicityDbContext _dbContext;
         private readonly ISeguridadService _seguridadService;
         private readonly ILogsService _logsService;
+        private readonly IMapper _mapper;
         private IAppPrincipal _currentUser { get; }
 
-        public PostService(PixicityDbContext dbContext, ISeguridadService seguridadService, ILogsService logsService, IAppPrincipal currentUser)
+        public PostService(PixicityDbContext dbContext, ISeguridadService seguridadService, ILogsService logsService, IMapper mapper, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
             _seguridadService = seguridadService;
             _logsService = logsService;
+            _mapper = mapper;
             _currentUser = currentUser;
         }
 
@@ -876,6 +879,45 @@ namespace Pixicity.Service.Implementations
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public TopPostsViewModel GetTopPosts(string date)
+        {
+            try
+            {
+                TopPostsViewModel topPosts = new TopPostsViewModel();
+
+                var topPuntos = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Where(x => x.Eliminado == false)
+                    .OrderByDescending(s => s.Puntos)
+                    .Take(10)
+                    .ToList();
+
+                topPosts.PostsConMasPuntos = _mapper.Map<List<PostViewModel>>(topPuntos);
+
+                var topFavoritos = new List<Post>();
+                topPosts.PostsConMasFavoritos = _mapper.Map<List<PostViewModel>>(topPuntos);
+
+                var topComentarios = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Comentarios)
+                    .OrderByDescending(o => o.Comentarios.Count)
+                    .Take(10)
+                    .ToList();
+
+                topPosts.PostsConMasComentarios = _mapper.Map<List<PostViewModel>>(topComentarios);
+
+                var topPostSeguidores = new List<Post>();
+                topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores);
+
+                return topPosts;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

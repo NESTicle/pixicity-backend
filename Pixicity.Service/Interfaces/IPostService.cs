@@ -250,5 +250,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userId">Id del usuario</param>
         /// <returns></returns>
         int PostsCountByUserId(long userId);
+
+        TopPostsViewModel GetTopPosts(string date);
     }
 }
