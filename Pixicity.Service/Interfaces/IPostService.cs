@@ -251,6 +251,6 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         int PostsCountByUserId(long userId);
 
-        TopPostsViewModel GetTopPosts(string date);
+        TopsViewModel GetTopPosts(string date);
     }
 }

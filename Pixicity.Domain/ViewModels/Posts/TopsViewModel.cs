@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pixicity.Domain.ViewModels.Posts
 {
-    public class TopPostsViewModel
+    public class TopsViewModel
     {
         public List<PostViewModel> PostsConMasPuntos { get; set; }
         public List<PostViewModel> PostsConMasFavoritos { get; set; }

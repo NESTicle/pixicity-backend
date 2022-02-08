@@ -882,11 +882,11 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public TopPostsViewModel GetTopPosts(string date)
+        public TopsViewModel GetTopPosts(string date)
         {
             try
             {
-                TopPostsViewModel topPosts = new TopPostsViewModel();
+                TopsViewModel topPosts = new TopsViewModel();
 
                 var topPuntos = _dbContext.Post
                     .AsNoTracking()
