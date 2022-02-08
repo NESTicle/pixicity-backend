@@ -100,6 +100,9 @@ namespace Pixicity.Service.Implementations
 
                     if(search.CategoriaId.HasValue)
                         posts = posts.Where(x => x.CategoriaId == search.CategoriaId.Value);
+
+                    if (!string.IsNullOrEmpty(search.Autor))
+                        posts = posts.Where(x => x.Usuario.UserName.ToLower().Contains(search.Autor));
                 }
 
                 totalCount = posts.Count();

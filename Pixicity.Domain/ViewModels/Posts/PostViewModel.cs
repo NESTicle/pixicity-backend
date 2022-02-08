@@ -32,6 +32,7 @@ namespace Pixicity.Domain.ViewModels.Posts
         public string Search { get; set; }
         public string SearchType { get; set; }
         public int? CategoriaId { get; set; }
+        public string Autor { get; set; }
 
         #endregion
     }
