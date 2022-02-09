@@ -600,6 +600,7 @@ namespace Pixicity.Web.Controllers.Posts
             try
             {
                 var data = _postService.GetTopPosts(date);
+                result.Data = data;
             }
             catch (Exception e)
             {

@@ -903,6 +903,7 @@ namespace Pixicity.Service.Implementations
 
                 var topComentarios = _dbContext.Post
                     .AsNoTracking()
+                    .Include(x => x.Categoria)
                     .Include(x => x.Comentarios)
                     .OrderByDescending(o => o.Comentarios.Count)
                     .Take(10)
