@@ -14,6 +14,9 @@ namespace Pixicity.Data.Models.Web
         public bool MaintenanceMode { get; set; }
         public string MaintenanceMessage { get; set; }
 
+        public bool DisableUserRegistration { get; set; }
+        public string DisableUserRegistrationMessage { get; set; }
+
         public string OnlineUsersTime { get; set; }
 
         public string HeaderScript { get; set; }

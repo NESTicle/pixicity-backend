@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Pixicity.Data;
 using Pixicity.Data.Models.Seguridad;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Enums;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
@@ -156,6 +157,11 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
+                Configuracion configuracion = _dbContext.Configuracion.AsNoTracking().FirstOrDefault();
+
+                if (configuracion != null && configuracion.DisableUserRegistration == true)
+                    throw new Exception(!string.IsNullOrEmpty(configuracion.DisableUserRegistrationMessage) ? configuracion.DisableUserRegistrationMessage : "Se ha cerrado el registro de más usuarios en la comunidad");
+
                 Usuario usuario = GetUsuarioByUserName(model.UserName);
 
                 if (usuario != null)
