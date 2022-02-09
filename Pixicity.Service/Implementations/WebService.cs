@@ -108,11 +108,13 @@ namespace Pixicity.Service.Implementations
                 if (configuracion == null)
                     configuracion = CreateConfiguracion(model);
 
-                configuracion.SiteName = model.SiteName;
                 configuracion.Slogan = model.Slogan;
+                configuracion.SiteName = model.SiteName;
+                configuracion.OnlineUsersTime = model.OnlineUsersTime;
                 configuracion.MaintenanceMode = model.MaintenanceMode;
                 configuracion.MaintenanceMessage = model.MaintenanceMessage;
-                configuracion.OnlineUsersTime = model.OnlineUsersTime;
+                configuracion.DisableUserRegistration = model.DisableUserRegistration;
+                configuracion.DisableUserRegistrationMessage = model.DisableUserRegistrationMessage;
 
                 _dbContext.Update(configuracion);
                 return _dbContext.SaveChanges();
