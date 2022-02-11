@@ -217,14 +217,6 @@ namespace Pixicity.Service.Implementations
                 {
                     new Categoria()
                     {
-                        Nombre = "Animaciones",
-                        SEO = "animaciones",
-                        Icono = "animaciones.png",
-                        UsuarioRegistra = "SYSTEM"
-                    },
-
-                    new Categoria()
-                    {
                         Nombre = "Apuntes y Monografías",
                         SEO = "apuntes-monografias",
                         Icono = "apuntes-monografias.png",
@@ -444,6 +436,14 @@ namespace Pixicity.Service.Implementations
                         Nombre = "Solidaridad",
                         SEO = "solidaridad",
                         Icono = "solidaridad.png",
+                        UsuarioRegistra = "SYSTEM"
+                    },
+
+                    new Categoria()
+                    {
+                        Nombre = "Paranormal",
+                        SEO = "paranormal",
+                        Icono = "paranormal.png",
                         UsuarioRegistra = "SYSTEM"
                     },
 
