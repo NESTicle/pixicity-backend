@@ -552,7 +552,9 @@ namespace Pixicity.Service.Implementations
                 if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
                     throw new Exception("Ya no tienes puntos para sumar");
 
-                if (GetPostSimpleById(model.UsuarioId).UsuarioId == model.UsuarioId)
+                var post = GetPostSimpleById(model.UsuarioId);
+
+                if (post.UsuarioId == model.UsuarioId)
                     throw new Exception("No es posible votar a tu mismo post");
 
                 var votos = GetVotosByUsuarioTypeId(model);
@@ -573,7 +575,7 @@ namespace Pixicity.Service.Implementations
 
                 if (model.VotosType == VotosTypeEnum.Posts)
                 {
-                    Post post = GetPostSimpleById(model.TypeId);
+                    Post votosPost = GetPostSimpleById(model.TypeId);
 
                     if (post != null)
                     {
@@ -588,10 +590,10 @@ namespace Pixicity.Service.Implementations
                             Mensaje = $"Dejó <b>{model.Cantidad}</b> puntos en tu post",
                             PostId = post.Id
                         });
+
+                        _seguridadService.SumarPuntosUsuario(votosPost.UsuarioId, model.Cantidad);
                     }
                 }
-
-                _seguridadService.SumarPuntosUsuario(model.UsuarioId, model.Cantidad);
 
                 return voto.Id;
             }
