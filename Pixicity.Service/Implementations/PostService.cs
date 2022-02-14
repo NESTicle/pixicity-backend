@@ -229,6 +229,7 @@ namespace Pixicity.Service.Implementations
                 return _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
+                    .Include(x => x.FavoritosPosts)
                     .Include(x => x.Usuario.Estado.Pais)
                     .FirstOrDefault(x => x.Id == postId && x.Eliminado == false);
             }

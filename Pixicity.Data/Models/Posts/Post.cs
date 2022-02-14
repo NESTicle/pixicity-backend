@@ -4,6 +4,8 @@ using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Pixicity.Data.Models.Posts
 {
@@ -15,10 +17,9 @@ namespace Pixicity.Data.Models.Posts
         public string Titulo { get; set; }
         public string Contenido { get; set; }
         public string Etiquetas { get; set; }
-        
+
         public int Puntos { get; set; }
         public int CantidadComentarios { get; set; }
-        public int Favoritos { get; set; }
         public int Visitantes { get; set; }
 
         public string IP { get; set; }
@@ -29,6 +30,18 @@ namespace Pixicity.Data.Models.Posts
 
         public virtual Categoria Categoria { get; set; }
         public virtual Usuario Usuario { get; set; }
+
+        [NotMapped]
+        public int Favoritos
+        {
+            get
+            {
+                if(FavoritosPosts == null)
+                    return 0;
+
+                return FavoritosPosts.Where(x => x.Eliminado == false).Count();
+            }
+        }
 
         public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
         public virtual ICollection<Denuncia> Denuncias { get; set; } = new HashSet<Denuncia>();
