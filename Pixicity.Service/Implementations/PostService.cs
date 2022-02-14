@@ -557,7 +557,7 @@ namespace Pixicity.Service.Implementations
                 if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
                     throw new Exception("Ya no tienes puntos para sumar");
 
-                var post = GetPostSimpleById(model.UsuarioId);
+                var post = GetPostSimpleById(model.TypeId);
 
                 if (post.UsuarioId == model.UsuarioId)
                     throw new Exception("No es posible votar a tu mismo post");
@@ -580,8 +580,6 @@ namespace Pixicity.Service.Implementations
 
                 if (model.VotosType == VotosTypeEnum.Posts)
                 {
-                    Post votosPost = GetPostSimpleById(model.TypeId);
-
                     if (post != null)
                     {
                         post.Puntos += model.Cantidad;
@@ -596,7 +594,7 @@ namespace Pixicity.Service.Implementations
                             PostId = post.Id
                         });
 
-                        _seguridadService.SumarPuntosUsuario(votosPost.UsuarioId, model.Cantidad);
+                        _seguridadService.SumarPuntosUsuario(post.UsuarioId, model.Cantidad);
                     }
                 }
 
