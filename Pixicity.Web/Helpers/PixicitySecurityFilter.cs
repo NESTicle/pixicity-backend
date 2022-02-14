@@ -6,6 +6,7 @@ using Pixicity.Service.Interfaces;
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 
 namespace Pixicity.Web.Helpers
 {
@@ -72,6 +73,8 @@ namespace Pixicity.Web.Helpers
                         return;
                     }
 
+                    user.UltimaIP = context.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+
                     SetUserInfoToAppPrincipal(user);
                     return;
                 }
@@ -91,8 +94,9 @@ namespace Pixicity.Web.Helpers
         {
             _appPrincipal.Id = usuario.Id;
             _appPrincipal.UserName = usuario.UserName;
+            _appPrincipal.IP = usuario.UltimaIP;
         }
-
+        
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
             _stopWatch.Stop();

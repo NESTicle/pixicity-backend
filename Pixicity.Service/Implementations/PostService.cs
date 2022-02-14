@@ -313,6 +313,7 @@ namespace Pixicity.Service.Implementations
             {
                 model.UsuarioId = _currentUser.Id;
                 model.Puntos = 0;
+                model.IP = _currentUser.IP;
 
                 _dbContext.Post.Add(model);
                 _dbContext.SaveChanges();

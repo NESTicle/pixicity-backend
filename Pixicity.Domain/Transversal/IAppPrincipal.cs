@@ -4,6 +4,7 @@
     {
         long Id { get; set; }
         string UserName { get; set; }
+        string IP { get; set; }
         bool IsAdmin { get; set; }
     }
 }
