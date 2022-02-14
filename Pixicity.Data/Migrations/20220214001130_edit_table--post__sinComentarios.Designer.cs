@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pixicity.Data;
@@ -9,9 +10,10 @@ using Pixicity.Data;
 namespace Pixicity.Data.Migrations
 {
     [DbContext(typeof(PixicityDbContext))]
-    partial class PixicityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220214001130_edit_table--post__sinComentarios")]
+    partial class edit_tablepost__sinComentarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

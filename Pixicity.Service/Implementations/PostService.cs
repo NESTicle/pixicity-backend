@@ -331,11 +331,14 @@ namespace Pixicity.Service.Implementations
             try
             {
                 Post post = GetPostSimpleById(model.Id);
+                
+                post.Titulo = model.Titulo;
                 post.Contenido = model.Contenido;
                 post.CategoriaId = model.CategoriaId;
                 post.EsPrivado = model.EsPrivado;
                 post.Smileys = model.Smileys;
-                post.Titulo = model.Titulo;
+                post.SinComentarios = model.SinComentarios;
+
                 post.FechaActualiza = DateTime.Now;
                 post.UsuarioActualiza = _currentUser.UserName;
 
