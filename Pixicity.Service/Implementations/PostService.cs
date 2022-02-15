@@ -952,7 +952,7 @@ namespace Pixicity.Service.Implementations
                 }
                 else
                 {
-                    seguirPost.Eliminado = true;
+                    seguirPost.Eliminado = !seguirPost.Eliminado;
                     seguirPost.FechaRegistro = DateTime.Now;
 
                     _dbContext.Update(seguirPost);
