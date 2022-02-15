@@ -225,5 +225,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="usuarioId">Id del usuario</param>
         /// <returns></returns>
         SocialMediaUsuarioPerfilViewModel GetSocialMediaByUsuarioId(long usuarioId);
+
+        /// <summary>
+        /// Obtiene la entidad Usuario descodificando el token jwt y obteniendo el userName de la propiedad unique_name
+        /// </summary>
+        /// <param name="jwt">JWT Token</param>
+        /// <returns></returns>
+        Usuario GetUsuarioByJWT(string jwt);
     }
 }

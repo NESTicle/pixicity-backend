@@ -21,6 +21,7 @@ namespace Pixicity.Domain.ViewModels.Posts
         public bool Smileys { get; set; }
         public bool EsPrivado { get; set; }
         public bool SinComentarios { get; set; }
+        public bool SeguirPost { get; set; }
 
         public DateTime FechaRegistro { get; set; }
 

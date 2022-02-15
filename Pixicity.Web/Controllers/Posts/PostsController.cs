@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
@@ -23,11 +24,15 @@ namespace Pixicity.Web.Controllers.Posts
     {
         private readonly IMapper _mapper;
         private readonly IPostService _postService;
+        private readonly ISeguridadService _seguridadService;
+        private readonly IJwtService _jwtService;
 
-        public PostsController(IMapper mapper, IPostService postService)
+        public PostsController(IMapper mapper, IPostService postService, ISeguridadService seguridadService, IJwtService jwtService)
         {
             _mapper = mapper;
             _postService = postService;
+            _seguridadService = seguridadService;
+            _jwtService = jwtService;
         }
 
         [HttpGet]
@@ -237,6 +242,16 @@ namespace Pixicity.Web.Controllers.Posts
 
                 if (mapped != null)
                 {
+                    var jwt = HttpContext.Request.Headers["Authorization"].ToString();
+
+                    if(!string.IsNullOrEmpty(jwt))
+                    {
+                        string userName = _jwtService.GetUniqueName(jwt);
+
+                        if(!string.IsNullOrEmpty(userName))
+                            mapped.SeguirPost = _postService.IsFollowingPost(mapped.Id, userName);
+                    }
+
                     result.Data = new
                     {
                         post = mapped,
@@ -601,6 +616,32 @@ namespace Pixicity.Web.Controllers.Posts
             {
                 var data = _postService.GetTopPosts(date);
                 result.Data = data;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(SeguirPost))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> SeguirPost([FromBody] PostViewModel post)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                if (post == null)
+                    throw new Exception("Hubo un error al seguir al post, el valor llegó vacío");
+
+                result.Data = _postService.SeguirPost(post.Id);
             }
             catch (Exception e)
             {

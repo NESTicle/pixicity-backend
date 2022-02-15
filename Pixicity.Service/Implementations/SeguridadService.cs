@@ -738,5 +738,25 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public Usuario GetUsuarioByJWT(string jwt)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(jwt))
+                    return null;
+
+                string jwtUniqueName = _jwtService.GetUniqueName(jwt);
+
+                if (string.IsNullOrEmpty(jwtUniqueName))
+                    return null;
+
+                return GetUsuarioByUserName(jwtUniqueName);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

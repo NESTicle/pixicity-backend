@@ -926,5 +926,68 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public long SeguirPost(long postId)
+        {
+            try
+            {
+                if (postId <= 0)
+                    throw new Exception("El id del post no es válido");
+
+                if (_currentUser == null || _currentUser.Id <= 0)
+                    throw new Exception("Necesitas estar logeado para poder realizar esta acción");
+
+                SeguirPost seguirPost = _dbContext.SeguirPost.FirstOrDefault(x => x.PostId == postId && x.UsuarioId == _currentUser.Id);
+
+                if(seguirPost == null)
+                {
+                    seguirPost = new SeguirPost()
+                    {
+                        PostId = postId,
+                        UsuarioId = _currentUser.Id,
+                        Eliminado = false
+                    };
+
+                    _dbContext.SeguirPost.Add(seguirPost);
+                }
+                else
+                {
+                    seguirPost.Eliminado = false;
+                    seguirPost.FechaRegistro = DateTime.Now;
+
+                    _dbContext.Update(seguirPost);
+                }
+
+                _dbContext.SaveChanges();
+                
+                return seguirPost.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool IsFollowingPost(long postId, string userName)
+        {
+            try
+            {
+                if (postId <= 0)
+                    return false;
+
+                if (string.IsNullOrEmpty(userName))
+                    return false;
+
+                SeguirPost seguirPost = _dbContext.SeguirPost
+                    .Include(x => x.Usuario)
+                    .FirstOrDefault(x => x.PostId == postId && x.Eliminado == false && x.Usuario.UserName.ToLower() == userName.ToLower().Trim());
+
+                return seguirPost != null;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

@@ -252,5 +252,20 @@ namespace Pixicity.Service.Interfaces
         int PostsCountByUserId(long userId);
 
         TopsViewModel GetTopPosts(string date);
+
+        /// <summary>
+        /// Seguir post
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        long SeguirPost(long postId);
+
+        /// <summary>
+        /// Revisar si está siguiendo el post
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <param name="userName">UserName</param>
+        /// <returns></returns>
+        bool IsFollowingPost(long postId, string userName);
     }
 }
