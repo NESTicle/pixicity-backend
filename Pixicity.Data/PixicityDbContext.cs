@@ -35,6 +35,7 @@ namespace Pixicity.Data
         public DbSet<Voto> Voto { get; set; }
         public DbSet<FavoritoPost> FavoritoPost { get; set; }
         public DbSet<Borrador> Borradores { get; set; }
+        public DbSet<SeguirPost> SeguirPost { get; set; }
 
         #endregion
 
@@ -75,7 +76,8 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new UsuarioSeguidoresMap());
             builder.ApplyConfiguration(new UsuarioPerfilMap());
             builder.ApplyConfiguration(new BorradorMap());
-
+            builder.ApplyConfiguration(new SeguirPostMap());
+            
             base.OnModelCreating(builder);
         }
     }

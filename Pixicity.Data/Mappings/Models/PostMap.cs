@@ -121,4 +121,22 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioId);
         }
     }
+
+    public class SeguirPostMap : IEntityTypeConfiguration<SeguirPost>
+    {
+        void IEntityTypeConfiguration<SeguirPost>.Configure(EntityTypeBuilder<SeguirPost> builder)
+        {
+            builder.ToTable("SeguirPosts", "Post");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+            
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.SeguirPosts)
+                .HasForeignKey(x => x.UsuarioId);
+
+            builder.HasOne(x => x.Post)
+                .WithMany(x => x.SeguirPosts)
+                .HasForeignKey(x => x.PostId);
+        }
+    }
 }

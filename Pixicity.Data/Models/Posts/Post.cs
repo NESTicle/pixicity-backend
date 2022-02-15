@@ -46,6 +46,7 @@ namespace Pixicity.Data.Models.Posts
         public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
         public virtual ICollection<Denuncia> Denuncias { get; set; } = new HashSet<Denuncia>();
         public virtual ICollection<FavoritoPost> FavoritosPosts { get; set; } = new HashSet<FavoritoPost>();
-        public virtual ICollection<Monitor> MonitorPosts { get; set; }
+        public virtual ICollection<Monitor> MonitorPosts { get; set; } = new HashSet<Monitor>();
+        public virtual ICollection<SeguirPost> SeguirPosts { get; set; } = new HashSet<SeguirPost>();
     }
 }
