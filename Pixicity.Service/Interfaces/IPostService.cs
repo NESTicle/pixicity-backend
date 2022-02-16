@@ -267,5 +267,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userName">UserName</param>
         /// <returns></returns>
         bool IsFollowingPost(long postId, string userName);
+
+        List<CloudTagsViewModel> GetCloudTags();
     }
 }

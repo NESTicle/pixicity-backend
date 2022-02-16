@@ -989,5 +989,38 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<CloudTagsViewModel> GetCloudTags()
+        {
+            try
+            {
+                var posts = _dbContext.Post
+                    .Where(x => x.Eliminado == false)
+                    .OrderByDescending(x => x.Id)
+                    .Take(20);
+
+                var tags = posts.Select(x => x.Etiquetas).ToList();
+
+                if (tags.Count <= 0)
+                    return new List<CloudTagsViewModel>();
+
+                List<string> stringTags = string.Join(",", tags).Split(",").ToList();
+
+                var group = stringTags.GroupBy(x => x).Select(x => new CloudTagsViewModel()
+                {
+                    Tag = x.Key,
+                    Count = x.Count()
+                }).OrderByDescending(x => x.Count)
+                .Take(10)
+                .OrderBy(x => x.Tag)
+                .ToList();
+
+                return group;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

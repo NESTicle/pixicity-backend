@@ -651,5 +651,27 @@ namespace Pixicity.Web.Controllers.Posts
 
             return await Task.FromResult(result);
         }
+
+        [HttpGet]
+        [Route(nameof(GetCloudTags))]
+        public async Task<JSONObjectResult> GetCloudTags()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _postService.GetCloudTags();
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }
