@@ -903,8 +903,16 @@ namespace Pixicity.Service.Implementations
 
                 topPosts.PostsConMasPuntos = _mapper.Map<List<PostViewModel>>(topPuntos);
 
-                var topFavoritos = new List<Post>();
-                topPosts.PostsConMasFavoritos = _mapper.Map<List<PostViewModel>>(topPuntos);
+                var topFavoritos = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.FavoritosPosts)
+                    .Where(x => x.Eliminado == false && x.FavoritosPosts.Any(x => x.Eliminado == false) && x.FavoritosPosts.Count > 0)
+                    .OrderByDescending(x => x.FavoritosPosts.Count)
+                    .Take(10)
+                    .ToList();
+
+                topPosts.PostsConMasFavoritos = _mapper.Map<List<PostViewModel>>(topFavoritos);
 
                 var topComentarios = _dbContext.Post
                     .AsNoTracking()
@@ -916,9 +924,17 @@ namespace Pixicity.Service.Implementations
 
                 topPosts.PostsConMasComentarios = _mapper.Map<List<PostViewModel>>(topComentarios);
 
-                var topPostSeguidores = new List<Post>();
-                topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores);
+                var topPostSeguidores = _dbContext.Post
+                    .AsNoTracking()
+                    .Include(x => x.Categoria)
+                    .Include(x => x.SeguirPosts)
+                    .Where(x => x.Eliminado == false && x.SeguirPosts.Any(x => x.Eliminado == false) && x.SeguirPosts.Count > 0)
+                    .OrderByDescending(x => x.SeguirPosts.Count)
+                    .Take(10)
+                    .ToList();
 
+                topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores);
+                
                 return topPosts;
             }
             catch (Exception e)
@@ -1011,7 +1027,7 @@ namespace Pixicity.Service.Implementations
                     Tag = x.Key,
                     Count = x.Count()
                 }).OrderByDescending(x => x.Count)
-                .Take(10)
+                .Take(15)
                 .OrderBy(x => x.Tag)
                 .ToList();
 
