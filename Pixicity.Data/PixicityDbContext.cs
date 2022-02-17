@@ -53,6 +53,7 @@ namespace Pixicity.Data
         public DbSet<Afiliado> Afiliado { get; set; }
         public DbSet<Denuncia> Denuncia { get; set; }
         public DbSet<Configuracion> Configuracion { get; set; }
+        public DbSet<Visitas> Visitas { get; set; }
 
         #endregion
 
@@ -77,6 +78,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new UsuarioPerfilMap());
             builder.ApplyConfiguration(new BorradorMap());
             builder.ApplyConfiguration(new SeguirPostMap());
+            builder.ApplyConfiguration(new VisitasMap());
             
             base.OnModelCreating(builder);
         }

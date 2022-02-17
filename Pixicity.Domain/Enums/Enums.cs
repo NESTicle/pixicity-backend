@@ -34,6 +34,14 @@ namespace Pixicity.Domain.Enums
             Fotos = 2
         }
 
+        public enum VisitasTypeEnum
+        {
+            [Display(Name = "Posts")]
+            Posts = 1,
+            [Display(Name = "Fotos")]
+            Fotos = 2
+        }
+
         public enum TipoMonitor
         {
             [Display(Name = "Comentario")]

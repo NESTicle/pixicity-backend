@@ -65,4 +65,22 @@ namespace Pixicity.Data.Mappings.Models
             builder.HasIndex(x => x.Id).IsUnique();
         }
     }
+
+    public class VisitasMap : IEntityTypeConfiguration<Visitas>
+    {
+        void IEntityTypeConfiguration<Visitas>.Configure(EntityTypeBuilder<Visitas> builder)
+        {
+            builder.ToTable("Visitas", "Web");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.IP)
+                .HasMaxLength(15)
+                .IsRequired();
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Visitas)
+                .HasForeignKey(x => x.UsuarioId);
+        }
+    }
 }
