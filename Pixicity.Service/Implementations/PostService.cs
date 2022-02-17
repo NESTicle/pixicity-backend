@@ -897,43 +897,51 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Where(x => x.Eliminado == false)
-                    .OrderByDescending(s => s.Puntos)
-                    .Take(10)
-                    .ToList();
+                    .AsQueryable();
 
-                topPosts.PostsConMasPuntos = _mapper.Map<List<PostViewModel>>(topPuntos);
+                topPuntos = FilterTopPosts(date, topPuntos)
+                    .OrderByDescending(s => s.Puntos)
+                    .Take(10);
+
+                topPosts.PostsConMasPuntos = _mapper.Map<List<PostViewModel>>(topPuntos.ToList());
 
                 var topFavoritos = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.FavoritosPosts)
-                    .Where(x => x.Eliminado == false && x.FavoritosPosts.Any(x => x.Eliminado == false) && x.FavoritosPosts.Count > 0)
-                    .OrderByDescending(x => x.FavoritosPosts.Count)
-                    .Take(10)
-                    .ToList();
+                    .Where(x => x.Eliminado == false && x.FavoritosPosts.Any(x => x.Eliminado == false)) // && x.FavoritosPosts.Count > 0
+                    .AsQueryable();
 
-                topPosts.PostsConMasFavoritos = _mapper.Map<List<PostViewModel>>(topFavoritos);
+                topFavoritos = FilterTopPosts(date, topFavoritos)
+                    .OrderByDescending(x => x.FavoritosPosts.Count)
+                    .Take(10);
+
+                topPosts.PostsConMasFavoritos = _mapper.Map<List<PostViewModel>>(topFavoritos.ToList());
 
                 var topComentarios = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Comentarios)
-                    .OrderByDescending(o => o.Comentarios.Count)
-                    .Take(10)
-                    .ToList();
+                    .AsQueryable();
 
-                topPosts.PostsConMasComentarios = _mapper.Map<List<PostViewModel>>(topComentarios);
+                topComentarios = FilterTopPosts(date, topComentarios)
+                    .OrderByDescending(o => o.Comentarios.Count)
+                    .Take(10);
+
+                topPosts.PostsConMasComentarios = _mapper.Map<List<PostViewModel>>(topComentarios.ToList());
 
                 var topPostSeguidores = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.SeguirPosts)
-                    .Where(x => x.Eliminado == false && x.SeguirPosts.Any(x => x.Eliminado == false) && x.SeguirPosts.Count > 0)
-                    .OrderByDescending(x => x.SeguirPosts.Count)
-                    .Take(10)
-                    .ToList();
+                    .Where(x => x.Eliminado == false && x.SeguirPosts.Any(x => x.Eliminado == false)) // && x.SeguirPosts.Count > 0
+                    .AsQueryable();
 
-                topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores);
+                topPostSeguidores = FilterTopPosts(date, topPostSeguidores)
+                    .OrderByDescending(x => x.SeguirPosts.Count)
+                    .Take(10);
+
+                topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores.ToList());
                 
                 return topPosts;
             }
@@ -1038,5 +1046,42 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        #region Private Methods
+
+        private IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(date) || date == "all")
+                    return posts;
+
+                DateTime today = DateTime.Today;
+                DateTime yesterday = today.AddDays(-1);
+                
+                switch (date)
+                {
+                    case "ayer":
+                        return posts.Where(x => x.FechaRegistro >= yesterday && x.FechaRegistro < today);
+                    case "hoy":
+                        DateTime endDateTime = today.AddDays(1).AddTicks(-1);
+                        return posts.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= endDateTime);
+                    case "ultimos7dias":
+                        DateTime last7Days = today.AddDays(-7);
+                        return posts.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last7Days);
+                    case "mes":
+                        DateTime last30Days = today.AddDays(-30);
+                        return posts.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last30Days);
+                    default:
+                        return posts;
+                }
+            }
+            catch (Exception)
+            {
+                return posts;
+            }
+        }
+
+        #endregion
     }
 }
