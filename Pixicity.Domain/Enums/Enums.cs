@@ -56,6 +56,8 @@ namespace Pixicity.Domain.Enums
             Puntos = 5,
             [Display(Name = "Seguir")]
             Seguir = 6,
+            [Display(Name = "ComentarioSiguePost")]
+            ComentarioSiguePost = 7,
         }
     }
 }

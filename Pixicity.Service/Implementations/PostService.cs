@@ -440,6 +440,24 @@ namespace Pixicity.Service.Implementations
                     });
                 }
 
+                // Notificar a todos los usuarios que siguen el post
+                var listaUsuarios = GetUsuariosQueSiguenPost(model.PostId);
+
+                if(listaUsuarios != null && listaUsuarios.Count > 0)
+                {
+                    foreach (var usuario in listaUsuarios.Where(x => x.Id != _currentUser.Id))
+                    {
+                        _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                        {
+                            UsuarioId = usuario.Id,
+                            UsuarioQueHaceAccionId = _currentUser.Id,
+                            Tipo = TipoMonitor.ComentarioSiguePost,
+                            Mensaje = $"Agregó un comentario en un post que sigues",
+                            PostId = model.PostId
+                        });
+                    }
+                }
+
                 return model.Id;
             }
             catch (Exception e)
@@ -1103,6 +1121,36 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return visita.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Usuario> GetUsuariosQueSiguenPost(long postId)
+        {
+            try
+            {
+                var usuarios = _dbContext.SeguirPost
+                    .Include(x => x.Usuario)
+                    .Where(x => x.PostId == postId && x.Eliminado == false)
+                    .Select(x => x.Usuario)
+                    .ToList();
+
+                return usuarios;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int GetCountUsuariosQueSiguenPost(long postId)
+        {
+            try
+            {
+                return _dbContext.SeguirPost.Count(x => x.PostId == postId && x.Eliminado == false);
             }
             catch (Exception e)
             {

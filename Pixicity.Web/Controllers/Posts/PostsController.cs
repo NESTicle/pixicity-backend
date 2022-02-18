@@ -258,6 +258,8 @@ namespace Pixicity.Web.Controllers.Posts
 
                     _postService.SetVisitaToPostUsuario(mapped.Id, IP, userName);
 
+                    mapped.Seguidores = _postService.GetCountUsuariosQueSiguenPost(postId);
+
                     result.Data = new
                     {
                         post = mapped,

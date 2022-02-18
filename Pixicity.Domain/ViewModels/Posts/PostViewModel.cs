@@ -16,6 +16,7 @@ namespace Pixicity.Domain.ViewModels.Posts
         public int CantidadComentarios { get; set; }
         public int Favoritos { get; set; }
         public int Visitantes { get; set; }
+        public int Seguidores { get; set; }
 
         public bool Sticky { get; set; }
         public bool Smileys { get; set; }

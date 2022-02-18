@@ -1,5 +1,6 @@
 ﻿using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Posts;
@@ -290,5 +291,19 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userName">Username del usuario logeado</param>
         /// <returns></returns>
         long SetVisitaToPostUsuario(long postId, string IP, string userName);
+
+        /// <summary>
+        /// Obtener la lista de usuarios que siguen un post
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        List<Usuario> GetUsuariosQueSiguenPost(long postId);
+
+        /// <summary>
+        /// Obtener la cantidad de seguidores que tiene un post
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        int GetCountUsuariosQueSiguenPost(long postId);
     }
 }
