@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
@@ -1040,6 +1041,68 @@ namespace Pixicity.Service.Implementations
                 .ToList();
 
                 return group;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Visitas GetVisitaPost(long postId, string IP, long? usuarioId)
+        {
+            try
+            {
+                var visita = _dbContext.Visitas
+                    .Where(x => x.Eliminado == false && x.TypeId == postId);
+
+                if(usuarioId >= 0)
+                    visita = visita.Where(x => x.UsuarioId == usuarioId);
+                else
+                    visita = visita.Where(x => x.IP == IP);
+
+                return visita.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long SetVisitaToPostUsuario(long postId, string IP, string userName)
+        {
+            try
+            {
+                if (postId <= 0)
+                    return 0;
+
+                long? usuarioId = null;
+
+                if(!string.IsNullOrEmpty(userName))
+                {
+                    Usuario usuario = _seguridadService.GetUsuarioByUserName(userName);
+                    usuarioId = usuario?.Id;
+                }
+
+                if (GetVisitaPost(postId, IP, usuarioId) != null)
+                    return 1;
+
+                Visitas visita = new Visitas()
+                {
+                    TipoVisitas = VisitasTypeEnum.Posts,
+                    TypeId = postId,
+                    IP = IP,
+                    UsuarioId = usuarioId,
+                };
+
+                _dbContext.Visitas.Add(visita);
+
+                Post post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
+                post.Visitantes++;
+
+                _dbContext.Update(post);
+                _dbContext.SaveChanges();
+
+                return visita.Id;
             }
             catch (Exception e)
             {

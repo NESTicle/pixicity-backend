@@ -242,15 +242,21 @@ namespace Pixicity.Web.Controllers.Posts
 
                 if (mapped != null)
                 {
-                    var jwt = HttpContext.Request.Headers["Authorization"].ToString();
+                    string IP = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                    string jwt = HttpContext.Request.Headers["Authorization"].ToString();
+                    string userName = string.Empty;
 
                     if(!string.IsNullOrEmpty(jwt))
                     {
-                        string userName = _jwtService.GetUniqueName(jwt);
+                        userName = _jwtService.GetUniqueName(jwt);
 
                         if(!string.IsNullOrEmpty(userName))
+                        {
                             mapped.SeguirPost = _postService.IsFollowingPost(mapped.Id, userName);
+                        }
                     }
+
+                    _postService.SetVisitaToPostUsuario(mapped.Id, IP, userName);
 
                     result.Data = new
                     {

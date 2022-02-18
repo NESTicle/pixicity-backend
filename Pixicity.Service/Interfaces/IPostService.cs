@@ -268,6 +268,27 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         bool IsFollowingPost(long postId, string userName);
 
+        /// <summary>
+        /// Obtener la lista de top tags
+        /// </summary>
+        /// <returns></returns>
         List<CloudTagsViewModel> GetCloudTags();
+
+        /// <summary>
+        /// Obtener visita por post y usuario
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <param name="usuarioId">Id del usuario</param>
+        /// <returns></returns>
+        Visitas GetVisitaPost(long postId, string IP, long? usuarioId);
+
+        /// <summary>
+        /// Sumar una visita al post y asignarle el usuario visitante
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <param name="IP">IP del usuario logeado</param>
+        /// <param name="userName">Username del usuario logeado</param>
+        /// <returns></returns>
+        long SetVisitaToPostUsuario(long postId, string IP, string userName);
     }
 }
