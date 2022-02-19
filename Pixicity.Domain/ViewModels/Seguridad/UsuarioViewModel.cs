@@ -1,4 +1,6 @@
-﻿namespace Pixicity.Domain.ViewModels.Seguridad
+﻿using Pixicity.Domain.ViewModels.Parametros;
+
+namespace Pixicity.Domain.ViewModels.Seguridad
 {
     public class UsuarioViewModel
     {
@@ -9,5 +11,8 @@
         public int Genero { get; set; }
         public string Email { get; set; }
         public string FechaNacimiento { get; set; }
+
+        public string GeneroString { get; set; }
+        public EstadoViewModel Estado { get; set; }
     }
 }

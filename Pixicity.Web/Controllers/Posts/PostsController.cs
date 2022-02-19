@@ -263,12 +263,6 @@ namespace Pixicity.Web.Controllers.Posts
                     result.Data = new
                     {
                         post = mapped,
-                        usuario = new
-                        {
-                            userName = data.Usuario.UserName,
-                            genero = data.Usuario.GeneroString,
-                            pais = data.Usuario.Estado.Pais.ISO2
-                        }
                     };
                 }
                 else
