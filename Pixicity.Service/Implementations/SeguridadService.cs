@@ -516,7 +516,7 @@ namespace Pixicity.Service.Implementations
             {
                 UsuarioSeguidores usuarioSeguidor = null;
 
-                if(model.SeguidorId == 0)
+                if (model.SeguidorId == 0)
                 {
                     Usuario usuario = GetUsuarioByUserName(model.UserName);
 
@@ -653,11 +653,11 @@ namespace Pixicity.Service.Implementations
             {
                 UsuarioPerfil usuarioPerfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == _currentUser.Id && x.Eliminado == false);
 
-                if(usuarioPerfil == null)
+                if (usuarioPerfil == null)
                 {
                     usuarioPerfil = model;
                     usuarioPerfil.UsuarioId = _currentUser.Id;
-                    
+
                     _dbContext.UsuarioPerfil.Add(usuarioPerfil);
                 }
                 else
@@ -752,6 +752,22 @@ namespace Pixicity.Service.Implementations
                     return null;
 
                 return GetUsuarioByUserName(jwtUniqueName);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long SetUltimaDireccionIPUsuario(Usuario usuario, string IP)
+        {
+            try
+            {
+                usuario.UltimaConexion = DateTime.Now;
+                usuario.UltimaIP = IP;
+
+                _dbContext.Update(usuario);
+                return _dbContext.SaveChanges();
             }
             catch (Exception e)
             {

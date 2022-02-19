@@ -56,7 +56,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="userId">Id del usuario</param>
         /// <returns></returns>
         int SiguiendoCountByUserId(long userId);
-        
+
         /// <summary>
         /// Obtiene un usuario filtrado por el Id
         /// </summary>
@@ -232,5 +232,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="jwt">JWT Token</param>
         /// <returns></returns>
         Usuario GetUsuarioByJWT(string jwt);
+
+        /// <summary>
+        /// Asignar última dirección IP al usuario
+        /// </summary>
+        /// <param name="usuario">Entidad de usuario</param>
+        /// <param name="IP">Dirección IP</param>
+        /// <returns></returns>
+        long SetUltimaDireccionIPUsuario(Usuario usuario, string IP);
     }
 }

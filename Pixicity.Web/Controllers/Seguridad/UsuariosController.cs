@@ -248,6 +248,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                     };
 
                     _seguridadService.SaveUserSession(session);
+                    _seguridadService.SetUltimaDireccionIPUsuario(loggedUser, HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
                     result.Data = new
                     {

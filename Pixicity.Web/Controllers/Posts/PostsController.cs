@@ -51,7 +51,8 @@ namespace Pixicity.Web.Controllers.Posts
                 {
                     x.Id,
                     x.Titulo,
-                    categoria = new {
+                    categoria = new
+                    {
                         icono = x.Categoria.Icono,
                         nombre = x.Categoria.Nombre,
                         seo = x.Categoria.SEO
@@ -246,11 +247,11 @@ namespace Pixicity.Web.Controllers.Posts
                     string jwt = HttpContext.Request.Headers["Authorization"].ToString();
                     string userName = string.Empty;
 
-                    if(!string.IsNullOrEmpty(jwt))
+                    if (!string.IsNullOrEmpty(jwt))
                     {
                         userName = _jwtService.GetUniqueName(jwt);
 
-                        if(!string.IsNullOrEmpty(userName))
+                        if (!string.IsNullOrEmpty(userName))
                         {
                             mapped.SeguirPost = _postService.IsFollowingPost(mapped.Id, userName);
                         }
