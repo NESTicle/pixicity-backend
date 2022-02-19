@@ -53,7 +53,7 @@ namespace Pixicity.Service.Interfaces
 
         List<TopUsuarioViewModel> GetTopUsuarios();
 
-        List<Post> GetTopPosts();
+        List<Post> GetTopPosts(string date);
 
         /// <summary>
         /// Obtiene el banner de ads de la tabla de Configuración

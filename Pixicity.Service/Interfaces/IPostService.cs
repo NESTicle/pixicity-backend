@@ -6,6 +6,7 @@ using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Posts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static Pixicity.Domain.Enums.Enums;
 
@@ -305,5 +306,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="postId">Id del post</param>
         /// <returns></returns>
         int GetCountUsuariosQueSiguenPost(long postId);
+
+        IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts);
     }
 }

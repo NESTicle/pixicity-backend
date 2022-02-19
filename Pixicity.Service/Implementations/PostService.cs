@@ -1160,7 +1160,7 @@ namespace Pixicity.Service.Implementations
 
         #region Private Methods
 
-        private IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts)
+        public IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts)
         {
             try
             {

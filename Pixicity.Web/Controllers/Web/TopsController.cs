@@ -47,7 +47,7 @@ namespace Pixicity.Web.Controllers.Web
 
         [HttpGet]
         [Route(nameof(GetTopPosts))]
-        public async Task<JSONObjectResult> GetTopPosts()
+        public async Task<JSONObjectResult> GetTopPosts([FromQuery] string date)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -56,7 +56,7 @@ namespace Pixicity.Web.Controllers.Web
 
             try
             {
-                var data = _webService.GetTopPosts();
+                var data = _webService.GetTopPosts(date);
                 var mapped = _mapper.Map<List<TopPostsViewModel>>(data);
                 
                 result.Data = mapped;

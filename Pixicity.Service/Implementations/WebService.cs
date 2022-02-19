@@ -15,10 +15,12 @@ namespace Pixicity.Service.Implementations
     public class WebService : IWebService
     {
         private readonly PixicityDbContext _dbContext;
+        private readonly IPostService _postService;
 
-        public WebService(PixicityDbContext dbContext)
+        public WebService(PixicityDbContext dbContext, IPostService postService)
         {
             _dbContext = dbContext;
+            _postService = postService;
         }
 
         public string SaveAfiliado(Afiliado model)
@@ -175,7 +177,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<Post> GetTopPosts()
+        public List<Post> GetTopPosts(string date)
         {
             try
             {
@@ -183,7 +185,10 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .AsNoTracking()
                     .Where(x => x.Eliminado == false)
-                    .OrderByDescending(x => x.Puntos)
+                    .AsQueryable();
+
+                posts = _postService.FilterTopPosts(date, posts)
+                    .OrderByDescending(s => s.Puntos)
                     .Take(10);
 
                 return posts.ToList();
