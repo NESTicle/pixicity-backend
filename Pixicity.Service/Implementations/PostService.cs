@@ -906,7 +906,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public TopsViewModel GetTopPosts(string date)
+        public TopsViewModel GetTopPosts(string date, long? categoria)
         {
             try
             {
@@ -918,7 +918,12 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false)
                     .AsQueryable();
 
-                topPuntos = FilterTopPosts(date, topPuntos)
+                topPuntos = FilterTopPosts(date, topPuntos);
+
+                if (categoria.HasValue)
+                    topPuntos = topPuntos.Where(x => x.CategoriaId == categoria.Value);
+
+                topPuntos = topPuntos
                     .OrderByDescending(s => s.Puntos)
                     .Take(10);
 
@@ -931,7 +936,12 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false && x.FavoritosPosts.Any(x => x.Eliminado == false)) // && x.FavoritosPosts.Count > 0
                     .AsQueryable();
 
-                topFavoritos = FilterTopPosts(date, topFavoritos)
+                topFavoritos = FilterTopPosts(date, topFavoritos);
+
+                if (categoria.HasValue)
+                    topFavoritos = topFavoritos.Where(x => x.CategoriaId == categoria.Value);
+
+                topFavoritos = topFavoritos
                     .OrderByDescending(x => x.FavoritosPosts.Count)
                     .Take(10);
 
@@ -943,7 +953,12 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Comentarios)
                     .AsQueryable();
 
-                topComentarios = FilterTopPosts(date, topComentarios)
+                topComentarios = FilterTopPosts(date, topComentarios);
+
+                if (categoria.HasValue)
+                    topComentarios = topComentarios.Where(x => x.CategoriaId == categoria.Value);
+
+                topComentarios = topComentarios
                     .OrderByDescending(o => o.Comentarios.Count)
                     .Take(10);
 
@@ -956,7 +971,12 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false && x.SeguirPosts.Any(x => x.Eliminado == false)) // && x.SeguirPosts.Count > 0
                     .AsQueryable();
 
-                topPostSeguidores = FilterTopPosts(date, topPostSeguidores)
+                topPostSeguidores = FilterTopPosts(date, topPostSeguidores);
+
+                if (categoria.HasValue)
+                    topPostSeguidores = topPostSeguidores.Where(x => x.CategoriaId == categoria.Value);
+
+                topPostSeguidores = topPostSeguidores
                     .OrderByDescending(x => x.SeguirPosts.Count)
                     .Take(10);
 

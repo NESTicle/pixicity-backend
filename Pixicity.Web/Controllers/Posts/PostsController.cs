@@ -608,7 +608,7 @@ namespace Pixicity.Web.Controllers.Posts
 
         [HttpGet]
         [Route(nameof(GetTopPosts))]
-        public async Task<JSONObjectResult> GetTopPosts([FromQuery] string date)
+        public async Task<JSONObjectResult> GetTopPosts([FromQuery] string date, [FromQuery] long? categoria)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -617,7 +617,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                var data = _postService.GetTopPosts(date);
+                var data = _postService.GetTopPosts(date, categoria);
                 result.Data = data;
             }
             catch (Exception e)
