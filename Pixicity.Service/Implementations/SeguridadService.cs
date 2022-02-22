@@ -37,6 +37,8 @@ namespace Pixicity.Service.Implementations
             {
                 var posts = _dbContext.Usuario
                     .AsNoTracking()
+                    .Include(x => x.Posts)
+                    .Include(x => x.Comentarios)
                     .Include(x => x.Estado.Pais)
                     .Include(x => x.Sessions.Where(x => x.Eliminado == false))
                     .Where(x => x.Eliminado == false && x.Baneado == false);

@@ -55,8 +55,46 @@ namespace Pixicity.Web.Controllers.Seguridad
                     puntos = x.Puntos,
                     comentarios = x.CantidadComentarios,
                     activo = (DateTime.Now - x.Sessions?.OrderBy(x => x.Id)?.LastOrDefault()?.Activo)?.TotalMinutes,
-                    posts = 0 // x.CantidadPosts
+                    posts = x.CantidadPosts
                 });
+
+                var paginationMetadata = new
+                {
+                    totalCount,
+                    pageSize = queryParameters.PageCount,
+                    currentPage = queryParameters.Page,
+                    totalPages = queryParameters.GetTotalPages(totalCount)
+                };
+
+                result.Data = new
+                {
+                    usuarios = mapped,
+                    pagination = paginationMetadata
+                };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(GetUsuariosAdmin))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> GetUsuariosAdmin([FromQuery] QueryParamsHelper queryParameters)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount);
+                var mapped = _mapper.Map<List<UsuarioAdminViewModel>>(data);
 
                 var paginationMetadata = new
                 {

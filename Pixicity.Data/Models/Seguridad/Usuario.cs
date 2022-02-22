@@ -7,6 +7,7 @@ using Pixicity.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Data.Models.Seguridad
@@ -32,14 +33,37 @@ namespace Pixicity.Data.Models.Seguridad
         public GenerosEnum Genero { get; set; }
 
         public int Puntos { get; set; }
-        public int CantidadComentarios { get; set; }
-
+        
         public DateTime? UltimaConexion { get; set; }
         public string UltimaIP { get; set; }
         public bool Baneado { get; set; } = false;
 
         public virtual Estado Estado { get; set; }
         public virtual Rango Rango { get; set; }
+
+        [NotMapped]
+        public int CantidadPosts
+        {
+            get
+            {
+                if (Posts == null || Posts.Count <= 0)
+                    return 0;
+
+                return Posts.Count(x => x.Eliminado == false);
+            }
+        }
+
+        [NotMapped]
+        public int CantidadComentarios
+        {
+            get
+            {
+                if (Comentarios == null || Comentarios.Count <= 0)
+                    return 0;
+
+                return Comentarios.Count(x => x.Eliminado == false);
+            }
+        }
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
         public virtual ICollection<Comentario> Comentarios { get; set; } = new HashSet<Comentario>();
@@ -49,7 +73,6 @@ namespace Pixicity.Data.Models.Seguridad
         public virtual ICollection<Session> Sessions { get; set; } = new HashSet<Session>();
         public virtual ICollection<Monitor> Monitors { get; set; } = new HashSet<Monitor>();
         public virtual ICollection<Monitor> MonitorsUsuarioQueHaceAcciones { get; set; } = new HashSet<Monitor>();
-
         public virtual ICollection<UsuarioSeguidores> Seguidos { get; set; } = new HashSet<UsuarioSeguidores>();
         public virtual ICollection<UsuarioSeguidores> Seguidores { get; set; } = new HashSet<UsuarioSeguidores>();
         public virtual ICollection<UsuarioPerfil> UsuarioPerfil { get; set; } = new HashSet<UsuarioPerfil>();

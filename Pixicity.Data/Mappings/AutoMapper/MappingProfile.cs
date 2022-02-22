@@ -65,6 +65,9 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ForMember(des => des.Pais, source => source.MapFrom(s => s.Estado.Pais));
 
             CreateMap<Estado, EstadoViewModel>();
+
+            CreateMap<Usuario, UsuarioAdminViewModel>()
+                .ForMember(des => des.Genero, source => source.MapFrom(s => s.GeneroString));
         }
     }
 }
