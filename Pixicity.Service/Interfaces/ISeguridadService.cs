@@ -14,7 +14,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="queryParameters"></param>
         /// <param name="totalCount"></param>
         /// <returns></returns>
-        List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount);
+        List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false);
 
         /// <summary>
         /// Obtiene la cantidad de Usuarios registrados en el sistema
@@ -136,6 +136,13 @@ namespace Pixicity.Service.Interfaces
         Session GetSessionByToken(string token);
 
         /// <summary>
+        /// Obtener sesión de usuario por el id del usuario
+        /// </summary>
+        /// <param name="usuarioId">Id del usuario</param>
+        /// <returns></returns>
+        Session GetSessionByUsuarioId(long usuarioId);
+
+        /// <summary>
         /// Actualizar el Campo de Activo de la sesión para determinar si se encuentra o no activo el Usuario
         /// </summary>
         /// <param name="model">Entidad Session</param>
@@ -240,5 +247,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="IP">Dirección IP</param>
         /// <returns></returns>
         long SetUltimaDireccionIPUsuario(Usuario usuario, string IP);
+
+        /// <summary>
+        /// Banear usuario
+        /// </summary>
+        /// <param name="userId">Id del usuario</param>
+        /// <returns></returns>
+        bool BanUser(long userId);
     }
 }

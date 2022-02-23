@@ -31,7 +31,7 @@ namespace Pixicity.Service.Implementations
             _currentUser = currentUser;
         }
 
-        public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount)
+        public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false)
         {
             try
             {
@@ -41,7 +41,10 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Comentarios)
                     .Include(x => x.Estado.Pais)
                     .Include(x => x.Sessions.Where(x => x.Eliminado == false))
-                    .Where(x => x.Eliminado == false && x.Baneado == false);
+                    .AsQueryable();
+
+                if (isAdmin == false)
+                    posts = posts.Where(x => x.Eliminado == false && x.Baneado == false);
 
                 totalCount = posts.Count();
 
@@ -381,6 +384,21 @@ namespace Pixicity.Service.Implementations
             try
             {
                 return _dbContext.Session.FirstOrDefault(x => x.Token.Trim().ToLower() == token.Trim().ToLower());
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Session GetSessionByUsuarioId(long usuarioId)
+        {
+            try
+            {
+                return _dbContext.Session
+                    .Where(x => x.UsuarioId == usuarioId && x.Eliminado == false)
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -770,6 +788,36 @@ namespace Pixicity.Service.Implementations
 
                 _dbContext.Update(usuario);
                 return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool BanUser(long userId)
+        {
+            try
+            {
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == userId && x.Eliminado == false);
+
+                if (usuario == null)
+                    throw new Exception($"Hubo un error al banear un usuario con id {userId}");
+
+                usuario.Baneado = !usuario.Baneado;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                if(usuario.Baneado)
+                {
+                    Session session = GetSessionByUsuarioId(userId);
+
+                    if(session != null)
+                        DeleteSession(session.Id);
+                }
+
+                return usuario.Baneado;
             }
             catch (Exception e)
             {

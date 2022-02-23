@@ -93,7 +93,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount);
+                var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount, true);
                 var mapped = _mapper.Map<List<UsuarioAdminViewModel>>(data);
 
                 var paginationMetadata = new
@@ -584,6 +584,29 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 result.Data = _seguridadService.GetSocialMediaByUsuarioId(usuarioId);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(BanUser))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> BanUser([FromBody] Usuario model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.BanUser(model.Id);
             }
             catch (Exception e)
             {
