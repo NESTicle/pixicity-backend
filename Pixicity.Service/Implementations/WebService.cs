@@ -32,6 +32,7 @@ namespace Pixicity.Service.Implementations
                 model.Descripcion = model.Descripcion.Trim();
                 model.Banner = model.Banner.Trim().ToLower();
                 model.Codigo = StringHelper.RandomString(10);
+                model.Activo = false;
 
                 _dbContext.Afiliado.Add(model);
                 _dbContext.SaveChanges();
@@ -216,6 +217,65 @@ namespace Pixicity.Service.Implementations
                     "728x90" => configuracion.Banner728x90,
                     _ => configuracion.Banner160x600,
                 };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Afiliado> GetAfiliados()
+        {
+            try
+            {
+                var afiliados = _dbContext.Afiliado
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false && x.Activo == true)
+                    .ToList();
+
+                return afiliados;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int ChangeAfiliadoActive(Afiliado model)
+        {
+            try
+            {
+                Afiliado afiliado = _dbContext.Afiliado.FirstOrDefault(x => x.Id == model.Id && x.Eliminado == false);
+
+                if (afiliado == null)
+                    throw new Exception($"Un error se ha encontrado al tratar de cambiar el estado al Afiliado con Id {model.Id}");
+
+                afiliado.Activo = !afiliado.Activo;
+                _dbContext.Update(afiliado);
+
+                return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public string HitAfiliado(string codigo)
+        {
+            try
+            {
+                Afiliado afiliado = _dbContext.Afiliado.FirstOrDefault(x => x.Codigo == codigo);
+
+                if (afiliado == null)
+                    return string.Empty;
+
+                afiliado.HitsOut++;
+
+                _dbContext.Update(afiliado);
+                _dbContext.SaveChanges();
+
+                return afiliado.URL;
             }
             catch (Exception e)
             {

@@ -11,5 +11,6 @@ namespace Pixicity.Data.Models.Web
         public string Descripcion { get; set; }
         public int HitsIn { get; set; }
         public int HitsOut { get; set; }
+        public bool Activo { get; set; } = false;
     }
 }

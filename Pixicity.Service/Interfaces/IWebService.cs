@@ -61,5 +61,25 @@ namespace Pixicity.Service.Interfaces
         /// <param name="type">Tipo de banner</param>
         /// <returns></returns>
         string GetAdsByType(string type);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<Afiliado> GetAfiliados();
+
+        /// <summary>
+        /// Cambiar el estado de 'Activo' de la entidad Afiliado
+        /// </summary>
+        /// <param name="model">Entidad Afiliado</param>
+        /// <returns></returns>
+        int ChangeAfiliadoActive(Afiliado model);
+
+        /// <summary>
+        /// Sumar visita al afiliado
+        /// </summary>
+        /// <param name="codigo">Código del afiliado</param>
+        /// <returns></returns>
+        string HitAfiliado(string codigo);
     }
 }
