@@ -59,5 +59,11 @@ namespace Pixicity.Domain.Enums
             [Display(Name = "ComentarioSiguePost")]
             ComentarioSiguePost = 7,
         }
+
+        public enum TipoHistorial
+        {
+            [Display(Name = "Post")]
+            Post = 1,
+        }
     }
 }

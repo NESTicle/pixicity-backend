@@ -83,4 +83,24 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioId);
         }
     }
+
+    public class HistorialMap : IEntityTypeConfiguration<Historial>
+    {
+        void IEntityTypeConfiguration<Historial>.Configure(EntityTypeBuilder<Historial> builder)
+        {
+            builder.ToTable("Historial", "Web");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Accion)
+                .IsRequired();
+
+            builder.Property(x => x.Razon)
+                .IsRequired();
+
+            builder.Property(x => x.IP)
+                .HasMaxLength(15)
+                .IsRequired();
+        }
+    }
 }
