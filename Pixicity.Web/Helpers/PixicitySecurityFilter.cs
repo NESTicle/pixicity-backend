@@ -54,7 +54,7 @@ namespace Pixicity.Web.Helpers
                     return;
                 }
 
-                var user = _seguridadService.GetUsuarioByUserName(jwtUniqueName);
+                var user = _seguridadService.GetUsuarioWithRangoByUserName(jwtUniqueName);
                 var activeSession = _seguridadService.GetSessionByToken(_jwtService.GetTokenFromJWT(bearer));
 
                 if(activeSession == null || DateTime.Now > activeSession.FechaExpiracion || activeSession.Eliminado == true)
@@ -95,6 +95,9 @@ namespace Pixicity.Web.Helpers
             _appPrincipal.Id = usuario.Id;
             _appPrincipal.UserName = usuario.UserName;
             _appPrincipal.IP = usuario.UltimaIP;
+            
+            _appPrincipal.IsAdmin = usuario.Rango?.Nombre == "Administrador";
+            _appPrincipal.IsModerador = usuario.Rango?.Nombre == "Moderador";
         }
         
         public void OnActionExecuted(ActionExecutedContext filterContext)

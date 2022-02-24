@@ -30,6 +30,13 @@ namespace Pixicity.Service.Interfaces
         Usuario GetUsuarioByUserName(string userName);
 
         /// <summary>
+        /// Obtiene un usuario con el rango filtrado por el userName
+        /// </summary>
+        /// <param name="userName">UserName</param>
+        /// <returns></returns>
+        Usuario GetUsuarioWithRangoByUserName(string userName);
+
+        /// <summary>
         /// Obtiene un usuario con la información relacionada, filtrado por el userName
         /// </summary>
         /// <param name="userName">Nombre del usuario</param>

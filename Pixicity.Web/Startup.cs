@@ -101,7 +101,7 @@ namespace Pixicity.Web
 
             services.AddScoped<IAppPrincipal>(provider =>
             {
-                return new AppPrincipal(0, "Unknown", "", false);
+                return new AppPrincipal(0, "Unknown", "", false, false);
             });
         }
 

@@ -76,7 +76,24 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                return _dbContext.Usuario.AsNoTracking().FirstOrDefault(x => x.UserName.ToLower().Equals(userName.Trim().ToLower()) && x.Eliminado == false);
+                return _dbContext.Usuario
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.UserName.ToLower().Equals(userName.Trim().ToLower()) && x.Eliminado == false);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public Usuario GetUsuarioWithRangoByUserName(string userName)
+        {
+            try
+            {
+                return _dbContext.Usuario
+                    .AsNoTracking()
+                    .Include(x => x.Rango)
+                    .FirstOrDefault(x => x.UserName.ToLower().Equals(userName.Trim().ToLower()) && x.Eliminado == false);
             }
             catch (Exception e)
             {

@@ -81,5 +81,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="codigo">Código del afiliado</param>
         /// <returns></returns>
         string HitAfiliado(string codigo);
+
+        List<HistorialViewModel> GetHistorialModeracion();
     }
 }

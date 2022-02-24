@@ -6,5 +6,6 @@
         string UserName { get; set; }
         string IP { get; set; }
         bool IsAdmin { get; set; }
+        bool IsModerador { get; set; }
     }
 }

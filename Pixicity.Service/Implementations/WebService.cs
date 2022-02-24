@@ -282,5 +282,33 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<HistorialViewModel> GetHistorialModeracion()
+        {
+            try
+            {
+                var query = (from q in _dbContext.Historial
+                             where q.Eliminado == false
+                             join post in _dbContext.Post on q.TipoId equals post.Id
+                             select new HistorialViewModel()
+                             {
+                                 Id = q.Id,
+                                 Accion = q.Accion,
+                                 Autor = post.UsuarioRegistra,
+                                 Causa = q.Razon,
+                                 Moderador = q.UsuarioRegistra,
+                                 Titulo = post.Titulo
+                             }).AsNoTracking()
+                             .OrderByDescending(x => x.Id)
+                             .Take(15)
+                             .ToList();
+
+                return query;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
