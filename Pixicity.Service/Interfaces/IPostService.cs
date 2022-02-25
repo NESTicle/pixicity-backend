@@ -324,5 +324,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="dias">Días que se analizarán para determinar si se elimina o no el post</param>
         /// <returns></returns>
         bool EliminarPostDenunciado(long postId, int cantidadDenuncias, int dias = 1);
+
+        /// <summary>
+        /// Obtiene la lista de borradores del usuario logeado
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Post> GetBorradores(QueryParamsHelper queryParameters, out long totalCount);
     }
 }
