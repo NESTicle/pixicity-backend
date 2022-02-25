@@ -27,6 +27,7 @@ namespace Pixicity.Data.Models.Posts
         public bool Sticky { get; set; }
         public bool Smileys { get; set; }
         public bool SinComentarios { get; set; }
+        public bool EsBorrador { get; set; }
 
         public virtual Categoria Categoria { get; set; }
         public virtual Usuario Usuario { get; set; }

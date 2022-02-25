@@ -11,6 +11,5 @@ namespace Pixicity.Data.Models.Parametros
         public string Icono { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
-        public virtual ICollection<Borrador> Borradores { get; set; } = new HashSet<Borrador>();
     }
 }

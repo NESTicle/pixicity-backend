@@ -38,7 +38,7 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                return _dbContext.Post.Where(x => x.Eliminado == false).Count();
+                return _dbContext.Post.Where(x => x.Eliminado == false && x.EsBorrador == false).Count();
             }
             catch (Exception e)
             {
@@ -53,7 +53,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Eliminado == false && x.Sticky == false);
+                    .Where(x => x.Eliminado == false && x.Sticky == false && x.EsBorrador == false);
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                     posts = posts.Where(x => x.Categoria.SEO == queryParameters.Query);
@@ -81,7 +81,7 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Include(x => x.Comentarios)
                     .Include(x => x.Usuario)
-                    .Where(x => x.Eliminado == false);
+                    .Where(x => x.Eliminado == false && x.EsBorrador == false);
 
                 if(search != null)
                 {
@@ -132,7 +132,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.UsuarioId == userId && x.Eliminado == false);
+                    .Where(x => x.UsuarioId == userId && x.Eliminado == false && x.EsBorrador == false);
 
                 totalCount = posts.Count();
 
@@ -185,7 +185,7 @@ namespace Pixicity.Service.Implementations
                 var posts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id);
+                    .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id && x.EsBorrador == false);
 
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                 {
@@ -214,7 +214,7 @@ namespace Pixicity.Service.Implementations
                 return _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Eliminado == false && x.Sticky == true)
+                    .Where(x => x.Eliminado == false && x.Sticky == true && x.EsBorrador == false)
                     .ToList();
             }
             catch (Exception e)
@@ -248,7 +248,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Usuario.Estado.Pais)
-                    .FirstOrDefault(x => x.Id > postId && x.Eliminado == false);
+                    .FirstOrDefault(x => x.Id > postId && x.Eliminado == false && x.EsBorrador == false);
             }
             catch (Exception e)
             {
@@ -264,7 +264,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Usuario.Estado.Pais)
-                    .Where(x => x.Id < postId && x.Eliminado == false)
+                    .Where(x => x.Id < postId && x.Eliminado == false && x.EsBorrador == false)
                     .OrderByDescending(y => y.Id)
                     .FirstOrDefault();
             }
@@ -285,7 +285,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Usuario.Estado.Pais)
-                    .Where(x => x.Id != postId && x.Eliminado == false)
+                    .Where(x => x.Id != postId && x.Eliminado == false && x.EsBorrador == false)
                     .OrderBy(r => Guid.NewGuid())
                     .Skip(toSkip)
                     .Take(1)
@@ -301,7 +301,9 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                return _dbContext.Post.AsNoTracking().FirstOrDefault(x => x.Id == postId);
+                return _dbContext.Post
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.Id == postId);
             }
             catch (Exception e)
             {
@@ -345,6 +347,7 @@ namespace Pixicity.Service.Implementations
                 post.EsPrivado = model.EsPrivado;
                 post.Smileys = model.Smileys;
                 post.SinComentarios = model.SinComentarios;
+                post.EsBorrador = model.EsBorrador;
 
                 post.FechaActualiza = DateTime.Now;
                 post.UsuarioActualiza = _currentUser.UserName;
@@ -952,7 +955,7 @@ namespace Pixicity.Service.Implementations
                 var topPuntos = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Eliminado == false)
+                    .Where(x => x.Eliminado == false && x.EsBorrador == false)
                     .AsQueryable();
 
                 topPuntos = FilterTopPosts(date, topPuntos);
@@ -970,7 +973,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.FavoritosPosts)
-                    .Where(x => x.Eliminado == false && x.FavoritosPosts.Any(x => x.Eliminado == false)) // && x.FavoritosPosts.Count > 0
+                    .Where(x => x.Eliminado == false && x.EsBorrador == false && x.FavoritosPosts.Any(x => x.Eliminado == false)) // && x.FavoritosPosts.Count > 0
                     .AsQueryable();
 
                 topFavoritos = FilterTopPosts(date, topFavoritos);
@@ -988,6 +991,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.Comentarios)
+                    .Where(x => x.Eliminado == false && x.EsBorrador == false)
                     .AsQueryable();
 
                 topComentarios = FilterTopPosts(date, topComentarios);
@@ -1005,7 +1009,7 @@ namespace Pixicity.Service.Implementations
                     .AsNoTracking()
                     .Include(x => x.Categoria)
                     .Include(x => x.SeguirPosts)
-                    .Where(x => x.Eliminado == false && x.SeguirPosts.Any(x => x.Eliminado == false)) // && x.SeguirPosts.Count > 0
+                    .Where(x => x.Eliminado == false && x.EsBorrador == false && x.SeguirPosts.Any(x => x.Eliminado == false)) // && x.SeguirPosts.Count > 0
                     .AsQueryable();
 
                 topPostSeguidores = FilterTopPosts(date, topPostSeguidores);

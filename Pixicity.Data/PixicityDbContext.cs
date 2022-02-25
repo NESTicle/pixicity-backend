@@ -34,7 +34,6 @@ namespace Pixicity.Data
         public DbSet<Comentario> Comentario { get; set; }
         public DbSet<Voto> Voto { get; set; }
         public DbSet<FavoritoPost> FavoritoPost { get; set; }
-        public DbSet<Borrador> Borradores { get; set; }
         public DbSet<SeguirPost> SeguirPost { get; set; }
 
         #endregion
@@ -77,7 +76,6 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new MonitorMap());
             builder.ApplyConfiguration(new UsuarioSeguidoresMap());
             builder.ApplyConfiguration(new UsuarioPerfilMap());
-            builder.ApplyConfiguration(new BorradorMap());
             builder.ApplyConfiguration(new SeguirPostMap());
             builder.ApplyConfiguration(new VisitasMap());
             builder.ApplyConfiguration(new HistorialMap());
