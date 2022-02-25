@@ -689,7 +689,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                var data = _postService.GetPostsByLoggedUser(queryParameters, out long totalCount);
+                var data = _postService.GetBorradores(queryParameters, out long totalCount);
                 var mapped = data.Select(x => new
                 {
                     x.Id,
