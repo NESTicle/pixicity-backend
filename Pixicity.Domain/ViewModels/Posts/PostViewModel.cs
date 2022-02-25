@@ -23,6 +23,7 @@ namespace Pixicity.Domain.ViewModels.Posts
         public bool EsPrivado { get; set; }
         public bool SinComentarios { get; set; }
         public bool SeguirPost { get; set; }
+        public bool EsBorrador { get; set; }
 
         public DateTime FechaRegistro { get; set; }
 
