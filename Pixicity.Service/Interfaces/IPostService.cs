@@ -308,5 +308,21 @@ namespace Pixicity.Service.Interfaces
         int GetCountUsuariosQueSiguenPost(long postId);
 
         IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts);
+
+        /// <summary>
+        /// Crear un nuevo historial de cambios en la comunidad
+        /// </summary>
+        /// <param name="model">Entidad Historial</param>
+        /// <returns></returns>
+        long SaveHistorial(Historial model);
+
+        /// <summary>
+        /// Eliminar posts que tengan denuncias continuas en la comunidad
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <param name="cantidadDenuncias">Cantidad de denuncias para determinar si se elimina el post de manera automática</param>
+        /// <param name="dias">Días que se analizarán para determinar si se elimina o no el post</param>
+        /// <returns></returns>
+        bool EliminarPostDenunciado(long postId, int cantidadDenuncias, int dias = 1);
     }
 }

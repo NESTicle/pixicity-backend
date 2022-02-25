@@ -290,11 +290,12 @@ namespace Pixicity.Service.Implementations
                 var query = (from q in _dbContext.Historial
                              where q.Eliminado == false
                              join post in _dbContext.Post on q.TipoId equals post.Id
+                             join usuario in _dbContext.Usuario on post.UsuarioId equals usuario.Id
                              select new HistorialViewModel()
                              {
                                  Id = q.Id,
                                  Accion = q.Accion,
-                                 Autor = post.UsuarioRegistra,
+                                 Autor = usuario.UserName,
                                  Causa = q.Razon,
                                  Moderador = q.UsuarioRegistra,
                                  Titulo = post.Titulo

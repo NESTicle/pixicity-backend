@@ -316,6 +316,7 @@ namespace Pixicity.Service.Implementations
                 model.UsuarioId = _currentUser.Id;
                 model.Puntos = 0;
                 model.IP = _currentUser.IP;
+                model.UsuarioRegistra = _currentUser.UserName;
 
                 _dbContext.Post.Add(model);
                 _dbContext.SaveChanges();
@@ -333,7 +334,11 @@ namespace Pixicity.Service.Implementations
             try
             {
                 Post post = GetPostSimpleById(model.Id);
-                
+
+                if (_currentUser.IsAdmin == false && _currentUser.IsModerador == false)
+                    if (post.UsuarioId != _currentUser.Id)
+                        throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
+
                 post.Titulo = model.Titulo;
                 post.Contenido = model.Contenido;
                 post.CategoriaId = model.CategoriaId;
@@ -346,6 +351,18 @@ namespace Pixicity.Service.Implementations
 
                 _dbContext.Update(post);
                 _dbContext.SaveChanges();
+
+                if(_currentUser.IsAdmin || _currentUser.IsModerador)
+                {
+                    SaveHistorial(new Historial()
+                    {
+                        Accion = "Actualizado",
+                        Razon = "Pendiente",
+                        TipoId = post.Id,
+                        Tipo = TipoHistorial.Post,
+                        IP = _currentUser.IP
+                    });
+                }
 
                 return post.Id;
             }
@@ -401,13 +418,26 @@ namespace Pixicity.Service.Implementations
                 if (post == null)
                     throw new Exception("Un error ha ocurrido al tratar de eliminar un post");
 
-                if (post.UsuarioId != _currentUser.Id) // TODO: Poder eliminar los posts si eres un Administrador
-                    throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
+                if(_currentUser.IsAdmin == false && _currentUser.IsModerador == false)
+                    if (post.UsuarioId != _currentUser.Id)
+                        throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
                 post.Eliminado = !post.Eliminado;
 
                 _dbContext.Update(post);
                 _dbContext.SaveChanges();
+
+                if (_currentUser.IsAdmin || _currentUser.IsModerador)
+                {
+                    SaveHistorial(new Historial()
+                    {
+                        Accion = "Eliminado",
+                        Razon = "Pendiente",
+                        TipoId = post.Id,
+                        Tipo = TipoHistorial.Post,
+                        IP = _currentUser.IP
+                    });
+                }
 
                 return post.Eliminado;
             }
@@ -714,6 +744,11 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
+                Denuncia entity = _dbContext.Denuncia.FirstOrDefault(x => x.PostId == model.PostId && x.UsuarioRegistra == _currentUser.UserName && x.Eliminado == false);
+
+                if (entity != null)
+                    throw new Exception("No puedes denunciar un post más de una vez");
+                
                 Denuncia denuncia = new Denuncia()
                 {
                     UsuarioDenunciaId = _currentUser.Id,
@@ -725,6 +760,8 @@ namespace Pixicity.Service.Implementations
 
                 _dbContext.Denuncia.Add(denuncia);
                 _dbContext.SaveChanges();
+
+                EliminarPostDenunciado(model.PostId, 8, 2);
 
                 return denuncia.Id;
             }
@@ -1178,8 +1215,6 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        #region Private Methods
-
         public IQueryable<Post> FilterTopPosts(string date, IQueryable<Post> posts)
         {
             try
@@ -1213,6 +1248,73 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        #endregion
+        public long SaveHistorial(Historial model)
+        {
+            try
+            {
+                if (model == null)
+                    return 0;
+
+                model.Id = 0;
+                model.FechaRegistro = DateTime.Now;
+                model.UsuarioRegistra = _currentUser.UserName;
+
+                _dbContext.Historial.Add(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool EliminarPostDenunciado(long postId, int cantidadDenuncias, int dias = 1)
+        {
+            try
+            {
+                if (postId <= 0)
+                    return false;
+
+                DateTime today = DateTime.Today.AddDays(1).AddTicks(-1);
+                DateTime days = today.AddDays(-dias); // Rango de fecha desde donde se va a evaluar si se elimina o no los posts
+
+                List<Denuncia> denuncias = _dbContext.Denuncia
+                    .AsNoTracking()
+                    .Where(x => x.PostId == postId && x.Eliminado == false && x.FechaRegistro >= days && x.FechaRegistro < today)
+                    .ToList();
+
+                if(denuncias.Count > cantidadDenuncias)
+                {
+                    Post post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
+
+                    if (post == null)
+                        return false;
+
+                    post.Eliminado = true;
+
+                    _dbContext.Update(post);
+                    _dbContext.SaveChanges();
+
+                    SaveHistorial(new Historial()
+                    {
+                        Accion = "Eliminado",
+                        Razon = "Por acumulación de denuncias",
+                        TipoId = post.Id,
+                        Tipo = TipoHistorial.Post,
+                        IP = _currentUser.IP
+                    });
+
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
