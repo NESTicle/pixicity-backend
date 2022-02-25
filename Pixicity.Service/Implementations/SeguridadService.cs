@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Service.Implementations
 {
@@ -21,14 +22,16 @@ namespace Pixicity.Service.Implementations
         private readonly PixicityDbContext _dbContext;
         private readonly IParametrosService _parametrosService;
         private readonly IJwtService _jwtService;
+        private readonly ILogsService _logsService;
         private IAppPrincipal _currentUser { get; }
 
-        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService, IAppPrincipal currentUser)
+        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService, IAppPrincipal currentUser, ILogsService logsService)
         {
             _dbContext = dbContext;
             _parametrosService = parametrosService;
             _jwtService = jwtService;
             _currentUser = currentUser;
+            _logsService = logsService;
         }
 
         public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false)
@@ -587,6 +590,14 @@ namespace Pixicity.Service.Implementations
 
                     _dbContext.UsuarioSeguidores.Add(follow);
                     _dbContext.SaveChanges();
+
+                    _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                    {
+                        UsuarioId = model.SeguidoId,
+                        UsuarioQueHaceAccionId = _currentUser.Id,
+                        Tipo = TipoMonitor.Seguir,
+                        Mensaje = $"Te está siguiendo",
+                    });
 
                     return follow.Id;
                 }
