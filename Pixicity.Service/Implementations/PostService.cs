@@ -1321,7 +1321,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<Post> GetBorradores(QueryParamsHelper queryParameters, out long totalCount)
+        public List<Post> GetBorradores(QueryParamsHelper queryParameters, long categoriaId, out long totalCount)
         {
             try
             {
@@ -1330,10 +1330,15 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id && x.EsBorrador == true);
 
+                if(categoriaId > 0)
+                {
+                    posts = posts.Where(x => x.CategoriaId == categoriaId);
+                }
+
                 if (!string.IsNullOrEmpty(queryParameters.Query))
                 {
                     string query = queryParameters.Query.Trim().ToLower();
-                    posts = posts.Where(x => x.Categoria.Nombre.ToLower().Contains(query) || x.Titulo.ToLower().Contains(query) || x.Contenido.ToLower().Contains(query));
+                    posts = posts.Where(x => x.Titulo.ToLower().Contains(query) || x.Contenido.ToLower().Contains(query));
                 }
 
                 totalCount = posts.Count();

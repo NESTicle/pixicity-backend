@@ -680,7 +680,7 @@ namespace Pixicity.Web.Controllers.Posts
         [HttpGet]
         [Route(nameof(GetBorradores))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> GetBorradores([FromQuery] QueryParamsHelper queryParameters)
+        public async Task<JSONObjectResult> GetBorradores([FromQuery] QueryParamsHelper queryParameters, [FromQuery] long categoriaId)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -689,7 +689,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                var data = _postService.GetBorradores(queryParameters, out long totalCount);
+                var data = _postService.GetBorradores(queryParameters, categoriaId, out long totalCount);
                 var mapped = data.Select(x => new
                 {
                     x.Id,
@@ -699,12 +699,18 @@ namespace Pixicity.Web.Controllers.Posts
                     x.Puntos,
                     categoria = new
                     {
+                        id = x.Categoria.Id,
                         icono = x.Categoria.Icono,
                         nombre = x.Categoria.Nombre,
                         seo = x.Categoria.SEO
                     },
                     x.Etiquetas,
                 });
+
+                var categorias = mapped.GroupBy(x => new { x.categoria.id, x.categoria.icono, x.categoria.nombre }, (key, g) => new {
+                    categoria = key,
+                    count = g.Count()
+                }).ToList();
 
                 var paginationMetadata = new
                 {
@@ -717,6 +723,7 @@ namespace Pixicity.Web.Controllers.Posts
                 result.Data = new
                 {
                     data = mapped,
+                    categorias,
                     pagination = paginationMetadata
                 };
             }

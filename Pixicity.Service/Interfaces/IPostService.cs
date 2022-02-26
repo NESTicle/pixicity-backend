@@ -331,6 +331,6 @@ namespace Pixicity.Service.Interfaces
         /// <param name="queryParameters"></param>
         /// <param name="totalCount"></param>
         /// <returns></returns>
-        List<Post> GetBorradores(QueryParamsHelper queryParameters, out long totalCount);
+        List<Post> GetBorradores(QueryParamsHelper queryParameters, long categoriaId, out long totalCount);
     }
 }

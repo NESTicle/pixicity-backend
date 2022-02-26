@@ -220,6 +220,8 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         List<Usuario> GetFollowersByUserId(QueryParamsHelper queryParameters, out long totalCount);
 
+        List<Usuario> GetLastFollowersByUserId(long userId);
+
         /// <summary>
         /// Obtener perfil del usuario actual
         /// </summary>
