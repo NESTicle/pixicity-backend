@@ -640,6 +640,8 @@ namespace Pixicity.Web.Controllers.Seguridad
                     },
                     puntos = x.Puntos
                 });
+
+                result.Data = mapped;
             }
             catch (Exception e)
             {
