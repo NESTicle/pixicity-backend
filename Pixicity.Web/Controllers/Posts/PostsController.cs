@@ -261,10 +261,20 @@ namespace Pixicity.Web.Controllers.Posts
 
                     mapped.Seguidores = _postService.GetCountUsuariosQueSiguenPost(postId);
 
-                    result.Data = new
+                    if(mapped.EsPrivado && string.IsNullOrEmpty(userName))
                     {
-                        post = mapped,
-                    };
+                        result.Data = new
+                        {
+                            post = new { esPrivado = true },
+                        };
+                    }
+                    else
+                    {
+                        result.Data = new
+                        {
+                            post = mapped,
+                        };
+                    }
                 }
                 else
                 {
