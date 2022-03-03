@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Extensions;
@@ -10,6 +12,9 @@ using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,14 +27,16 @@ namespace Pixicity.Web.Controllers.Seguridad
         private readonly ISeguridadService _seguridadService;
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
-        private IAppPrincipal _currentUser { get; }
+        private readonly IWebHostEnvironment _env;
+        private IAppPrincipal CurrentUser { get; }
 
-        public UsuariosController(ISeguridadService seguridadService, IPostService postService, IMapper mapper, IAppPrincipal currentUser)
+        public UsuariosController(ISeguridadService seguridadService, IPostService postService, IMapper mapper, IAppPrincipal currentUser, IWebHostEnvironment env)
         {
             _seguridadService = seguridadService;
             _postService = postService;
             _mapper = mapper;
-            _currentUser = currentUser;
+            CurrentUser = currentUser;
+            _env = env;
         }
 
         [HttpGet]
@@ -248,7 +255,7 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 Usuario usuario = _mapper.Map<Usuario>(model);
-                usuario.Id = _currentUser.Id;
+                usuario.Id = CurrentUser.Id;
 
                 result.Data = _seguridadService.UpdateUsuario(usuario);
             }
@@ -642,6 +649,48 @@ namespace Pixicity.Web.Controllers.Seguridad
                 });
 
                 result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(ChangeAvatar))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        public async Task<JSONObjectResult> ChangeAvatar(IFormCollection form)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                if (form == null || form.Files == null || form.Files.Count < 1)
+                    throw new Exception("Hubo un error al actualizar el avatar del usuario");
+
+                var file = form.Files[0];
+
+                string extension = Path.GetExtension(file.FileName);
+
+                string[] availableExtensions = new string[] { ".jpeg" };
+
+                if (!availableExtensions.Contains(extension))
+                    throw new Exception($"No ha sido posible actualizar el avatar del usuario ya que el formato del archivo no es aceptado");
+
+                string folder = Path.Combine(_env.WebRootPath, "images", "avatars", CurrentUser.UserName);
+                IOHelper.CreateDirectory(folder);
+
+                string avatar = Path.Combine(folder, "avatar.jpeg");
+                using FileStream stream = new FileStream(avatar, FileMode.Create);
+                file.CopyTo(stream);
+
+                result.Data = _seguridadService.ChangeAvatar("avatar.jpeg");
             }
             catch (Exception e)
             {

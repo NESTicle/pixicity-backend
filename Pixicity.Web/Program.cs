@@ -1,12 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Pixicity.Domain.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Pixicity.Web
 {
@@ -14,7 +8,7 @@ namespace Pixicity.Web
     {
         public static void Main(string[] args)
         {
-            IOHelper.CreateDirectory("wwwroot/images");
+            IOHelper.CreateDirectory("wwwroot/images/avatars");
 
             CreateHostBuilder(args).Build().Run();
         }

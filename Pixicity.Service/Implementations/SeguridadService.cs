@@ -875,5 +875,30 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public string ChangeAvatar(string avatar)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(avatar))
+                    return string.Empty;
+
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == _currentUser.Id && x.Eliminado == false);
+
+                if (usuario == null)
+                    return string.Empty;
+
+                usuario.Avatar = avatar;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return avatar;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

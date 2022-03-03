@@ -17,6 +17,7 @@ namespace Pixicity.Data.Models.Seguridad
         public long EstadoId { get; set; }
         public long RangoId { get; set; }
 
+        public string Avatar { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
@@ -33,7 +34,7 @@ namespace Pixicity.Data.Models.Seguridad
         public GenerosEnum Genero { get; set; }
 
         public int Puntos { get; set; }
-        
+
         public DateTime? UltimaConexion { get; set; }
         public string UltimaIP { get; set; }
         public bool Baneado { get; set; } = false;

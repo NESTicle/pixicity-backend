@@ -6,6 +6,7 @@ namespace Pixicity.Domain.ViewModels.Seguridad
     public class PerfilUsuarioViewModel
     {
         public long Id { get; set; }
+        public string Avatar { get; set; }
         public string UserName { get; set; }
         public DateTime FechaRegistro { get; set; }
         public int Puntos { get; set; }
