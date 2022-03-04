@@ -166,6 +166,7 @@ namespace Pixicity.Service.Implementations
                 var data = users.Select(x => new TopUsuarioViewModel()
                 {
                     Id = x.Id,
+                    Avatar = x.Avatar,
                     UserName = x.UserName,
                     Puntos = x.Puntos,
                 });
