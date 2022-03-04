@@ -6,6 +6,7 @@ using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpGet]
         [Route(nameof(GetRangosUsuarios))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
         public async Task<JSONObjectResult> GetRangosUsuarios([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult

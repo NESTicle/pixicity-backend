@@ -151,6 +151,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpGet]
         [Route(nameof(GetSesiones))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
         public async Task<JSONObjectResult> GetSesiones([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult
@@ -604,7 +605,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpPost]
         [Route(nameof(BanUser))]
-        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Moderador" })]
         public async Task<JSONObjectResult> BanUser([FromBody] Usuario model)
         {
             JSONObjectResult result = new JSONObjectResult

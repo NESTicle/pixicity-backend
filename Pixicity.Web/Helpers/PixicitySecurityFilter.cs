@@ -79,6 +79,42 @@ namespace Pixicity.Web.Helpers
                     return;
                 }
 
+                if (_functionality == "Administrador")
+                {
+                    if (user == null)
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return;
+                    }
+
+                    if(user.Rango.Nombre != "Administrador")
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return;
+                    }
+
+                    SetUserInfoToAppPrincipal(user);
+                    return;
+                }
+
+                if (_functionality == "Moderador")
+                {
+                    if (user == null)
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return;
+                    }
+
+                    if (user.Rango.Nombre != "Moderador" && user.Rango.Nombre != "Administrador")
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return;
+                    }
+
+                    SetUserInfoToAppPrincipal(user);
+                    return;
+                }
+
                 SetUserInfoToAppPrincipal(user);
 
                 //base.OnActionExecuting(context);
