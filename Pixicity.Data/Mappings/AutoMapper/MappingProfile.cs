@@ -40,8 +40,10 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Usuario, UsuarioViewModel>()
                 .ForMember(des => des.PaisId, source => source.MapFrom(s => s.Estado != null ? s.Estado.IdPais : (long?)null))
-                .ForMember(des => des.Password, source => source.Ignore())
-                .ReverseMap();
+                .ForMember(des => des.Password, source => source.Ignore());
+
+            CreateMap<UsuarioViewModel, Usuario>()
+                .ForMember(des => des.GeneroString, source => source.Ignore());
 
             CreateMap<Comentario, ComentarioViewModel>()
                 .ForMember(des => des.Usuario, source => source.MapFrom(s => s.Usuario.UserName))

@@ -7,6 +7,7 @@ using Pixicity.Domain.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using static Pixicity.Domain.Enums.Enums;
 
@@ -63,6 +64,23 @@ namespace Pixicity.Data.Models.Seguridad
                     return 0;
 
                 return Comentarios.Count(x => x.Eliminado == false);
+            }
+        }
+
+        [NotMapped]
+        public int Edad
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(FechaNacimiento))
+                    return 0;
+
+                DateTime.TryParseExact(FechaNacimiento, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateBirth);
+
+                if (dateBirth == null || dateBirth.Year <= 1)
+                    return 0;
+
+                return DateTime.Now.Year - dateBirth.Year;
             }
         }
 
