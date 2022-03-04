@@ -639,6 +639,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                 var data = _seguridadService.GetLastFollowersByUserId(userId);
                 var mapped = data.Select(x => new
                 {
+                    avatar = x.Avatar,
                     userName = x.UserName,
                     genero = x.GeneroString,
                     pais = new
