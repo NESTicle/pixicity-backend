@@ -11,6 +11,7 @@ using Pixicity.Domain.ViewModels.Posts;
 using Pixicity.Domain.ViewModels.Seguridad;
 using Pixicity.Domain.ViewModels.Web;
 using System;
+using System.Linq;
 
 namespace Pixicity.Data.Mappings.AutoMapper
 {
@@ -62,7 +63,8 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ForMember(des => des.URL, source => source.MapFrom(s => s.Titulo.ToLower().Replace(" ", "-")));
 
             CreateMap<Usuario, PerfilUsuarioViewModel>()
-                .ForMember(des => des.Pais, source => source.MapFrom(s => s.Estado.Pais));
+                .ForMember(des => des.Pais, source => source.MapFrom(s => s.Estado.Pais))
+                .ForMember(des => des.CompleteName, source => source.MapFrom(s => s.UsuarioPerfil.FirstOrDefault().CompleteName));
 
             CreateMap<Estado, EstadoViewModel>();
 
