@@ -301,7 +301,8 @@ namespace Pixicity.Web.Controllers.Seguridad
                         {
                             id = EncodingHelper.EncodeBase64(loggedUser.Id.ToString()),
                             loggedUser.UserName,
-                            rango = loggedUser.Rango.Nombre
+                            rango = loggedUser.Rango.Nombre,
+                            avatar = loggedUser.Avatar
                         },
                         session.Token
                     };
