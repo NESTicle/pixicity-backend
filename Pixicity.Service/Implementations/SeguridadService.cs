@@ -111,6 +111,7 @@ namespace Pixicity.Service.Implementations
                 return _dbContext.Usuario.AsNoTracking()
                     .Include(x => x.Estado.Pais)
                     .Include(x => x.UsuarioPerfil)
+                    .Include(x => x.Rango)
                     .FirstOrDefault(x => x.UserName.ToLower() == userName.Trim().ToLower() && x.Eliminado == false);
             }
             catch (Exception e)

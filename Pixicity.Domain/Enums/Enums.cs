@@ -22,7 +22,7 @@ namespace Pixicity.Domain.Enums
             Moderador = 2,
             [Display(Name = "Usuario")]
             Usuario = 3,
-            [Display(Name = "Usuario")]
+            [Display(Name = "Baneado")]
             Baneado = 666
         }
 
