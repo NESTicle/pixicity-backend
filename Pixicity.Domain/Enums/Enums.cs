@@ -65,5 +65,11 @@ namespace Pixicity.Domain.Enums
             [Display(Name = "Post")]
             Post = 1,
         }
+
+        public enum TipoActividad
+        {
+            [Display(Name = "Post Nuevo")]
+            PostNuevo = 1,
+        }
     }
 }
