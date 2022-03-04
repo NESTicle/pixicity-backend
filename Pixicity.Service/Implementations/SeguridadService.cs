@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pixicity.Data;
+using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Enums;
@@ -858,17 +859,22 @@ namespace Pixicity.Service.Implementations
                     throw new Exception($"Hubo un error al banear un usuario con id {userId}");
 
                 usuario.Baneado = !usuario.Baneado;
-
-                _dbContext.Update(usuario);
-                _dbContext.SaveChanges();
-
+                
                 if(usuario.Baneado)
                 {
                     Session session = GetSessionByUsuarioId(userId);
 
                     if(session != null)
                         DeleteSession(session.Id);
+
+                    Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
+
+                    if(rango != null)
+                        usuario.RangoId = rango.Id;
                 }
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
 
                 return usuario.Baneado;
             }
@@ -911,6 +917,28 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.Eliminado == false && x.Baneado == false)
                     .OrderByDescending(x => x.Id)
                     .Take(5)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<Rango> GetRangosUsuarios(QueryParamsHelper queryParameters, out long totalCount)
+        {
+            try
+            {
+                var rangos = _dbContext.Rango
+                   .AsNoTracking()
+                   .Where(x => x.Eliminado == false);
+
+                totalCount = rangos.Count();
+
+                return rangos
+                    .OrderByDescending(x => x.FechaRegistro)
+                    .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                    .Take(queryParameters.PageCount)
                     .ToList();
             }
             catch (Exception e)

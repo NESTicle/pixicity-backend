@@ -1,4 +1,5 @@
-﻿using Pixicity.Data.Models.Seguridad;
+﻿using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Seguridad;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
 using System;
@@ -271,5 +272,13 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <returns></returns>
         List<Usuario> GetLastRegisteredUsers();
+
+        /// <summary>
+        /// Obtiene una lista de rango de usuarios
+        /// </summary>
+        /// <param name="queryParameters"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
+        List<Rango> GetRangosUsuarios(QueryParamsHelper queryParameters, out long totalCount);
     }
 }

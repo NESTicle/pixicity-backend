@@ -360,7 +360,7 @@ namespace Pixicity.Service.Implementations
                     SaveHistorial(new Historial()
                     {
                         Accion = "Actualizado",
-                        Razon = "Pendiente",
+                        Razon = "-",
                         TipoId = post.Id,
                         Tipo = TipoHistorial.Post,
                         IP = _currentUser.IP
