@@ -15,6 +15,7 @@ namespace Pixicity.Domain.ViewModels.Seguridad
         public int PostsCount { get; set; }
         public int SeguidoresCount { get; set; }
         public int SiguiendoCount { get; set; }
+        public string Genero { get; set; }
 
         public PaisViewModel Pais { get; set; }
     }
