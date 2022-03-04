@@ -901,5 +901,21 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public List<Usuario> GetLastRegisteredUsers()
+        {
+            try
+            {
+                return _dbContext.Usuario
+                    .Where(x => x.Eliminado == false && x.Baneado == false)
+                    .OrderByDescending(x => x.Id)
+                    .Take(5)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

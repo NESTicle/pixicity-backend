@@ -265,5 +265,11 @@ namespace Pixicity.Service.Interfaces
         bool BanUser(long userId);
 
         string ChangeAvatar(string avatar);
+
+        /// <summary>
+        /// Obtener la lista de últimos usuarios registrados
+        /// </summary>
+        /// <returns></returns>
+        List<Usuario> GetLastRegisteredUsers();
     }
 }
