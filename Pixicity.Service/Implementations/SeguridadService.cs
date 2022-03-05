@@ -955,6 +955,7 @@ namespace Pixicity.Service.Implementations
                 if (model == null)
                     return 0;
 
+                model.UsuarioRegistra = _currentUser.UserName;
                 _dbContext.Actividad.Add(model);
                 _dbContext.SaveChanges();
 
@@ -972,7 +973,7 @@ namespace Pixicity.Service.Implementations
             {
                 if (model == null || model.UsuarioId < 1)
                     return new ActividadLogsViewModel();
-                
+
                 var data = _dbContext.Actividad
                     .Include(x => x.Usuario)
                     .Where(x => x.UsuarioId == model.UsuarioId)
@@ -987,7 +988,7 @@ namespace Pixicity.Service.Implementations
                     TipoActividad = actividad.TipoActividad,
                     Texto = SetActividadText(actividad.TipoActividad, actividad.ObjId1, actividad.Datos)
                 }).ToList();
-                
+
                 ActividadLogsViewModel actividad = new ActividadLogsViewModel()
                 {
                     Hoy = ActividadesGroupBy(actividades, "hoy"),
@@ -1008,17 +1009,24 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                switch(tipoActividad)
+                switch (tipoActividad)
                 {
+                    case TipoActividad.PostNuevo:
                     case TipoActividad.PostVotado:
-                        if(id > 0)
+                    case TipoActividad.ComentarioNuevo:
+                        if (id > 0)
                         {
                             Post post = _dbContext.Post
                                 .Include(x => x.Categoria)
                                 .AsNoTracking()
                                 .FirstOrDefault(x => x.Id == id);
 
-                            return $"Dejó <strong>{data}</strong> puntos en el post {SetPostURL(post)}";
+                            if (tipoActividad == TipoActividad.PostVotado)
+                                return $"Dejó <strong>{data}</strong> puntos en el post {SetPostURL(post)}";
+                            else if (tipoActividad == TipoActividad.ComentarioNuevo)
+                                return $"Comentó el post {SetPostURL(post)}";
+                            else if (tipoActividad == TipoActividad.PostNuevo)
+                                return $"Creó un nuevo post {SetPostURL(post)}";
                         }
                         break;
                 }
@@ -1062,10 +1070,10 @@ namespace Pixicity.Service.Implementations
                         return actividades.Where(x => x.FechaRegistro >= yesterday && x.FechaRegistro < today).ToList();
                     case "semana":
                         DateTime last7Days = today.AddDays(-7);
-                        return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last7Days).ToList();
+                        return actividades.Where(x => x.FechaRegistro <= today && x.FechaRegistro >= last7Days).ToList();
                     case "mes":
                         DateTime last30Days = today.AddDays(-30);
-                        return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last30Days).ToList();
+                        return actividades.Where(x => x.FechaRegistro <= today && x.FechaRegistro >= last30Days).ToList();
                     default:
                         return actividades;
                 }

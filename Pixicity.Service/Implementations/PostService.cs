@@ -323,6 +323,13 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Post.Add(model);
                 _dbContext.SaveChanges();
 
+                _seguridadService.SaveActividadUsuario(new Actividad()
+                {
+                    UsuarioId = model.UsuarioId,
+                    ObjId1 = model.Id,
+                    TipoActividad = TipoActividad.PostNuevo
+                });
+
                 return model.Id;
             }
             catch (Exception e)
@@ -490,6 +497,15 @@ namespace Pixicity.Service.Implementations
                         });
                     }
                 }
+
+                // Agregar comentario a la actividad del usuario
+
+                _seguridadService.SaveActividadUsuario(new Actividad()
+                {
+                    UsuarioId = model.UsuarioId,
+                    ObjId1 = post.Id,
+                    TipoActividad = TipoActividad.ComentarioNuevo
+                });
 
                 return model.Id;
             }
