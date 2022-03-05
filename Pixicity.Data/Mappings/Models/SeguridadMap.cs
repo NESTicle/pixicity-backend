@@ -74,4 +74,18 @@ namespace Pixicity.Data.Mappings.Models
                 .HasForeignKey(x => x.UsuarioId);
         }
     }
+
+    public class ActividadMap : IEntityTypeConfiguration<Actividad>
+    {
+        void IEntityTypeConfiguration<Actividad>.Configure(EntityTypeBuilder<Actividad> builder)
+        {
+            builder.ToTable("Actividades", "Seguridad");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.HasOne(x => x.Usuario)
+                .WithMany(x => x.Actividades)
+                .HasForeignKey(x => x.UsuarioId);
+        }
+    }
 }
