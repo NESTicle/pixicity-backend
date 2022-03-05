@@ -1077,6 +1077,13 @@ namespace Pixicity.Service.Implementations
                     };
 
                     _dbContext.SeguirPost.Add(seguirPost);
+
+                    _seguridadService.SaveActividadUsuario(new Actividad()
+                    {
+                        UsuarioId = _currentUser.Id,
+                        ObjId1 = postId,
+                        TipoActividad = TipoActividad.SiguiendoPost
+                    });
                 }
                 else
                 {

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
 using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
+using Pixicity.Domain.AppSettings;
 using Pixicity.Domain.Enums;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.Transversal;
@@ -25,15 +27,17 @@ namespace Pixicity.Service.Implementations
         private readonly IParametrosService _parametrosService;
         private readonly IJwtService _jwtService;
         private readonly ILogsService _logsService;
+        private readonly KeysAppSettingsViewModel _keys;
         private IAppPrincipal _currentUser { get; }
 
-        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService, IAppPrincipal currentUser, ILogsService logsService)
+        public SeguridadService(PixicityDbContext dbContext, IParametrosService parametrosService, IJwtService jwtService, IAppPrincipal currentUser, ILogsService logsService, IOptions<KeysAppSettingsViewModel> keys)
         {
             _dbContext = dbContext;
             _parametrosService = parametrosService;
             _jwtService = jwtService;
             _currentUser = currentUser;
             _logsService = logsService;
+            _keys = keys.Value;
         }
 
         public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false)
@@ -603,6 +607,13 @@ namespace Pixicity.Service.Implementations
                         Mensaje = $"Te está siguiendo",
                     });
 
+                    SaveActividadUsuario(new Actividad()
+                    {
+                        UsuarioId = _currentUser.Id,
+                        ObjId1 = model.SeguidoId,
+                        TipoActividad = TipoActividad.SiguiendoUsuario
+                    });
+
                     return follow.Id;
                 }
             }
@@ -1009,26 +1020,33 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
+                if (id <= 0)
+                    return string.Empty;
+
                 switch (tipoActividad)
                 {
                     case TipoActividad.PostNuevo:
                     case TipoActividad.PostVotado:
                     case TipoActividad.ComentarioNuevo:
-                        if (id > 0)
-                        {
-                            Post post = _dbContext.Post
+                    case TipoActividad.SiguiendoPost:
+                        Post post = _dbContext.Post
                                 .Include(x => x.Categoria)
                                 .AsNoTracking()
                                 .FirstOrDefault(x => x.Id == id);
 
-                            if (tipoActividad == TipoActividad.PostVotado)
-                                return $"Dejó <strong>{data}</strong> puntos en el post {SetPostURL(post)}";
-                            else if (tipoActividad == TipoActividad.ComentarioNuevo)
-                                return $"Comentó el post {SetPostURL(post)}";
-                            else if (tipoActividad == TipoActividad.PostNuevo)
-                                return $"Creó un nuevo post {SetPostURL(post)}";
-                        }
+                        if (tipoActividad == TipoActividad.PostVotado)
+                            return $"Dejó <strong>{data}</strong> puntos en el post {SetPostURL(post)}";
+                        else if (tipoActividad == TipoActividad.ComentarioNuevo)
+                            return $"Comentó el post {SetPostURL(post)}";
+                        else if (tipoActividad == TipoActividad.PostNuevo)
+                            return $"Creó un nuevo post {SetPostURL(post)}";
+                        else if (tipoActividad == TipoActividad.SiguiendoPost)
+                            return $"Está siguiendo el post {SetPostURL(post)}";
                         break;
+
+                    case TipoActividad.SiguiendoUsuario:
+                        Usuario usuario = _dbContext.Usuario.AsNoTracking().FirstOrDefault(x => x.Id == id);
+                        return $"Está siguiendo a <a href='/perfil/{usuario.UserName}'><img class='img-fluid' height='16px' width='16px' src='{(!string.IsNullOrEmpty(usuario.Avatar) ? _keys.PixicityURL + "/images/avatars/" + usuario.UserName + "/" + usuario.Avatar : "/assets/images/avatar.gif")}' title='{usuario.UserName}' /> {usuario.UserName}</a>";
                 }
 
                 return string.Empty;

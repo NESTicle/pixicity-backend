@@ -7,5 +7,6 @@ namespace Pixicity.Domain.AppSettings
     public class KeysAppSettingsViewModel
     {
         public string JWT { get; set; }
+        public string PixicityURL { get; set; }
     }
 }
