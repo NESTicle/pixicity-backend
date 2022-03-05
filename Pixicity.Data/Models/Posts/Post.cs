@@ -33,11 +33,23 @@ namespace Pixicity.Data.Models.Posts
         public virtual Usuario Usuario { get; set; }
 
         [NotMapped]
+        public string URL
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Titulo))
+                    return string.Empty;
+
+                return Titulo.ToLower().Replace(" ", "-");
+            }
+        }
+
+        [NotMapped]
         public int Favoritos
         {
             get
             {
-                if(FavoritosPosts == null)
+                if (FavoritosPosts == null)
                     return 0;
 
                 return FavoritosPosts.Where(x => x.Eliminado == false).Count();

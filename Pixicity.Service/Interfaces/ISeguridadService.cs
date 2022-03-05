@@ -280,5 +280,14 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<Rango> GetRangosUsuarios(QueryParamsHelper queryParameters, out long totalCount);
+
+        /// <summary>
+        /// Crea una actividad del usuario
+        /// </summary>
+        /// <param name="model">Entidad Actividad</param>
+        /// <returns></returns>
+        long SaveActividadUsuario(Actividad model);
+
+        ActividadLogsViewModel GetActividadesByUsuario(Actividad model);
     }
 }

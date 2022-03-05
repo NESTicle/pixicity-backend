@@ -11,6 +11,7 @@ namespace Pixicity.Data.Models.Seguridad
 
         public long ObjId1 { get; set; }
         public long ObjId2 { get; set; }
+        public string Datos { get; set; }
 
         [Column("TipoActividad")]
         public string TipoActividadString

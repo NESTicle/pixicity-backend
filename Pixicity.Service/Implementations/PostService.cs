@@ -647,6 +647,14 @@ namespace Pixicity.Service.Implementations
                         });
 
                         _seguridadService.SumarPuntosUsuario(post.UsuarioId, model.Cantidad);
+
+                        _seguridadService.SaveActividadUsuario(new Actividad()
+                        {
+                            UsuarioId = model.UsuarioId,
+                            ObjId1 = post.UsuarioId,
+                            Datos = model.Cantidad.ToString(),
+                            TipoActividad = TipoActividad.PostVotado
+                        });
                     }
                 }
 

@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Pixicity.Data;
 using Pixicity.Data.Models.Parametros;
+using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Enums;
@@ -859,17 +860,17 @@ namespace Pixicity.Service.Implementations
                     throw new Exception($"Hubo un error al banear un usuario con id {userId}");
 
                 usuario.Baneado = !usuario.Baneado;
-                
-                if(usuario.Baneado)
+
+                if (usuario.Baneado)
                 {
                     Session session = GetSessionByUsuarioId(userId);
 
-                    if(session != null)
+                    if (session != null)
                         DeleteSession(session.Id);
 
                     Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
 
-                    if(rango != null)
+                    if (rango != null)
                         usuario.RangoId = rango.Id;
                 }
 
@@ -888,7 +889,7 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                if(string.IsNullOrEmpty(avatar))
+                if (string.IsNullOrEmpty(avatar))
                     return string.Empty;
 
                 Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == _currentUser.Id && x.Eliminado == false);
@@ -944,6 +945,134 @@ namespace Pixicity.Service.Implementations
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public long SaveActividadUsuario(Actividad model)
+        {
+            try
+            {
+                if (model == null)
+                    return 0;
+
+                _dbContext.Actividad.Add(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public ActividadLogsViewModel GetActividadesByUsuario(Actividad model)
+        {
+            try
+            {
+                if (model == null || model.UsuarioId < 1)
+                    return new ActividadLogsViewModel();
+                
+                var data = _dbContext.Actividad
+                    .Include(x => x.Usuario)
+                    .Where(x => x.UsuarioId == model.UsuarioId)
+                    .OrderByDescending(x => x.Id)
+                    .Take(30)
+                    .ToList();
+
+                var actividades = data.Select(actividad => new ActividadUsuarioViewModel()
+                {
+                    Id = actividad.Id,
+                    FechaRegistro = actividad.FechaRegistro,
+                    TipoActividad = actividad.TipoActividad,
+                    Texto = SetActividadText(actividad.TipoActividad, actividad.ObjId1, actividad.Datos)
+                }).ToList();
+                
+                ActividadLogsViewModel actividad = new ActividadLogsViewModel()
+                {
+                    Hoy = ActividadesGroupBy(actividades, "hoy"),
+                    Ayer = ActividadesGroupBy(actividades, "ayer"),
+                    Semana = ActividadesGroupBy(actividades, "semana"),
+                    Mes = ActividadesGroupBy(actividades, "mes")
+                };
+
+                return actividad;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private string SetActividadText(TipoActividad tipoActividad, long id, string data)
+        {
+            try
+            {
+                switch(tipoActividad)
+                {
+                    case TipoActividad.PostVotado:
+                        if(id > 0)
+                        {
+                            Post post = _dbContext.Post
+                                .Include(x => x.Categoria)
+                                .AsNoTracking()
+                                .FirstOrDefault(x => x.Id == id);
+
+                            return $"Dejó <strong>{data}</strong> puntos en el post {SetPostURL(post)}";
+                        }
+                        break;
+                }
+
+                return string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        private string SetPostURL(Post post)
+        {
+            try
+            {
+                if (post == null)
+                    return "'Este post ya no existe en la comunidad'";
+
+                return $"<a href='/posts/{post.Categoria.SEO}/{post.Id}/{post.URL}'>{post.Titulo}</a>";
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        private List<ActividadUsuarioViewModel> ActividadesGroupBy(List<ActividadUsuarioViewModel> actividades, string date)
+        {
+            try
+            {
+                DateTime today = DateTime.Today;
+                DateTime yesterday = today.AddDays(-1);
+
+                switch (date)
+                {
+                    case "hoy":
+                        DateTime endDateTime = today.AddDays(1).AddTicks(-1);
+                        return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= endDateTime).ToList();
+                    case "ayer":
+                        return actividades.Where(x => x.FechaRegistro >= yesterday && x.FechaRegistro < today).ToList();
+                    case "semana":
+                        DateTime last7Days = today.AddDays(-7);
+                        return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last7Days).ToList();
+                    case "mes":
+                        DateTime last30Days = today.AddDays(-30);
+                        return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= last30Days).ToList();
+                    default:
+                        return actividades;
+                }
+            }
+            catch (Exception)
+            {
+                return new List<ActividadUsuarioViewModel>();
             }
         }
     }

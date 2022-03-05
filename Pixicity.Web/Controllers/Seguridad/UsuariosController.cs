@@ -731,5 +731,27 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             return await Task.FromResult(result);
         }
+
+        [HttpGet]
+        [Route(nameof(GetActividadUsuario))]
+        public async Task<JSONObjectResult> GetActividadUsuario([FromQuery] long usuarioId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.GetActividadesByUsuario(new Actividad() { UsuarioId = usuarioId });
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }
