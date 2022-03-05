@@ -8,8 +8,10 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Masculino")]
             Masculino = 1,
+
             [Display(Name = "Femenino")]
             Femenino = 2,
+
             [Display(Name = "Otros")]
             Otros = 3
         }
@@ -18,10 +20,13 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Administrador")]
             Administrador = 1,
+
             [Display(Name = "Moderador")]
             Moderador = 2,
+
             [Display(Name = "Usuario")]
             Usuario = 3,
+
             [Display(Name = "Baneado")]
             Baneado = 666
         }
@@ -30,6 +35,7 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Posts")]
             Posts = 1,
+
             [Display(Name = "Fotos")]
             Fotos = 2
         }
@@ -38,6 +44,7 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Posts")]
             Posts = 1,
+
             [Display(Name = "Fotos")]
             Fotos = 2
         }
@@ -46,16 +53,22 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Comentario")]
             Comentario = 1,
+
             [Display(Name = "Like")]
             Like = 2,
+
             [Display(Name = "Dislike")]
             Dislike = 3,
+
             [Display(Name = "Favoritos")]
             Favoritos = 4,
+
             [Display(Name = "Puntos")]
             Puntos = 5,
+
             [Display(Name = "Seguir")]
             Seguir = 6,
+
             [Display(Name = "ComentarioSiguePost")]
             ComentarioSiguePost = 7,
         }
@@ -70,6 +83,36 @@ namespace Pixicity.Domain.Enums
         {
             [Display(Name = "Post Nuevo")]
             PostNuevo = 1,
+
+            [Display(Name = "Post Favorito")]
+            PostFavorito = 2,
+
+            [Display(Name = "Post Votado")]
+            PostVotado = 3,
+
+            [Display(Name = "Post Recomendado")]
+            PostRecomendado = 4,
+
+            [Display(Name = "Comentario Nuevo")]
+            ComentarioNuevo = 5,
+
+            [Display(Name = "Comentario Votado")]
+            ComentarioVotado = 6,
+
+            [Display(Name = "Siguiendo un Post")]
+            SiguiendoPost = 7,
+
+            [Display(Name = "Siguiendo un Usuario")]
+            SiguiendoUsuario = 8,
+
+            [Display(Name = "Foto Nueva")]
+            FotoNueva = 9,
+
+            [Display(Name = "Publicaciones en Muro")]
+            PublicacionesEnMuro = 10,
+
+            [Display(Name = "Le Gusta un Shout")]
+            LeGustaShout = 11,
         }
     }
 }
