@@ -44,6 +44,7 @@ namespace Pixicity.Data
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<UsuarioSeguidores> UsuarioSeguidores { get; set; }
         public DbSet<UsuarioPerfil> UsuarioPerfil { get; set; }
+        public DbSet<Actividad> Actividad { get; set; }
 
         #endregion
 
@@ -79,6 +80,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new SeguirPostMap());
             builder.ApplyConfiguration(new VisitasMap());
             builder.ApplyConfiguration(new HistorialMap());
+            builder.ApplyConfiguration(new ActividadMap());
             
             base.OnModelCreating(builder);
         }
