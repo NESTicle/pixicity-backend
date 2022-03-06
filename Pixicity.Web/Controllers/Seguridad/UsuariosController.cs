@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Web.Controllers.Seguridad
 {
@@ -734,7 +735,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpGet]
         [Route(nameof(GetActividadUsuario))]
-        public async Task<JSONObjectResult> GetActividadUsuario([FromQuery] long usuarioId)
+        public async Task<JSONObjectResult> GetActividadUsuario([FromQuery] long usuarioId, [FromQuery] TipoActividad? tipoActividad)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -743,7 +744,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                result.Data = _seguridadService.GetActividadesByUsuario(new Actividad() { UsuarioId = usuarioId });
+                result.Data = _seguridadService.GetActividadesByUsuario(usuarioId, tipoActividad);
             }
             catch (Exception e)
             {

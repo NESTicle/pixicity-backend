@@ -4,6 +4,7 @@ using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Seguridad;
 using System;
 using System.Collections.Generic;
+using static Pixicity.Domain.Enums.Enums;
 
 namespace Pixicity.Service.Interfaces
 {
@@ -288,6 +289,6 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         long SaveActividadUsuario(Actividad model);
 
-        ActividadLogsViewModel GetActividadesByUsuario(Actividad model);
+        ActividadLogsViewModel GetActividadesByUsuario(long usuarioId, TipoActividad? tipoActividad);
     }
 }

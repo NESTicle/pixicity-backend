@@ -978,17 +978,21 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public ActividadLogsViewModel GetActividadesByUsuario(Actividad model)
+        public ActividadLogsViewModel GetActividadesByUsuario(long usuarioId, TipoActividad? tipoActividad)
         {
             try
             {
-                if (model == null || model.UsuarioId < 1)
+                if (usuarioId < 1)
                     return new ActividadLogsViewModel();
 
-                var data = _dbContext.Actividad
+                var query = _dbContext.Actividad
                     .Include(x => x.Usuario)
-                    .Where(x => x.UsuarioId == model.UsuarioId)
-                    .OrderByDescending(x => x.Id)
+                    .Where(x => x.UsuarioId == usuarioId);
+
+                if (tipoActividad.HasValue)
+                    query = query.Where(x => x.TipoActividadString == tipoActividad.Value.ToString());
+
+                var data = query.OrderByDescending(x => x.Id)
                     .Take(30)
                     .ToList();
 
