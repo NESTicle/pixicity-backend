@@ -1026,8 +1026,10 @@ namespace Pixicity.Service.Implementations
                 switch (tipoActividad)
                 {
                     case TipoActividad.PostNuevo:
+                    case TipoActividad.PostFavorito:
                     case TipoActividad.PostVotado:
                     case TipoActividad.ComentarioNuevo:
+                    case TipoActividad.ComentarioVotado:
                     case TipoActividad.SiguiendoPost:
                         Post post = _dbContext.Post
                                 .Include(x => x.Categoria)
@@ -1042,6 +1044,10 @@ namespace Pixicity.Service.Implementations
                             return $"Creó un nuevo post {SetPostURL(post)}";
                         else if (tipoActividad == TipoActividad.SiguiendoPost)
                             return $"Está siguiendo el post {SetPostURL(post)}";
+                        else if (tipoActividad == TipoActividad.PostFavorito)
+                            return $"Agregó a favoritos el post {SetPostURL(post)}";
+                        else if (tipoActividad == TipoActividad.ComentarioVotado)
+                            return $"Votó {data} un comentario en el post {SetPostURL(post)}";
                         break;
 
                     case TipoActividad.SiguiendoUsuario:
