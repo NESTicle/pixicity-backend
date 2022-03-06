@@ -844,6 +844,13 @@ namespace Pixicity.Service.Implementations
                 _dbContext.FavoritoPost.Add(favoritoPost);
                 _dbContext.SaveChanges();
 
+                _seguridadService.SaveActividadUsuario(new Actividad()
+                {
+                    UsuarioId = _currentUser.Id,
+                    ObjId1 = postId,
+                    TipoActividad = TipoActividad.PostFavorito
+                });
+
                 return favoritoPost.Id;
             }
             catch (Exception e)
