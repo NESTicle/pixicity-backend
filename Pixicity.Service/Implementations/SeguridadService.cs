@@ -1083,21 +1083,22 @@ namespace Pixicity.Service.Implementations
             try
             {
                 DateTime today = DateTime.Today;
-                DateTime yesterday = today.AddDays(-1);
-
+                
                 switch (date)
                 {
                     case "hoy":
                         DateTime endDateTime = today.AddDays(1).AddTicks(-1);
                         return actividades.Where(x => x.FechaRegistro >= today && x.FechaRegistro <= endDateTime).ToList();
                     case "ayer":
+                        DateTime yesterday = today.AddDays(-1);
                         return actividades.Where(x => x.FechaRegistro >= yesterday && x.FechaRegistro < today).ToList();
                     case "semana":
-                        DateTime last7Days = today.AddDays(-7);
-                        return actividades.Where(x => x.FechaRegistro <= today && x.FechaRegistro >= last7Days).ToList();
+                        DateTime filter = today.AddDays(-2);
+                        DateTime filter2 = today.AddDays(-20);
+                        return actividades.Where(x => x.FechaRegistro < filter && x.FechaRegistro >= filter2).ToList();
                     case "mes":
-                        DateTime last30Days = today.AddDays(-30);
-                        return actividades.Where(x => x.FechaRegistro <= today && x.FechaRegistro >= last30Days).ToList();
+                        DateTime dateFilter = today.AddDays(-21);
+                        return actividades.Where(x => x.FechaRegistro <= dateFilter).ToList();
                     default:
                         return actividades;
                 }
