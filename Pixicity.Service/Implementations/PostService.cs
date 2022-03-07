@@ -232,6 +232,7 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Include(x => x.FavoritosPosts)
                     .Include(x => x.Usuario.Estado.Pais)
+                    .Include(x => x.Usuario.Rango)
                     .FirstOrDefault(x => x.Id == postId && x.Eliminado == false);
             }
             catch (Exception e)

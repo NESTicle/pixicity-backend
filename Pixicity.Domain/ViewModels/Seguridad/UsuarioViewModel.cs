@@ -12,6 +12,7 @@ namespace Pixicity.Domain.ViewModels.Seguridad
         public int Genero { get; set; }
         public string Email { get; set; }
         public string FechaNacimiento { get; set; }
+        public RangoUsuarioViewModel Rango { get; set; }
 
         public string GeneroString { get; set; }
         public EstadoViewModel Estado { get; set; }

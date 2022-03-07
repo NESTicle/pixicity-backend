@@ -76,6 +76,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ForMember(des => des.Genero, source => source.MapFrom(s => s.GeneroString));
 
             CreateMap<Rango, RangoViewModel>();
+            CreateMap<Rango, RangoUsuarioViewModel>();
         }
     }
 }
