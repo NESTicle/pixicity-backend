@@ -42,7 +42,8 @@ namespace Pixicity.Web.Controllers.General
                     posts = _postService.CountPosts(),
                     comentarios = _postService.CountComentarios(),
                     fotos = 0,
-                    comentariosFotos = 0
+                    comentariosFotos = 0,
+                    recordUsers = _seguridadService.GetRecordUsersOnline()
                 };
             }
             catch (Exception e)

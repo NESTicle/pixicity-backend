@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Pixicity.Data.Models.Parametros;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
@@ -54,6 +55,29 @@ namespace Pixicity.Web.Controllers.Seguridad
                     rangos = mapped,
                     pagination = paginationMetadata
                 };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(AddUpdateRango))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
+        public async Task<JSONObjectResult> AddUpdateRango([FromBody] Rango model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.AddUpdateRango(model);
             }
             catch (Exception e)
             {

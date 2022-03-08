@@ -351,7 +351,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                var data = _postService.PreviousPost(model.Id);
+                var data = _postService.RandomPost(model.Id);
                 var mapped = _mapper.Map<PostViewModel>(data);
 
                 result.Data = mapped;

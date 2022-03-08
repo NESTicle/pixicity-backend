@@ -287,7 +287,6 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Include(x => x.Usuario.Estado.Pais)
                     .Where(x => x.Id != postId && x.Eliminado == false && x.EsBorrador == false)
-                    .OrderBy(r => Guid.NewGuid())
                     .Skip(toSkip)
                     .Take(1)
                     .FirstOrDefault();

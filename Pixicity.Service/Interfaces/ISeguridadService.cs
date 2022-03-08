@@ -290,5 +290,14 @@ namespace Pixicity.Service.Interfaces
         long SaveActividadUsuario(Actividad model);
 
         ActividadLogsViewModel GetActividadesByUsuario(long usuarioId, TipoActividad? tipoActividad);
+
+        RecordUsersOnlineViewModel GetRecordUsersOnline();
+
+        /// <summary>
+        /// Agregar o actualizar rango
+        /// </summary>
+        /// <param name="model">Entidad Rango</param>
+        /// <returns></returns>
+        long AddUpdateRango(Rango model);
     }
 }

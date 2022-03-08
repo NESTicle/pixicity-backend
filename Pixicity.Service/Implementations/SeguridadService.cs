@@ -49,6 +49,7 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Posts)
                     .Include(x => x.Comentarios)
                     .Include(x => x.Estado.Pais)
+                    .Include(x => x.Rango)
                     .Include(x => x.Sessions.Where(x => x.Eliminado == false))
                     .AsQueryable();
 
@@ -216,16 +217,14 @@ namespace Pixicity.Service.Implementations
                 };
 
                 // Se hace una validación por si ponen en el frontend un género que no exista
-                bool isGenero = Enum.IsDefined(typeof(Enums.GenerosEnum), model.Genero);
+                bool isGenero = Enum.IsDefined(typeof(GenerosEnum), model.Genero);
 
                 if (isGenero == false)
-                    usuario.Genero = Enums.GenerosEnum.Otros;
+                    usuario.Genero = GenerosEnum.Otros;
                 else
-                    usuario.Genero = (Enums.GenerosEnum)model.Genero;
+                    usuario.Genero = (GenerosEnum)model.Genero;
 
-                _parametrosService.CreateRangoIfNotExists("Administrador");
-                _parametrosService.CreateRangoIfNotExists("Moderador");
-                usuario.RangoId = _parametrosService.CreateRangoIfNotExists("Usuario");
+                usuario.RangoId = _parametrosService.CreateRangoIfNotExists("Novato");
 
                 _dbContext.Usuario.Add(usuario);
                 _dbContext.SaveChanges();
@@ -455,8 +454,20 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                var query = _dbContext.Session.Where(x => x.Eliminado == false && x.Activo > DateTime.Now.AddMinutes(-15));
-                return query.Count();
+                var count = _dbContext.Session.Where(x => x.Eliminado == false && x.Activo > DateTime.Now.AddMinutes(-15)).Count();
+
+                var configuracion = _dbContext.Configuracion.FirstOrDefault();
+
+                if(configuracion != null && count > configuracion.RecordOnlineUsers)
+                {
+                    configuracion.RecordOnlineUsers = count;
+                    configuracion.RecordOnlineTime = DateTime.Now;
+
+                    _dbContext.Update(configuracion);
+                    _dbContext.SaveChanges();
+                }
+                
+                return count;
             }
             catch (Exception e)
             {
@@ -943,12 +954,13 @@ namespace Pixicity.Service.Implementations
             {
                 var rangos = _dbContext.Rango
                    .AsNoTracking()
+                   .Include(x => x.Usuarios.Where(x => x.Eliminado == false))
                    .Where(x => x.Eliminado == false);
 
                 totalCount = rangos.Count();
 
                 return rangos
-                    .OrderByDescending(x => x.FechaRegistro)
+                    .OrderByDescending(x => x.Id)
                     .Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                     .Take(queryParameters.PageCount)
                     .ToList();
@@ -1013,6 +1025,69 @@ namespace Pixicity.Service.Implementations
                 };
 
                 return actividad;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public RecordUsersOnlineViewModel GetRecordUsersOnline()
+        {
+            try
+            {
+                Configuracion configuracion = _dbContext.Configuracion.FirstOrDefault();
+
+                if (configuracion == null)
+                    return new RecordUsersOnlineViewModel();
+
+                return new RecordUsersOnlineViewModel()
+                {
+                    UsersOnline = configuracion.RecordOnlineUsers,
+                    Date = configuracion.RecordOnlineTime
+                };
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long AddUpdateRango(Rango model)
+        {
+            try
+            {
+                if (model == null)
+                    return 0;
+
+                if(model.Id > 0)
+                {
+                    Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Id == model.Id);
+
+                    if (rango == null)
+                        throw new Exception($"No se ha encontrado rango con Id {model.Id}");
+
+                    rango.Color = model.Color;
+                    rango.Icono = model.Icono;
+                    rango.Nombre = model.Nombre;
+                    rango.Tipo = model.Tipo;
+                    rango.Puntos = model.Puntos;
+
+                    rango.FechaActualiza = DateTime.Now;
+                    rango.UsuarioActualiza = _currentUser.UserName;
+
+                    _dbContext.Update(rango);
+                }
+                else
+                {
+                    model.UsuarioRegistra = _currentUser.UserName;
+
+                    _dbContext.Rango.Add(model);
+                }
+
+                _dbContext.SaveChanges();
+                
+                return model.Id;
             }
             catch (Exception e)
             {

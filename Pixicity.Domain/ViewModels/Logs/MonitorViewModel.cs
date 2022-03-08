@@ -1,4 +1,5 @@
 ﻿using Pixicity.Domain.ViewModels.Posts;
+using Pixicity.Domain.ViewModels.Seguridad;
 using System;
 
 namespace Pixicity.Domain.ViewModels.Logs
@@ -13,7 +14,7 @@ namespace Pixicity.Domain.ViewModels.Logs
         public long? PostId { get; set; }
         public string TipoString { get; set; }
         
-        public string UsuarioQueHaceAccion { get; set; }
+        public UsuarioViewModel UsuarioQueHaceAccion { get; set; }
         public PostViewModel Post { get; set; }
     }
 }

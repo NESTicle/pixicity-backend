@@ -55,7 +55,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
                 .ReverseMap();
 
             CreateMap<Monitor, MonitorViewModel>()
-                .ForMember(des => des.UsuarioQueHaceAccion, source => source.MapFrom(s => s.UsuarioQueHaceAccion.UserName))
+                .ForMember(des => des.UsuarioQueHaceAccion, source => source.MapFrom(s => s.UsuarioQueHaceAccion))
                 .ReverseMap();
 
             CreateMap<Denuncia, DenunciaViewModel>()

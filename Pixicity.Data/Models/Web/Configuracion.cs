@@ -26,5 +26,8 @@ namespace Pixicity.Data.Models.Web
         public string Banner468x60 { get; set; }
         public string Banner160x600 { get; set; }
         public string Banner728x90 { get; set; }
+
+        public int RecordOnlineUsers { get; set; }
+        public DateTime RecordOnlineTime { get; set; }
     }
 }

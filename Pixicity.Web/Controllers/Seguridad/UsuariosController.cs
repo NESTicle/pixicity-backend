@@ -54,10 +54,16 @@ namespace Pixicity.Web.Controllers.Seguridad
                 var mapped = data.Select(x => new
                 {
                     x.Id,
+                    x.Avatar,
                     userName = x.UserName,
                     genero = x.Genero,
                     pais = x.Estado.Pais.Nombre,
                     iso2 = x.Estado.Pais.ISO2,
+                    rango = new
+                    {
+                        nombre = x.Rango?.Nombre,
+                        icono = x.Rango?.Icono
+                    },
                     puntos = x.Puntos,
                     comentarios = x.CantidadComentarios,
                     activo = (DateTime.Now - x.Sessions?.OrderBy(x => x.Id)?.LastOrDefault()?.Activo)?.TotalMinutes,

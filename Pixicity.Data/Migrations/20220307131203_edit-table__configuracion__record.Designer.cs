@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pixicity.Data;
@@ -9,9 +10,10 @@ using Pixicity.Data;
 namespace Pixicity.Data.Migrations
 {
     [DbContext(typeof(PixicityDbContext))]
-    partial class PixicityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220307131203_edit-table__configuracion__record")]
+    partial class edittable__configuracion__record
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +228,6 @@ namespace Pixicity.Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Color")
-                        .HasColumnType("text");
-
                     b.Property<bool>("Eliminado")
                         .HasColumnType("boolean");
 
@@ -250,9 +249,6 @@ namespace Pixicity.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
-
-                    b.Property<int>("Puntos")
-                        .HasColumnType("integer");
 
                     b.Property<string>("TipoString")
                         .HasColumnType("text")
