@@ -10,6 +10,7 @@ using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pixicity.Web.Controllers.Seguridad
@@ -65,6 +66,38 @@ namespace Pixicity.Web.Controllers.Seguridad
             return await Task.FromResult(result);
         }
 
+        [HttpGet]
+        [Route(nameof(GetRangosDropdown))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
+        public async Task<JSONObjectResult> GetRangosDropdown()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var data = _seguridadService.GetRangosDropdown();
+                var mapped = data.Select(x => new
+                {
+                    id = x.Id,
+                    nombre = x.Nombre,
+                    icono = x.Icono,
+                    color = x.Color
+                });
+
+                result.Data = mapped;
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpPost]
         [Route(nameof(AddUpdateRango))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
@@ -78,6 +111,30 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 result.Data = _seguridadService.AddUpdateRango(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(ChangeRangoUsuario))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
+        public async Task<JSONObjectResult> ChangeRangoUsuario([FromBody] RangoViewModel model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                long usuarioId = _seguridadService.ChangeRangoUsuario(model);
+                result.Data = usuarioId > 0;
             }
             catch (Exception e)
             {

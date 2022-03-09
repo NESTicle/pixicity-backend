@@ -8,6 +8,7 @@ namespace Pixicity.Domain.ViewModels.Seguridad
         public long Id { get; set; }
         public DateTime FechaRegistro { get; set; }
 
+        public long UsuarioId { get; set; }
         public string Icono { get; set; }
         public string Nombre { get; set; }
         public string TipoString { get; set; }

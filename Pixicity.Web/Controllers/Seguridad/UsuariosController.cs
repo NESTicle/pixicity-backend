@@ -563,6 +563,28 @@ namespace Pixicity.Web.Controllers.Seguridad
             return await Task.FromResult(result);
         }
 
+        [HttpGet]
+        [Route(nameof(GetPerfilInfoByUserId))]
+        public async Task<JSONObjectResult> GetPerfilInfoByUserId([FromQuery] long usuarioId)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.GetUsuarioPerfilByUsuarioId(usuarioId);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpPut]
         [Route(nameof(SavePerfilInfo))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]

@@ -231,6 +231,13 @@ namespace Pixicity.Service.Interfaces
         UsuarioPerfil GetCurrentPerfilInfo();
 
         /// <summary>
+        /// Obtener el perfil del usuario por id
+        /// </summary>
+        /// <param name="usuarioId">Id del usuario</param>
+        /// <returns></returns>
+        UsuarioPerfil GetUsuarioPerfilByUsuarioId(long usuarioId);
+
+        /// <summary>
         /// Guardar perfil del usuario
         /// </summary>
         /// <param name="model">UsuarioPerfil entidad</param>
@@ -283,6 +290,12 @@ namespace Pixicity.Service.Interfaces
         List<Rango> GetRangosUsuarios(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Obtiene la lista completa de rangos
+        /// </summary>
+        /// <returns></returns>
+        List<Rango> GetRangosDropdown();
+
+        /// <summary>
         /// Crea una actividad del usuario
         /// </summary>
         /// <param name="model">Entidad Actividad</param>
@@ -299,5 +312,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Rango</param>
         /// <returns></returns>
         long AddUpdateRango(Rango model);
+
+        /// <summary>
+        /// Actualizar el rango a un usuario
+        /// </summary>
+        /// <param name="model">Entidad Rango</param>
+        /// <returns></returns>
+        long ChangeRangoUsuario(RangoViewModel model);
     }
 }

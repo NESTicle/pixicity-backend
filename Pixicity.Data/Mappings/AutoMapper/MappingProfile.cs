@@ -67,7 +67,6 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Usuario, PerfilUsuarioViewModel>()
                 .ForMember(des => des.Pais, source => source.MapFrom(s => s.Estado.Pais))
                 .ForMember(des => des.Genero, source => source.MapFrom(s => s.GeneroString))
-                .ForMember(des => des.Rango, source => source.MapFrom(s => s.Rango.Nombre))
                 .ForMember(des => des.CompleteName, source => source.MapFrom(s => s.UsuarioPerfil.FirstOrDefault().CompleteName));
 
             CreateMap<Estado, EstadoViewModel>();
@@ -77,6 +76,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
 
             CreateMap<Rango, RangoViewModel>();
             CreateMap<Rango, RangoUsuarioViewModel>();
+            CreateMap<Rango, DropdownViewModel>();
         }
     }
 }

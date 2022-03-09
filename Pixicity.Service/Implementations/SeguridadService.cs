@@ -744,6 +744,19 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public UsuarioPerfil GetUsuarioPerfilByUsuarioId(long usuarioId)
+        {
+            try
+            {
+                UsuarioPerfil usuarioPerfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == usuarioId && x.Eliminado == false);
+                return usuarioPerfil;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SavePerfilInfo(UsuarioPerfil model)
         {
             try
@@ -971,6 +984,22 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Rango> GetRangosDropdown()
+        {
+            try
+            {
+                return _dbContext.Rango
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false)
+                    .OrderBy(x => x.Nombre)
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public long SaveActividadUsuario(Actividad model)
         {
             try
@@ -1088,6 +1117,28 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
                 
                 return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long ChangeRangoUsuario(RangoViewModel model)
+        {
+            try
+            {
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == model.UsuarioId && x.Eliminado == false);
+
+                if (usuario == null)
+                    throw new Exception("No se ha podido actualizar el rango del usuario");
+
+                usuario.RangoId = model.Id;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return usuario.Id;
             }
             catch (Exception e)
             {
