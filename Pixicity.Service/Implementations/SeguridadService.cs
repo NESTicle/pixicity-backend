@@ -885,34 +885,40 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public bool BanUser(long userId)
+        public long BanUser(Usuario model)
         {
             try
             {
-                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == userId && x.Eliminado == false);
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == model.Id && x.Eliminado == false);
 
                 if (usuario == null)
-                    throw new Exception($"Hubo un error al banear un usuario con id {userId}");
+                    throw new Exception($"Hubo un error al banear un usuario con id {model.Id}");
 
                 usuario.Baneado = !usuario.Baneado;
+                usuario.RazonBaneo = model.RazonBaneo;
+                usuario.TiempoBaneado = model.TiempoBaneado;
+                usuario.BaneadoPermanente = model.BaneadoPermanente;
 
                 if (usuario.Baneado)
                 {
-                    Session session = GetSessionByUsuarioId(userId);
+                    Session session = GetSessionByUsuarioId(model.Id);
 
                     if (session != null)
                         DeleteSession(session.Id);
 
-                    Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
+                    if(model.BaneadoPermanente)
+                    {
+                        Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
 
-                    if (rango != null)
-                        usuario.RangoId = rango.Id;
+                        if (rango != null)
+                            usuario.RangoId = rango.Id;
+                    }
                 }
 
                 _dbContext.Update(usuario);
                 _dbContext.SaveChanges();
 
-                return usuario.Baneado;
+                return usuario.Id;
             }
             catch (Exception e)
             {

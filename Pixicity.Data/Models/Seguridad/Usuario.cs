@@ -38,7 +38,11 @@ namespace Pixicity.Data.Models.Seguridad
 
         public DateTime? UltimaConexion { get; set; }
         public string UltimaIP { get; set; }
+
         public bool Baneado { get; set; } = false;
+        public DateTime TiempoBaneado { get; set; }
+        public string RazonBaneo { get; set; }
+        public bool BaneadoPermanente { get; set; }
 
         public virtual Estado Estado { get; set; }
         public virtual Rango Rango { get; set; }

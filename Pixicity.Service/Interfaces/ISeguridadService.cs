@@ -269,9 +269,9 @@ namespace Pixicity.Service.Interfaces
         /// <summary>
         /// Banear usuario
         /// </summary>
-        /// <param name="userId">Id del usuario</param>
+        /// <param name="model">Usuario</param>
         /// <returns></returns>
-        bool BanUser(long userId);
+        long BanUser(Usuario model);
 
         string ChangeAvatar(string avatar);
 

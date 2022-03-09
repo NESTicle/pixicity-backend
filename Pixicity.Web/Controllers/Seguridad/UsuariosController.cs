@@ -291,27 +291,51 @@ namespace Pixicity.Web.Controllers.Seguridad
                     result.Data = "error";
                 else
                 {
-                    Session session = new Session()
+                    if(loggedUser.BaneadoPermanente)
                     {
-                        UsuarioId = loggedUser.Id,
-                        Token = _seguridadService.GenerarJWT(loggedUser),
-                        FechaExpiracion = DateTime.UtcNow.AddDays(15)
-                    };
-
-                    _seguridadService.SaveUserSession(session);
-                    _seguridadService.SetUltimaDireccionIPUsuario(loggedUser, HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString());
-
-                    result.Data = new
-                    {
-                        Usuario = new
+                        result.Data = new
                         {
-                            id = EncodingHelper.EncodeBase64(loggedUser.Id.ToString()),
-                            loggedUser.UserName,
-                            rango = loggedUser.Rango.Nombre,
-                            avatar = loggedUser.Avatar
-                        },
-                        session.Token
-                    };
+                            error = "baneado_permanente",
+                            loggedUser.BaneadoPermanente,
+                            loggedUser.RazonBaneo
+                        };
+                    }
+                    else
+                    {
+                        if(loggedUser.Baneado && loggedUser.TiempoBaneado > DateTime.Now)
+                        {
+                            result.Data = new
+                            {
+                                error = "baneado",
+                                loggedUser.RazonBaneo,
+                                loggedUser.TiempoBaneado
+                            };
+                        }
+                        else
+                        {
+                            Session session = new Session()
+                            {
+                                UsuarioId = loggedUser.Id,
+                                Token = _seguridadService.GenerarJWT(loggedUser),
+                                FechaExpiracion = DateTime.UtcNow.AddDays(15)
+                            };
+
+                            _seguridadService.SaveUserSession(session);
+                            _seguridadService.SetUltimaDireccionIPUsuario(loggedUser, HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString());
+
+                            result.Data = new
+                            {
+                                Usuario = new
+                                {
+                                    id = EncodingHelper.EncodeBase64(loggedUser.Id.ToString()),
+                                    loggedUser.UserName,
+                                    rango = loggedUser.Rango.Nombre,
+                                    avatar = loggedUser.Avatar
+                                },
+                                session.Token
+                            };
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -642,7 +666,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                result.Data = _seguridadService.BanUser(model.Id);
+                result.Data = _seguridadService.BanUser(model);
             }
             catch (Exception e)
             {
