@@ -708,22 +708,28 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<Usuario> GetLastFollowersByUserId(long userId)
+        public List<Usuario> GetLastFollowersByUserId(long userId, out long totalCount)
         {
             try
             {
                 if (userId <= 0)
+                {
+                    totalCount = 0;
                     return new List<Usuario>();
+                }
 
                 var usuarios = _dbContext.UsuarioSeguidores
                     .AsNoTracking()
                     .Include(x => x.Seguidor.Estado.Pais)
-                    .Where(x => x.SeguidoId == userId && x.Eliminado == false)
-                    .Take(15)
+                    .Where(x => x.SeguidoId == userId && x.Eliminado == false);
+
+                totalCount = usuarios.Count();
+
+                var lastFollowers = usuarios.Take(15)
                     .Select(x => x.Seguidor)
                     .ToList();
 
-                return usuarios;
+                return lastFollowers;
             }
             catch (Exception)
             {

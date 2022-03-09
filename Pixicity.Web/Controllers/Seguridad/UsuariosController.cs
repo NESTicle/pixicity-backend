@@ -688,7 +688,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                var data = _seguridadService.GetLastFollowersByUserId(userId);
+                var data = _seguridadService.GetLastFollowersByUserId(userId, out long totalCount);
                 var mapped = data.Select(x => new
                 {
                     avatar = x.Avatar,
@@ -702,7 +702,10 @@ namespace Pixicity.Web.Controllers.Seguridad
                     puntos = x.Puntos
                 });
 
-                result.Data = mapped;
+                result.Data = new {
+                    followers = mapped,
+                    totalCount
+                };
             }
             catch (Exception e)
             {
