@@ -677,6 +677,29 @@ namespace Pixicity.Web.Controllers.Seguridad
             return await Task.FromResult(result);
         }
 
+        [HttpPut]
+        [Route(nameof(UnbanUser))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Moderador" })]
+        public async Task<JSONObjectResult> UnbanUser([FromBody] Usuario model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _seguridadService.UnbanUser(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
         [HttpGet]
         [Route(nameof(GetLastFollowersByUserId))]
         public async Task<JSONObjectResult> GetLastFollowersByUserId([FromQuery] long userId)

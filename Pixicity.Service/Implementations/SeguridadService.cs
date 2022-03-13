@@ -458,7 +458,7 @@ namespace Pixicity.Service.Implementations
 
                 var configuracion = _dbContext.Configuracion.FirstOrDefault();
 
-                if(configuracion != null && count > configuracion.RecordOnlineUsers)
+                if (configuracion != null && count > configuracion.RecordOnlineUsers)
                 {
                     configuracion.RecordOnlineUsers = count;
                     configuracion.RecordOnlineTime = DateTime.Now;
@@ -466,7 +466,7 @@ namespace Pixicity.Service.Implementations
                     _dbContext.Update(configuracion);
                     _dbContext.SaveChanges();
                 }
-                
+
                 return count;
             }
             catch (Exception e)
@@ -900,26 +900,82 @@ namespace Pixicity.Service.Implementations
                 if (usuario == null)
                     throw new Exception($"Hubo un error al banear un usuario con id {model.Id}");
 
-                usuario.Baneado = !usuario.Baneado;
+                usuario.Baneado = true;
                 usuario.RazonBaneo = model.RazonBaneo;
                 usuario.TiempoBaneado = model.TiempoBaneado;
                 usuario.BaneadoPermanente = model.BaneadoPermanente;
 
-                if (usuario.Baneado)
+                Session session = GetSessionByUsuarioId(model.Id);
+
+                if (session != null)
+                    DeleteSession(session.Id);
+
+                Historial historial = new Historial()
                 {
-                    Session session = GetSessionByUsuarioId(model.Id);
+                    FechaRegistro = DateTime.Now,
+                    IP = _currentUser.IP,
+                    Tipo = TipoHistorial.Usuario,
+                    TipoId = 0,
+                    Razon = model.RazonBaneo,
+                    UsuarioRegistra = _currentUser.UserName
+                };
 
-                    if (session != null)
-                        DeleteSession(session.Id);
+                if (model.BaneadoPermanente)
+                {
+                    Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
 
-                    if(model.BaneadoPermanente)
-                    {
-                        Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Eliminado == false && x.Nombre == "Baneado");
+                    if (rango != null)
+                        usuario.RangoId = rango.Id;
 
-                        if (rango != null)
-                            usuario.RangoId = rango.Id;
-                    }
+                    historial.Accion = "Baneo Permanente";
                 }
+                else
+                {
+                    historial.Accion = "Baneo Temporal";
+                }
+
+                _dbContext.Historial.Add(historial);
+                _dbContext.SaveChanges();
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return usuario.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long UnbanUser(Usuario model)
+        {
+            try
+            {
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == model.Id && x.Eliminado == false);
+
+                if (usuario == null)
+                    throw new Exception($"Hubo un error al desbanear un usuario con id {model.Id}");
+
+                usuario.Baneado = false;
+                usuario.TiempoBaneado = null;
+                usuario.BaneadoPermanente = false;
+
+                Session session = GetSessionByUsuarioId(model.Id);
+
+                if (session != null)
+                    DeleteSession(session.Id);
+
+                _dbContext.Historial.Add(new Historial()
+                {
+                    FechaRegistro = DateTime.Now,
+                    IP = _currentUser.IP,
+                    Tipo = TipoHistorial.Usuario,
+                    TipoId = 0,
+                    Razon = model.RazonBaneo,
+                    Accion = "El usuario ha sido desbaneado",
+                    UsuarioRegistra = _currentUser.UserName
+                });
 
                 _dbContext.Update(usuario);
                 _dbContext.SaveChanges();
@@ -1101,7 +1157,7 @@ namespace Pixicity.Service.Implementations
                 if (model == null)
                     return 0;
 
-                if(model.Id > 0)
+                if (model.Id > 0)
                 {
                     Rango rango = _dbContext.Rango.FirstOrDefault(x => x.Id == model.Id);
 
@@ -1127,7 +1183,7 @@ namespace Pixicity.Service.Implementations
                 }
 
                 _dbContext.SaveChanges();
-                
+
                 return model.Id;
             }
             catch (Exception e)
@@ -1225,7 +1281,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 DateTime today = DateTime.Today;
-                
+
                 switch (date)
                 {
                     case "hoy":

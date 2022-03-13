@@ -273,6 +273,13 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         long BanUser(Usuario model);
 
+        /// <summary>
+        /// Desbanear usuario
+        /// </summary>
+        /// <param name="model">Usuario</param>
+        /// <returns></returns>
+        long UnbanUser(Usuario model);
+
         string ChangeAvatar(string avatar);
 
         /// <summary>

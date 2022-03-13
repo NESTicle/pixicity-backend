@@ -40,7 +40,7 @@ namespace Pixicity.Data.Models.Seguridad
         public string UltimaIP { get; set; }
 
         public bool Baneado { get; set; } = false;
-        public DateTime TiempoBaneado { get; set; }
+        public DateTime? TiempoBaneado { get; set; }
         public string RazonBaneo { get; set; }
         public bool BaneadoPermanente { get; set; }
 
