@@ -82,6 +82,17 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         string HitAfiliado(string codigo);
 
+        /// <summary>
+        /// Obtener la lista de los últimos cambios en el histórico de moderación
+        /// </summary>
+        /// <returns></returns>
         List<HistorialViewModel> GetHistorialModeracion();
+
+        /// <summary>
+        /// Actualizar la afiliación
+        /// </summary>
+        /// <param name="model">Entidad Afiliado</param>
+        /// <returns></returns>
+        long UpdateAfiliacion(Afiliado model);
     }
 }

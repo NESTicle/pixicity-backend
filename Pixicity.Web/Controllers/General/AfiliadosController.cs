@@ -5,6 +5,7 @@ using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Service.Interfaces;
+using Pixicity.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace Pixicity.Web.Controllers.General
 
         [HttpGet]
         [Route(nameof(GetAfiliados))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Moderador" })]
         public async Task<JSONObjectResult> GetAfiliados([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult
@@ -72,6 +74,29 @@ namespace Pixicity.Web.Controllers.General
             try
             {
                 result.Data = _webService.SaveAfiliado(model);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPut]
+        [Route(nameof(UpdateAfiliacion))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Moderador" })]
+        public async Task<JSONObjectResult> UpdateAfiliacion([FromBody] Afiliado model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _webService.UpdateAfiliacion(model);
             }
             catch (Exception e)
             {

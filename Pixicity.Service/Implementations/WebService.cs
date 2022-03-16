@@ -4,6 +4,7 @@ using Pixicity.Data.Models.Posts;
 using Pixicity.Data.Models.Seguridad;
 using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Helpers;
+using Pixicity.Domain.Transversal;
 using Pixicity.Domain.ViewModels.Web;
 using Pixicity.Service.Interfaces;
 using System;
@@ -16,11 +17,13 @@ namespace Pixicity.Service.Implementations
     {
         private readonly PixicityDbContext _dbContext;
         private readonly IPostService _postService;
+        private IAppPrincipal _currentUser { get; }
 
-        public WebService(PixicityDbContext dbContext, IPostService postService)
+        public WebService(PixicityDbContext dbContext, IPostService postService, IAppPrincipal currentUser)
         {
             _dbContext = dbContext;
             _postService = postService;
+            _currentUser = currentUser;
         }
 
         public string SaveAfiliado(Afiliado model)
@@ -306,6 +309,38 @@ namespace Pixicity.Service.Implementations
                              .ToList();
 
                 return query;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long UpdateAfiliacion(Afiliado model)
+        {
+            try
+            {
+                if (model == null)
+                    return 0;
+
+                Afiliado afiliado = _dbContext.Afiliado.Where(x => x.Id == model.Id).FirstOrDefault();
+
+                if (afiliado == null)
+                    throw new Exception($"No se ha encontrado el registro de Afiliado con el Id {model.Id}");
+
+                afiliado.Activo = model.Activo;
+                afiliado.Banner = model.Banner;
+                afiliado.Descripcion = model.Descripcion;
+                afiliado.Titulo = model.Titulo;
+                afiliado.URL = model.URL;
+
+                afiliado.FechaActualiza = DateTime.Now;
+                afiliado.UsuarioActualiza = _currentUser.UserName;
+
+                _dbContext.Update(afiliado);
+                _dbContext.SaveChanges();
+
+                return afiliado.Id;
             }
             catch (Exception e)
             {

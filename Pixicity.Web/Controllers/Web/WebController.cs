@@ -6,6 +6,7 @@ using Pixicity.Domain.ViewModels.Base;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Helpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pixicity.Web.Controllers.Web
@@ -56,7 +57,17 @@ namespace Pixicity.Web.Controllers.Web
 
             try
             {
-                result.Data = _webService.GetAfiliados();
+                var data = _webService.GetAfiliados();
+                var mapped = data.Select(x => new
+                {
+                    x.Codigo,
+                    x.Banner,
+                    x.Titulo,
+                    x.URL,
+                    x.Descripcion
+                });
+
+                result.Data = mapped;
             }
             catch (Exception e)
             {
