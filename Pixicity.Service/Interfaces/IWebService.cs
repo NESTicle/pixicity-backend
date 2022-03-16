@@ -94,5 +94,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Afiliado</param>
         /// <returns></returns>
         long UpdateAfiliacion(Afiliado model);
+
+        long SetHitIn(string codigo);
     }
 }

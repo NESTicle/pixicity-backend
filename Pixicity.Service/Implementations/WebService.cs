@@ -347,5 +347,27 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public long SetHitIn(string codigo)
+        {
+            try
+            {
+                Afiliado afiliado = _dbContext.Afiliado.Where(x => x.Codigo == codigo).FirstOrDefault();
+
+                if (afiliado == null)
+                    return 0;
+
+                afiliado.HitsIn++;
+
+                _dbContext.Update(afiliado);
+                _dbContext.SaveChanges();
+
+                return afiliado.HitsIn;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

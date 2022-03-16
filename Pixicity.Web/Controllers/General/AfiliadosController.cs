@@ -106,5 +106,27 @@ namespace Pixicity.Web.Controllers.General
 
             return await Task.FromResult(result);
         }
+
+        [HttpPost]
+        [Route(nameof(SetHitIn))]
+        public async Task<JSONObjectResult> SetHitIn([FromBody] Afiliado model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _webService.SetHitIn(model.Codigo);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
     }
 }
