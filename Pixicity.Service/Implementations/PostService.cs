@@ -462,6 +462,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 model.UsuarioId = _currentUser.Id;
+                model.IP = _currentUser.IP;
 
                 _dbContext.Comentario.Add(model);
                 _dbContext.SaveChanges();
