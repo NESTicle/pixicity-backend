@@ -131,6 +131,13 @@ namespace Pixicity.Service.Interfaces
         long AddComentario(Comentario model);
 
         /// <summary>
+        /// Eliminar comentario
+        /// </summary>
+        /// <param name="comentarioId"></param>
+        /// <returns></returns>
+        int DeleteComentario(long comentarioId);
+
+        /// <summary>
         /// Obtiene la lista de todos los comentarios para visualizar en el dashboard
         /// </summary>
         /// <param name="queryParameters"></param>

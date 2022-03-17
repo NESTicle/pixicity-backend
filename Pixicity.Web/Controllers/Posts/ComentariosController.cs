@@ -162,9 +162,9 @@ namespace Pixicity.Web.Controllers.Posts
         }
 
         [HttpPost]
-        [Route(nameof(AddComentario))]
+        [Route(nameof(DeleteComentario))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> AddComentario([FromBody] Comentario model)
+        public async Task<JSONObjectResult> DeleteComentario([FromBody] Comentario model)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -173,7 +173,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                result.Data = _postService.AddComentario(model);
+                result.Data = _postService.DeleteComentario(model.Id);
             }
             catch (Exception e)
             {

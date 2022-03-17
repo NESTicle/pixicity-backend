@@ -516,6 +516,33 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public int DeleteComentario(long comentarioId)
+        {
+            try
+            {
+                if (comentarioId < 1)
+                    throw new Exception("No se ha podido eliminar el comentario");
+
+                Comentario comentario = _dbContext.Comentario.Where(x => x.Id == comentarioId).FirstOrDefault();
+
+                if (comentario == null)
+                    throw new Exception("No se ha podido eliminar el comentario");
+
+                if (comentario.UsuarioId != _currentUser.Id)
+                    if (!_currentUser.IsModerador && !_currentUser.IsAdmin)
+                        throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
+
+                comentario.Eliminado = true;
+                
+                _dbContext.Update(comentario);
+                return _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Comentario> GetComentarios(QueryParamsHelper queryParameters, out long totalCount)
         {
             try
