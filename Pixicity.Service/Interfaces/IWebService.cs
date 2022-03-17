@@ -95,6 +95,18 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         long UpdateAfiliacion(Afiliado model);
 
+        /// <summary>
+        /// Sumar una visita a Pixicity
+        /// </summary>
+        /// <param name="codigo"></param>
+        /// <returns></returns>
         long SetHitIn(string codigo);
+
+        /// <summary>
+        /// Eliminar un afiliado
+        /// </summary>
+        /// <param name="id">Id del afiliado</param>
+        /// <returns></returns>
+        long DeleteAfiliado(long id);
     }
 }

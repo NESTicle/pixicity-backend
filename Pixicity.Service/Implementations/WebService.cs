@@ -53,6 +53,7 @@ namespace Pixicity.Service.Implementations
             try
             {
                 var posts = _dbContext.Afiliado
+                    .Where(x => x.Eliminado == false)
                    .AsNoTracking()
                    .AsQueryable();
 
@@ -363,6 +364,28 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return afiliado.HitsIn;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public long DeleteAfiliado(long id)
+        {
+            try
+            {
+                Afiliado afiliado = _dbContext.Afiliado.Where(x => x.Id == id).FirstOrDefault();
+
+                if (afiliado == null)
+                    throw new Exception($"No se ha encontrado el registro de Afiliado con el Id {id}");
+
+                afiliado.Eliminado = true;
+
+                _dbContext.Update(afiliado);
+                _dbContext.SaveChanges();
+
+                return afiliado.Id;
             }
             catch (Exception e)
             {
