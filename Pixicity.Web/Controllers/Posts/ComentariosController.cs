@@ -161,7 +161,7 @@ namespace Pixicity.Web.Controllers.Posts
             return await Task.FromResult(result);
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route(nameof(DeleteComentario))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
         public async Task<JSONObjectResult> DeleteComentario([FromBody] Comentario model)
