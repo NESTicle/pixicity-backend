@@ -532,7 +532,7 @@ namespace Pixicity.Service.Implementations
                     if (!_currentUser.IsModerador && !_currentUser.IsAdmin)
                         throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
-                comentario.Eliminado = true;
+                comentario.Eliminado = !comentario.Eliminado;
                 
                 _dbContext.Update(comentario);
                 return _dbContext.SaveChanges();
