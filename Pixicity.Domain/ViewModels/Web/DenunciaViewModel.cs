@@ -1,12 +1,11 @@
 ﻿using Pixicity.Domain.ViewModels.Posts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Pixicity.Domain.ViewModels.Web
 {
     public class DenunciaViewModel
     {
+        public long Id { get; set; }
         public DateTime FechaRegistro { get; set; }
         public long RazonDenunciaId { get; set; }
 

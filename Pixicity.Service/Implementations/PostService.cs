@@ -83,7 +83,7 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Usuario)
                     .Where(x => x.Eliminado == false && x.EsBorrador == false);
 
-                if(search != null)
+                if (search != null)
                 {
                     search.Search = search.Search?.Trim()?.ToLower();
 
@@ -102,7 +102,7 @@ namespace Pixicity.Service.Implementations
                             break;
                     }
 
-                    if(search.CategoriaId.HasValue)
+                    if (search.CategoriaId.HasValue)
                         posts = posts.Where(x => x.CategoriaId == search.CategoriaId.Value);
 
                     if (!string.IsNullOrEmpty(search.Autor))
@@ -362,7 +362,7 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Update(post);
                 _dbContext.SaveChanges();
 
-                if(_currentUser.IsAdmin || _currentUser.IsModerador)
+                if (_currentUser.IsAdmin || _currentUser.IsModerador)
                 {
                     SaveHistorial(new Historial()
                     {
@@ -428,7 +428,7 @@ namespace Pixicity.Service.Implementations
                 if (post == null)
                     throw new Exception("Un error ha ocurrido al tratar de eliminar un post");
 
-                if(_currentUser.IsAdmin == false && _currentUser.IsModerador == false)
+                if (_currentUser.IsAdmin == false && _currentUser.IsModerador == false)
                     if (post.UsuarioId != _currentUser.Id)
                         throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
@@ -484,7 +484,7 @@ namespace Pixicity.Service.Implementations
                 // Notificar a todos los usuarios que siguen el post
                 var listaUsuarios = GetUsuariosQueSiguenPost(model.PostId);
 
-                if(listaUsuarios != null && listaUsuarios.Count > 0)
+                if (listaUsuarios != null && listaUsuarios.Count > 0)
                 {
                     foreach (var usuario in listaUsuarios.Where(x => x.Id != _currentUser.Id))
                     {
@@ -533,7 +533,7 @@ namespace Pixicity.Service.Implementations
                         throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
 
                 comentario.Eliminado = !comentario.Eliminado;
-                
+
                 _dbContext.Update(comentario);
                 return _dbContext.SaveChanges();
             }
@@ -782,6 +782,31 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public long DeleteDenuncia(long id)
+        {
+            try
+            {
+                if (id < 1)
+                    throw new Exception("Hubo un error al eliminar una denuncia");
+
+                Denuncia denuncia = _dbContext.Denuncia.FirstOrDefault(x => x.Id == id);
+
+                if (denuncia == null)
+                    throw new Exception($"No se ha podido eliminar la denuncia con id {id}");
+
+                denuncia.Eliminado = true;
+
+                _dbContext.Update(denuncia);
+                _dbContext.SaveChanges();
+
+                return denuncia.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Voto> GetVotosByUsuarioTypeId(Voto voto)
         {
             try
@@ -803,7 +828,7 @@ namespace Pixicity.Service.Implementations
 
                 if (entity != null)
                     throw new Exception("No puedes denunciar un post más de una vez");
-                
+
                 Denuncia denuncia = new Denuncia()
                 {
                     UsuarioDenunciaId = _currentUser.Id,
@@ -858,7 +883,7 @@ namespace Pixicity.Service.Implementations
 
                 FavoritoPost search = SearchFavoritoPost(favoritoPost);
 
-                if(search != null)
+                if (search != null)
                 {
                     if (search.Eliminado == false)
                         return 0;
@@ -975,7 +1000,7 @@ namespace Pixicity.Service.Implementations
             {
                 var post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
 
-                if(post == null)
+                if (post == null)
                     return new List<Post>();
 
                 var relatedPosts = _dbContext.Post
@@ -1081,7 +1106,7 @@ namespace Pixicity.Service.Implementations
                     .Take(10);
 
                 topPosts.PostsConMasSeguidores = _mapper.Map<List<PostViewModel>>(topPostSeguidores.ToList());
-                
+
                 return topPosts;
             }
             catch (Exception e)
@@ -1102,7 +1127,7 @@ namespace Pixicity.Service.Implementations
 
                 SeguirPost seguirPost = _dbContext.SeguirPost.FirstOrDefault(x => x.PostId == postId && x.UsuarioId == _currentUser.Id);
 
-                if(seguirPost == null)
+                if (seguirPost == null)
                 {
                     seguirPost = new SeguirPost()
                     {
@@ -1129,7 +1154,7 @@ namespace Pixicity.Service.Implementations
                 }
 
                 _dbContext.SaveChanges();
-                
+
                 return seguirPost.Id;
             }
             catch (Exception e)
@@ -1200,7 +1225,7 @@ namespace Pixicity.Service.Implementations
                 var visita = _dbContext.Visitas
                     .Where(x => x.Eliminado == false && x.TypeId == postId);
 
-                if(usuarioId >= 0)
+                if (usuarioId >= 0)
                     visita = visita.Where(x => x.UsuarioId == usuarioId);
                 else
                     visita = visita.Where(x => x.IP == IP);
@@ -1222,7 +1247,7 @@ namespace Pixicity.Service.Implementations
 
                 long? usuarioId = null;
 
-                if(!string.IsNullOrEmpty(userName))
+                if (!string.IsNullOrEmpty(userName))
                 {
                     Usuario usuario = _seguridadService.GetUsuarioByUserName(userName);
                     usuarioId = usuario?.Id;
@@ -1294,7 +1319,7 @@ namespace Pixicity.Service.Implementations
 
                 DateTime today = DateTime.Today;
                 DateTime yesterday = today.AddDays(-1);
-                
+
                 switch (date)
                 {
                     case "ayer":
@@ -1355,7 +1380,7 @@ namespace Pixicity.Service.Implementations
                     .Where(x => x.PostId == postId && x.Eliminado == false && x.FechaRegistro >= days && x.FechaRegistro < today)
                     .ToList();
 
-                if(denuncias.Count > cantidadDenuncias)
+                if (denuncias.Count > cantidadDenuncias)
                 {
                     Post post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
 
@@ -1396,7 +1421,7 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Categoria)
                     .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id && x.EsBorrador == true);
 
-                if(categoriaId > 0)
+                if (categoriaId > 0)
                 {
                     posts = posts.Where(x => x.CategoriaId == categoriaId);
                 }

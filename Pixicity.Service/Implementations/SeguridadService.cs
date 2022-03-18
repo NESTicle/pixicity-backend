@@ -229,6 +229,9 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Usuario.Add(usuario);
                 _dbContext.SaveChanges();
 
+                // Enviar correo para validar el usuario
+                // TODO
+
                 return usuario.Id;
             }
             catch (Exception e)

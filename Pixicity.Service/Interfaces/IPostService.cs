@@ -204,6 +204,13 @@ namespace Pixicity.Service.Interfaces
         List<Denuncia> GetDenuncias(QueryParamsHelper queryParameters, out long totalCount);
 
         /// <summary>
+        /// Eliminar una denuncia desde el panel administrativo
+        /// </summary>
+        /// <param name="id">Id de la denuncia</param>
+        /// <returns></returns>
+        long DeleteDenuncia(long id);
+
+        /// <summary>
         /// Registrar una nueva denuncia para el post
         /// </summary>
         /// <param name="denuncia">Entidad de denuncia</param>

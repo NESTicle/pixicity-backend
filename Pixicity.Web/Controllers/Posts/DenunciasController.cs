@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Pixicity.Data.Models.Web;
 using Pixicity.Domain.Extensions;
 using Pixicity.Domain.Helpers;
 using Pixicity.Domain.ViewModels.Base;
@@ -29,7 +30,7 @@ namespace Pixicity.Web.Controllers.Posts
 
         [HttpGet]
         [Route(nameof(GetDenuncias))]
-        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
         public async Task<JSONObjectResult> GetDenuncias([FromQuery] QueryParamsHelper queryParameters)
         {
             JSONObjectResult result = new JSONObjectResult
@@ -55,6 +56,29 @@ namespace Pixicity.Web.Controllers.Posts
                     data = mapped,
                     pagination = paginationMetadata
                 };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpDelete]
+        [Route(nameof(DeleteDenuncia))]
+        [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Administrador" })]
+        public async Task<JSONObjectResult> DeleteDenuncia([FromBody] Denuncia model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _postService.DeleteDenuncia(model.Id);
             }
             catch (Exception e)
             {
