@@ -67,10 +67,37 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.Usuario)
                     .Include(x => x.UsuarioQueHaceAccion)
                     .Include(x => x.Post.Categoria)
-                    .Where(x => x.Eliminado == false && x.Leido == false && x.UsuarioId == _currentUser.Id)
+                    .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id)
                     .OrderByDescending(x => x.FechaRegistro)
                     .Take(10)
                     .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool SetNotificacionesAsReaded()
+        {
+            try
+            {
+                List<Monitor> notificaciones = _dbContext.Monitor
+                    .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id && x.Leido == false)
+                    .ToList();
+
+                if (notificaciones == null || notificaciones.Count < 1)
+                    return false;
+
+                foreach (var notificacion in notificaciones)
+                {
+                    notificacion.Leido = true;
+                }
+
+                _dbContext.UpdateRange(notificaciones);
+                _dbContext.SaveChanges();
+
+                return true;
             }
             catch (Exception e)
             {
@@ -107,12 +134,13 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                var notifications = _dbContext.Monitor.Count(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id);
+                var notifications = _dbContext.Monitor
+                    .Count(x => x.Eliminado == false && x.Leido == false && x.UsuarioId == _currentUser.Id);
 
                 return new StatsViewModel()
                 {
                     Notifications = notifications,
-                    Messages = 15
+                    Messages = 101
                 };
             }
             catch (Exception e)

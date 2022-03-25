@@ -30,6 +30,12 @@ namespace Pixicity.Service.Interfaces
         List<Monitor> GetLastNotificacionesByCurrentUser();
 
         /// <summary>
+        /// Asignar el estado de Leido a todas las notificaciones del usuario
+        /// </summary>
+        /// <returns></returns>
+        bool SetNotificacionesAsReaded();
+
+        /// <summary>
         /// Obtener la lista de notificaciones del usuario actual
         /// </summary>
         /// <param name="queryParameters">Parámetros para filtrar la tabla</param>
