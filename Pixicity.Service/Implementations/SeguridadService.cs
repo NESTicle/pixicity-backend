@@ -495,11 +495,11 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public long? DeleteAllSessionsByUsuarioId(long usuarioId)
+        public long? DeleteAllSessionsByUsuarioId(long? usuarioId)
         {
             try
             {
-                if (usuarioId <= 0)
+                if (usuarioId == null || usuarioId <= 0)
                     return 0;
 
                 var sessions = _dbContext.Session.Where(x => x.UsuarioId == usuarioId).ToList();
@@ -541,6 +541,31 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return session.Eliminado;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int DeleteSessionByIP(string IP)
+        {
+            try
+            {
+                List<Session> sesiones = _dbContext.Session.Where(x => x.IP == IP).ToList();
+
+                if (sesiones == null || sesiones.Count < 1)
+                    return 0;
+
+                foreach (var sesion in sesiones)
+                {
+                    sesion.UsuarioElimina = "SYSTEM";
+                    sesion.FechaElimina = DateTime.Now;
+                    sesion.Eliminado = true;
+                }
+
+                _dbContext.UpdateRange(sesiones);
+                return _dbContext.SaveChanges();
             }
             catch (Exception e)
             {
@@ -1210,6 +1235,42 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return usuario.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public int SessionOnlineUser(string bearer, string IP)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(IP))
+                    return 0;
+
+                Session session = null;
+
+                if(!string.IsNullOrEmpty(bearer))
+                {
+                    bearer = bearer.Replace("Bearer ", "");
+
+                    session = _dbContext.Session.FirstOrDefault(x => x.Token == bearer);
+
+                    if (session != null)
+                        return 0;
+                }
+
+                DeleteSessionByIP(IP);
+
+                _dbContext.Session.Add(new Session()
+                {
+                    Activo = DateTime.Now,
+                    FechaRegistro = DateTime.Now,
+                    IP = IP
+                });
+
+                return _dbContext.SaveChanges();
             }
             catch (Exception e)
             {

@@ -176,7 +176,7 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <param name="usuarioId">Id del Usuario</param>
         /// <returns></returns>
-        long? DeleteAllSessionsByUsuarioId(long usuarioId);
+        long? DeleteAllSessionsByUsuarioId(long? usuarioId);
 
         /// <summary>
         /// Eliminar la sesión del usuario
@@ -184,6 +184,13 @@ namespace Pixicity.Service.Interfaces
         /// <param name="id">Id de la sesión</param>
         /// <returns></returns>
         bool DeleteSession(long id);
+
+        /// <summary>
+        /// Eliminar las sesiones de la IP
+        /// </summary>
+        /// <param name="IP">Dirección IP</param>
+        /// <returns></returns>
+        int DeleteSessionByIP(string IP);
 
         /// <summary>
         /// Obtener la información del usuario
@@ -326,5 +333,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="model">Entidad Rango</param>
         /// <returns></returns>
         long ChangeRangoUsuario(RangoViewModel model);
+
+        /// <summary>
+        /// Agregar usuario a los usuarios en linea
+        /// </summary>
+        /// <param name="bearer">Bearer authorization</param>
+        /// <returns></returns>
+        int SessionOnlineUser(string bearer, string IP);
     }
 }

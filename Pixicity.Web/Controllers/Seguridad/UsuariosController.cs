@@ -291,7 +291,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                     result.Data = "error";
                 else
                 {
-                    if(loggedUser.BaneadoPermanente)
+                    if (loggedUser.BaneadoPermanente)
                     {
                         result.Data = new
                         {
@@ -302,7 +302,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                     }
                     else
                     {
-                        if(loggedUser.Baneado && loggedUser.TiempoBaneado > DateTime.Now)
+                        if (loggedUser.Baneado && loggedUser.TiempoBaneado > DateTime.Now)
                         {
                             result.Data = new
                             {
@@ -317,7 +317,8 @@ namespace Pixicity.Web.Controllers.Seguridad
                             {
                                 UsuarioId = loggedUser.Id,
                                 Token = _seguridadService.GenerarJWT(loggedUser),
-                                FechaExpiracion = DateTime.UtcNow.AddDays(15)
+                                FechaExpiracion = DateTime.UtcNow.AddDays(15),
+                                IP = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString()
                             };
 
                             _seguridadService.SaveUserSession(session);
@@ -725,7 +726,8 @@ namespace Pixicity.Web.Controllers.Seguridad
                     puntos = x.Puntos
                 });
 
-                result.Data = new {
+                result.Data = new
+                {
                     followers = mapped,
                     totalCount
                 };
@@ -823,6 +825,31 @@ namespace Pixicity.Web.Controllers.Seguridad
             try
             {
                 result.Data = _seguridadService.GetActividadesByUsuario(usuarioId, tipoActividad);
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpGet]
+        [Route(nameof(SessionOnlineUser))]
+        public async Task<JSONObjectResult> SessionOnlineUser()
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                var bearer = HttpContext.Request.Headers["Authorization"].ToString();
+                string IP = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+                result.Data = _seguridadService.SessionOnlineUser(bearer, IP);
             }
             catch (Exception e)
             {
