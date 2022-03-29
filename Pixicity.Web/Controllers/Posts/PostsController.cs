@@ -261,7 +261,7 @@ namespace Pixicity.Web.Controllers.Posts
 
                     mapped.Seguidores = _postService.GetCountUsuariosQueSiguenPost(postId);
 
-                    if(mapped.EsPrivado && string.IsNullOrEmpty(userName))
+                    if (mapped.EsPrivado && string.IsNullOrEmpty(userName))
                     {
                         result.Data = new
                         {
@@ -715,9 +715,11 @@ namespace Pixicity.Web.Controllers.Posts
                         seo = x.Categoria.SEO
                     },
                     x.Etiquetas,
+                    x.Eliminado
                 });
 
-                var categorias = mapped.GroupBy(x => new { x.categoria.id, x.categoria.icono, x.categoria.nombre }, (key, g) => new {
+                var categorias = mapped.GroupBy(x => new { x.categoria.id, x.categoria.icono, x.categoria.nombre }, (key, g) => new
+                {
                     categoria = key,
                     count = g.Count()
                 }).ToList();
