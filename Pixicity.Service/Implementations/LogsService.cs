@@ -105,7 +105,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, out long totalCount)
+        public List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, ActividadFiltrarViewModel search, out long totalCount)
         {
             try
             {
@@ -115,6 +115,30 @@ namespace Pixicity.Service.Implementations
                     .Include(x => x.UsuarioQueHaceAccion)
                     .Include(x => x.Post.Categoria)
                     .Where(x => x.Eliminado == false && x.UsuarioId == _currentUser.Id);
+
+                if(search != null)
+                {
+                    if (search.Favorito)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.Favoritos.ToString());
+
+                    if (search.Comentarios)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.Comentario.ToString());
+
+                    if (search.Puntos)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.Puntos.ToString());
+
+                    if (search.Seguidores)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.Seguir.ToString());
+
+                    if (search.PostNuevo)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.PostNuevoUsuarioQueSigues.ToString());
+
+                    if (search.Recomendaciones)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.Recomendacion.ToString());
+
+                    if (search.ComentariosPostQueSigue)
+                        query = query.Where(x => x.TipoString == Domain.Enums.Enums.TipoMonitor.ComentarioSiguePost.ToString());
+                }
 
                 totalCount = query.Count();
 

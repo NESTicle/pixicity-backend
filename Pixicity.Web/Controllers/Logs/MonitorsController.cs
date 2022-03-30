@@ -30,7 +30,7 @@ namespace Pixicity.Web.Controllers.Logs
         [HttpGet]
         [Route(nameof(GetNotificaciones))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> GetNotificaciones([FromQuery] QueryParamsHelper queryParameters)
+        public async Task<JSONObjectResult> GetNotificaciones([FromQuery] QueryParamsHelper queryParameters, [FromQuery] ActividadFiltrarViewModel search)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -39,7 +39,7 @@ namespace Pixicity.Web.Controllers.Logs
 
             try
             {
-                var data = _logsService.GetNotificacionesByCurrentUser(queryParameters, out long totalCount);
+                var data = _logsService.GetNotificacionesByCurrentUser(queryParameters, search, out long totalCount);
                 var mapped = _mapper.Map<List<MonitorViewModel>>(data);
 
                 var paginationMetadata = new

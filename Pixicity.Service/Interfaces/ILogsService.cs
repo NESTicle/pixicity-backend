@@ -41,7 +41,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="queryParameters">Parámetros para filtrar la tabla</param>
         /// <param name="totalCount">Total de notificaciones</param>
         /// <returns></returns>
-        List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, out long totalCount);
+        List<Monitor> GetNotificacionesByCurrentUser(QueryParamsHelper queryParameters, ActividadFiltrarViewModel search, out long totalCount);
 
         /// <summary>
         /// Obtener los valores actuales del usuario y visualizarlos en el menu del usuario
