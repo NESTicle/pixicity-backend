@@ -799,7 +799,8 @@ namespace Pixicity.Web.Controllers.Seguridad
                 {
                     avatar = x.Avatar,
                     userName = x.UserName,
-                    genero = x.GeneroString
+                    genero = x.GeneroString,
+                    registro = x.FechaRegistro
                 });
 
                 result.Data = mapped;
