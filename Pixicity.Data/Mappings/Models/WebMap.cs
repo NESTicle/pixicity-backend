@@ -103,4 +103,23 @@ namespace Pixicity.Data.Mappings.Models
                 .IsRequired();
         }
     }
+
+    public class ContactoMap : IEntityTypeConfiguration<Contacto>
+    {
+        void IEntityTypeConfiguration<Contacto>.Configure(EntityTypeBuilder<Contacto> builder)
+        {
+            builder.ToTable("Contacto", "Web");
+
+            builder.HasIndex(x => x.Id).IsUnique();
+
+            builder.Property(x => x.Nombre)
+                .IsRequired();
+
+            builder.Property(x => x.Email)
+                .IsRequired();
+
+            builder.Property(x => x.Comentarios)
+                .IsRequired();
+        }
+    }
 }

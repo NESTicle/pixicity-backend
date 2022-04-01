@@ -36,7 +36,8 @@ namespace Pixicity.Web.Controllers.General
 
             try
             {
-                result.Data = new {
+                result.Data = new
+                {
                     usuariosOnline = _seguridadService.GetOnlineUsersCount(),
                     usuarios = _seguridadService.CountUsuarios(),
                     posts = _postService.CountPosts(),
@@ -45,6 +46,28 @@ namespace Pixicity.Web.Controllers.General
                     comentariosFotos = 0,
                     recordUsers = _seguridadService.GetRecordUsersOnline()
                 };
+            }
+            catch (Exception e)
+            {
+                result.Status = System.Net.HttpStatusCode.InternalServerError;
+                result.Errors.Add(e.Message);
+            }
+
+            return await Task.FromResult(result);
+        }
+
+        [HttpPost]
+        [Route(nameof(Contacto))]
+        public async Task<JSONObjectResult> Contacto([FromBody] Contacto model)
+        {
+            JSONObjectResult result = new JSONObjectResult
+            {
+                Status = System.Net.HttpStatusCode.OK
+            };
+
+            try
+            {
+                result.Data = _webService.SaveContacto(model);
             }
             catch (Exception e)
             {

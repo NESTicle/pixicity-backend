@@ -108,5 +108,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="id">Id del afiliado</param>
         /// <returns></returns>
         long DeleteAfiliado(long id);
+
+        /// <summary>
+        /// Guardar formulario de contacto de la comunidad
+        /// </summary>
+        /// <param name="contacto">Entidad Contacto</param>
+        /// <returns></returns>
+        long SaveContacto(Contacto contacto);
     }
 }

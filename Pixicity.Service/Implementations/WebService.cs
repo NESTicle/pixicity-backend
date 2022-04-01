@@ -392,5 +392,25 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public long SaveContacto(Contacto model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.Email))
+                    throw new Exception("El campo de correo electrónico es obligatorio");
+
+                model.Email = model.Email.Trim().ToLower();
+
+                _dbContext.Add(model);
+                _dbContext.SaveChanges();
+
+                return model.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

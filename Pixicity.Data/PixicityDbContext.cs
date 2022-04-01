@@ -55,6 +55,7 @@ namespace Pixicity.Data
         public DbSet<Configuracion> Configuracion { get; set; }
         public DbSet<Visitas> Visitas { get; set; }
         public DbSet<Historial> Historial { get; set; }
+        public DbSet<Contacto> Contacto { get; set; }
 
         #endregion
 
@@ -81,6 +82,7 @@ namespace Pixicity.Data
             builder.ApplyConfiguration(new VisitasMap());
             builder.ApplyConfiguration(new HistorialMap());
             builder.ApplyConfiguration(new ActividadMap());
+            builder.ApplyConfiguration(new ContactoMap());
             
             base.OnModelCreating(builder);
         }
