@@ -998,7 +998,10 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                var post = _dbContext.Post.FirstOrDefault(x => x.Id == postId);
+                var post = _dbContext
+                    .Post
+                    .AsNoTracking()
+                    .FirstOrDefault(x => x.Id == postId);
 
                 if (post == null)
                     return new List<Post>();
@@ -1006,7 +1009,7 @@ namespace Pixicity.Service.Implementations
                 var relatedPosts = _dbContext.Post
                     .AsNoTracking()
                     .Include(x => x.Categoria)
-                    .Where(x => x.Id != post.Id && x.Titulo.ToLower().Contains(post.Titulo.ToLower()))
+                    .Where(x => x.Id != post.Id && (x.Titulo.ToLower().Contains(post.Titulo.ToLower()) || x.Contenido.Contains(post.Contenido)))
                     .Take(5)
                     .ToList();
 
