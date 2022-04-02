@@ -401,6 +401,7 @@ namespace Pixicity.Service.Implementations
                     throw new Exception("El campo de correo electrónico es obligatorio");
 
                 model.Email = model.Email.Trim().ToLower();
+                model.Comentarios = model.Comentarios.Trim();
 
                 _dbContext.Add(model);
                 _dbContext.SaveChanges();
