@@ -23,6 +23,7 @@ namespace Pixicity.Data.Models.Seguridad
         public string Password { get; set; }
         public string Email { get; set; }
         public string FechaNacimiento { get; set; }
+        public string ProfileBackground { get; set; }
 
         [Column("Genero")]
         public string GeneroString

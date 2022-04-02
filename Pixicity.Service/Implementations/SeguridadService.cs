@@ -1278,6 +1278,28 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public string ChangeBackgroundProfile(string url)
+        {
+            try
+            {
+                Usuario usuario = _dbContext.Usuario.FirstOrDefault(x => x.Id == _currentUser.Id);
+
+                if (usuario == null)
+                    throw new Exception("No se ha encontrado el perfil del usuario");
+
+                usuario.ProfileBackground = url;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                return usuario.ProfileBackground;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         private string SetActividadText(TipoActividad tipoActividad, long id, string data)
         {
             try

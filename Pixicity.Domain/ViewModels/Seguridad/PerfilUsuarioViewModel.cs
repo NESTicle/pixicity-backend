@@ -7,6 +7,7 @@ namespace Pixicity.Domain.ViewModels.Seguridad
     {
         public long Id { get; set; }
         public string Avatar { get; set; }
+        public string ProfileBackground { get; set; }
         public string UserName { get; set; }
         public string CompleteName { get; set; }
         public DateTime FechaRegistro { get; set; }

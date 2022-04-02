@@ -340,5 +340,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="bearer">Bearer authorization</param>
         /// <returns></returns>
         int SessionOnlineUser(string bearer, string IP);
+
+        /// <summary>
+        /// Actualizar el fondo del perfil del usuario
+        /// </summary>
+        /// <param name="url">URL de la imagen</param>
+        /// <returns></returns>
+        string ChangeBackgroundProfile(string url);
     }
 }
