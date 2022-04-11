@@ -346,5 +346,12 @@ namespace Pixicity.Service.Interfaces
         /// <param name="totalCount"></param>
         /// <returns></returns>
         List<Post> GetBorradores(QueryParamsHelper queryParameters, long categoriaId, out long totalCount);
+
+        /// <summary>
+        /// Le envía como notificación el post recomendado a todos los usuarios que sigue
+        /// </summary>
+        /// <param name="postId">Id del post</param>
+        /// <returns></returns>
+        int RecomendarPost(long postId);
     }
 }

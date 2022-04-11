@@ -736,6 +736,25 @@ namespace Pixicity.Service.Implementations
             }
         }
 
+        public List<Usuario> GetAllFollowersByUserId(long userId)
+        {
+            try
+            {
+                var usuarios = _dbContext.UsuarioSeguidores
+                    .AsNoTracking()
+                    .Include(x => x.Seguidor.Estado.Pais)
+                    .Where(x => x.SeguidoId == userId && x.Eliminado == false)
+                    .Select(x => x.Seguidor);
+
+                return usuarios
+                    .ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public List<Usuario> GetLastFollowersByUserId(long userId, out long totalCount)
         {
             try

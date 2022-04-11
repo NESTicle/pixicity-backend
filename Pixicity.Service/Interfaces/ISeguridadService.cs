@@ -229,6 +229,13 @@ namespace Pixicity.Service.Interfaces
         /// <returns></returns>
         List<Usuario> GetFollowersByUserId(QueryParamsHelper queryParameters, out long totalCount);
 
+        /// <summary>
+        /// Obtener la lista completa de usuarios que siguen al usuario id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        List<Usuario> GetAllFollowersByUserId(long userId);
+
         List<Usuario> GetLastFollowersByUserId(long userId, out long totalCount);
 
         /// <summary>

@@ -1448,5 +1448,45 @@ namespace Pixicity.Service.Implementations
                 throw e;
             }
         }
+
+        public int RecomendarPost(long postId)
+        {
+            try
+            {
+                if (_currentUser.Id < 1)
+                    throw new Exception("Se ha encontrado un error y no hemos podido identificar el usuario que realizó esta petición");
+
+                Post post = GetPostSimpleById(postId);
+
+                if(post.UsuarioId == _currentUser.Id)
+                    throw new Exception("Oye cerebrito!, no puedes hacer eso aquí");
+
+                if (post == null)
+                    throw new Exception("No se ha podido encontrar el post");
+
+                var followers = _seguridadService.GetAllFollowersByUserId(_currentUser.Id);
+
+                if (followers == null || followers.Count < 1)
+                    return 0;
+
+                foreach (Usuario follower in followers)
+                {
+                    _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                    {
+                        UsuarioId = follower.Id,
+                        UsuarioQueHaceAccionId = _currentUser.Id,
+                        Tipo = TipoMonitor.Recomendacion,
+                        Mensaje = $"Te ha recomendado un post",
+                        PostId = postId
+                    });
+                }
+
+                return followers.Count;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
