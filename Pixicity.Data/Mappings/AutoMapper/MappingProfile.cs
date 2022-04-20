@@ -77,6 +77,7 @@ namespace Pixicity.Data.Mappings.AutoMapper
             CreateMap<Rango, RangoViewModel>();
             CreateMap<Rango, RangoUsuarioViewModel>();
             CreateMap<Rango, DropdownViewModel>();
+            CreateMap<UsuarioPerfil, UsuarioPerfilViewModel>();
         }
     }
 }

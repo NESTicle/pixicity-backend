@@ -788,7 +788,12 @@ namespace Pixicity.Service.Implementations
         {
             try
             {
-                UsuarioPerfil usuarioPerfil = _dbContext.UsuarioPerfil.FirstOrDefault(x => x.UsuarioId == _currentUser.Id && x.Eliminado == false);
+                UsuarioPerfil usuarioPerfil = _dbContext
+                    .UsuarioPerfil
+                    .AsNoTracking()
+                    .Include(x => x.Usuario)
+                    .FirstOrDefault(x => x.UsuarioId == _currentUser.Id && x.Eliminado == false);
+
                 return usuarioPerfil;
             }
             catch (Exception e)

@@ -577,7 +577,14 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                result.Data = _seguridadService.GetCurrentPerfilInfo();
+                var data = _seguridadService.GetCurrentPerfilInfo();
+                var mapped = _mapper.Map<UsuarioPerfilViewModel>(data);
+
+                result.Data = new
+                {
+                    perfil = mapped,
+                    background = data.Usuario?.ProfileBackground
+                };
             }
             catch (Exception e)
             {
