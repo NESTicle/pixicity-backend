@@ -342,6 +342,13 @@ namespace Pixicity.Service.Interfaces
         long ChangeRangoUsuario(RangoViewModel model);
 
         /// <summary>
+        /// Detectar si el usuario va a subir de rango dependiendo de los puntos parametrizados
+        /// </summary>
+        /// <param name="usuarioId">Id del usuario</param>
+        /// <returns></returns>
+        bool SubirRangoUsuario(long usuarioId);
+
+        /// <summary>
         /// Agregar usuario a los usuarios en linea
         /// </summary>
         /// <param name="bearer">Bearer authorization</param>

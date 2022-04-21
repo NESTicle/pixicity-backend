@@ -11,7 +11,7 @@ namespace Pixicity.Data.Models.Logs
     {
         public long Id { get; set; }
         public long UsuarioId { get; set; }
-        public long UsuarioQueHaceAccionId { get; set; }
+        public long? UsuarioQueHaceAccionId { get; set; }
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
         public bool Leido { get; set; }

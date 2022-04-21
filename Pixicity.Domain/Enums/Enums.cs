@@ -27,6 +27,9 @@ namespace Pixicity.Domain.Enums
             [Display(Name = "Usuario")]
             Usuario = 3,
 
+            [Display(Name = "Oficial")]
+            Oficial = 4,
+
             [Display(Name = "Baneado")]
             Baneado = 666
         }
@@ -77,6 +80,9 @@ namespace Pixicity.Domain.Enums
 
             [Display(Name = "Recomendacion")]
             Recomendacion = 9,
+
+            [Display(Name = "Rango")]
+            Rango = 10,
         }
 
         public enum TipoHistorial

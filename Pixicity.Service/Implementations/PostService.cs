@@ -650,18 +650,18 @@ namespace Pixicity.Service.Implementations
             {
                 model.UsuarioId = _currentUser.Id;
 
-                if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
-                    throw new Exception("Ya no tienes puntos para sumar");
+                //if (GetAvailableVotos(VotosTypeEnum.Posts) <= 0)
+                //    throw new Exception("Ya no tienes puntos para sumar");
 
                 var post = GetPostSimpleById(model.TypeId);
 
-                if (post.UsuarioId == model.UsuarioId)
-                    throw new Exception("No es posible votar a tu mismo post");
+                //if (post.UsuarioId == model.UsuarioId)
+                //    throw new Exception("No es posible votar a tu mismo post");
 
                 var votos = GetVotosByUsuarioTypeId(model);
 
-                if (votos != null && votos.Count > 0)
-                    throw new Exception("No es posible votar a un mismo post más de una vez");
+                //if (votos != null && votos.Count > 0)
+                //    throw new Exception("No es posible votar a un mismo post más de una vez");
 
                 Voto voto = new Voto()
                 {

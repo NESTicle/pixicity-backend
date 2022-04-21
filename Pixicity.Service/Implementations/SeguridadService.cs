@@ -328,6 +328,8 @@ namespace Pixicity.Service.Implementations
                 _dbContext.Update(usuario);
                 _dbContext.SaveChanges();
 
+                SubirRangoUsuario(usuarioId);
+
                 return usuario.Puntos;
             }
             catch (Exception e)
@@ -1259,6 +1261,65 @@ namespace Pixicity.Service.Implementations
                 _dbContext.SaveChanges();
 
                 return usuario.Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool SubirRangoUsuario(long usuarioId)
+        {
+            try
+            {
+                if (usuarioId < 1)
+                    return false;
+
+                Usuario usuario = _dbContext.Usuario
+                    .Include(x => x.Rango)
+                    .Where(x => x.Id == usuarioId && x.Eliminado == false)
+                    .FirstOrDefault();
+
+                if (usuario == null)
+                    return false;
+
+                if (usuario.Rango.TipoString != RangosEnum.Usuario.ToString() || usuario.Puntos < 1)
+                    return false;
+
+                List<Rango> rangos = _dbContext.Rango
+                    .AsNoTracking()
+                    .Where(x => x.Eliminado == false && x.Puntos > 0 && x.TipoString == RangosEnum.Usuario.ToString())
+                    .OrderBy(x => x.Puntos)
+                    .ToList();
+
+                if (rangos == null || rangos.Count < 1)
+                    return false;
+
+                Rango rango = rangos
+                    .Where(x => x.Puntos > usuario.Puntos)
+                    .OrderBy(x => x.Puntos)
+                    .FirstOrDefault();
+
+                if (rango == null)
+                    return false;
+
+                if (usuario.RangoId == rango.Id)
+                    return false;
+
+                usuario.RangoId = rango.Id;
+
+                _dbContext.Update(usuario);
+                _dbContext.SaveChanges();
+
+                _logsService.SaveMonitor(new Data.Models.Logs.Monitor()
+                {
+                    UsuarioId = usuario.Id,
+                    UsuarioQueHaceAccionId = 1,
+                    Tipo = TipoMonitor.Rango,
+                    Mensaje = $"Has sido promovido al rango de '{rango.Nombre}'",
+                });
+
+                return true;
             }
             catch (Exception e)
             {
