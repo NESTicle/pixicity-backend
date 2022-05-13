@@ -583,7 +583,7 @@ namespace Pixicity.Web.Controllers.Seguridad
                 result.Data = new
                 {
                     perfil = mapped,
-                    background = data.Usuario?.ProfileBackground
+                    background = data?.Usuario?.ProfileBackground
                 };
             }
             catch (Exception e)
