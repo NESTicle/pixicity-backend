@@ -40,7 +40,7 @@ namespace Pixicity.Service.Implementations
             _keys = keys.Value;
         }
 
-        public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false)
+        public List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, SearchUsuarioViewModel search, out long totalCount, bool isAdmin = false)
         {
             try
             {
@@ -55,6 +55,21 @@ namespace Pixicity.Service.Implementations
 
                 if (isAdmin == false)
                     posts = posts.Where(x => x.Eliminado == false && x.Baneado == false);
+
+                if(search != null)
+                {
+                    if (search.Rango.HasValue)
+                        posts = posts.Where(x => x.RangoId == search.Rango.Value);
+
+                    if (search.Genero.HasValue)
+                        posts = posts.Where(x => x.GeneroString == search.Genero.Value.ToString());
+
+                    if (search.Pais.HasValue)
+                        posts = posts.Where(x => x.Estado.IdPais == search.Pais.Value);
+
+                    //if (search.EnLinea.HasValue)
+                    //    posts = posts.Where(x => (DateTime.Now - x.Sessions.OrderByDescending(x => x.Id).FirstOrDefault().Activo).TotalMinutes > 15);
+                }
 
                 totalCount = posts.Count();
 

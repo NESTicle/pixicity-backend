@@ -40,7 +40,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
         [HttpGet]
         [Route(nameof(GetUsuarios))]
-        public async Task<JSONObjectResult> GetUsuarios([FromQuery] QueryParamsHelper queryParameters)
+        public async Task<JSONObjectResult> GetUsuarios([FromQuery] QueryParamsHelper queryParameters, [FromQuery] SearchUsuarioViewModel search)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -49,7 +49,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount);
+                var data = _seguridadService.GetUsuarios(queryParameters, search, out long totalCount);
 
                 var mapped = data.Select(x => new
                 {
@@ -105,7 +105,7 @@ namespace Pixicity.Web.Controllers.Seguridad
 
             try
             {
-                var data = _seguridadService.GetUsuarios(queryParameters, out long totalCount, true);
+                var data = _seguridadService.GetUsuarios(queryParameters, null, out long totalCount, true);
                 var mapped = _mapper.Map<List<UsuarioAdminViewModel>>(data);
 
                 var paginationMetadata = new

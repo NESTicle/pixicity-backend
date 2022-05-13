@@ -16,7 +16,7 @@ namespace Pixicity.Service.Interfaces
         /// <param name="queryParameters"></param>
         /// <param name="totalCount"></param>
         /// <returns></returns>
-        List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, out long totalCount, bool isAdmin = false);
+        List<Usuario> GetUsuarios(QueryParamsHelper queryParameters, SearchUsuarioViewModel search, out long totalCount, bool isAdmin = false);
 
         /// <summary>
         /// Obtiene la cantidad de Usuarios registrados en el sistema
