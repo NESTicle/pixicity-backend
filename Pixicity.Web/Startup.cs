@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Pixicity.Data;
 using Pixicity.Data.Mappings.AutoMapper;
 using Pixicity.Data.Models.Seguridad;
@@ -15,6 +16,7 @@ using Pixicity.Domain.Transversal;
 using Pixicity.Service.Implementations;
 using Pixicity.Service.Interfaces;
 using Pixicity.Web.Middlewares;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,6 +105,23 @@ namespace Pixicity.Web
             {
                 return new AppPrincipal(0, "Unknown", "", false, false);
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Pixicity! API",
+                    Description = "Pixicity Social Community API",
+                    TermsOfService = new Uri("https://pixicity.io/terminos-condiciones"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "nesticle8bit",
+                        Email = "contacto@pixicity.io",
+                        Url = new Uri("https://pixicity.io/perfil/nesticle8bit"),
+                    },
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -130,6 +149,14 @@ namespace Pixicity.Web
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")),
                 RequestPath = "/images"
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pixicity! API V1");
+                c.RoutePrefix = string.Empty;
             });
         }
     }
