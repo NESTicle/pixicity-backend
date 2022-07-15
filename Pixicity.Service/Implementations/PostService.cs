@@ -665,6 +665,7 @@ namespace Pixicity.Service.Implementations
                         Usuario = x.Usuario != null ? x.Usuario.UserName : "",
                         Avatar = x.Usuario != null ? x.Usuario.Avatar : ""
                     })
+                    .OrderBy(x => x.Id)
                     .ToList();
 
                 return query;
