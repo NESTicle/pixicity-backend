@@ -104,15 +104,7 @@ namespace Pixicity.Web.Controllers.Posts
             try
             {
                 var data = _postService.GetComentariosByPostId(postId);
-                var mapped = data.Select(x => new
-                {
-                    avatar = x.Usuario.Avatar,
-                    userName = x.Usuario.UserName,
-                    x.FechaComentario,
-                    x.Contenido
-                });
-
-                result.Data = mapped;
+                result.Data = data;
             }
             catch (Exception e)
             {

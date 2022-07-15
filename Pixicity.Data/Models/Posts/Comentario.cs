@@ -8,6 +8,7 @@ namespace Pixicity.Data.Models.Posts
         public long Id { get; set; }
         public long PostId { get; set; }
         public long UsuarioId { get; set; }
+        public long? ComentarioId { get; set; }
 
         public string Contenido { get; set; }
         public DateTime FechaComentario { get; set; } = DateTime.Now;

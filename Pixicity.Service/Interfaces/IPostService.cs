@@ -164,7 +164,7 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <param name="postId">Id del Post</param>
         /// <returns></returns>
-        List<Comentario> GetComentariosByPostId(long postId);
+        List<ComentarioViewModel> GetComentariosByPostId(long postId);
 
         /// <summary>
         /// Obtener la cantidad de comentarios realizados en la comunidad

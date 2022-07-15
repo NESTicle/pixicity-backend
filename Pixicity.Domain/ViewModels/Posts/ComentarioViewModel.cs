@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Pixicity.Domain.ViewModels.Posts
 {
@@ -17,5 +18,8 @@ namespace Pixicity.Domain.ViewModels.Posts
 
         public PostViewModel Post { get; set; }
         public string Usuario { get; set; }
+        public string Avatar { get; set; }
+
+        public List<ComentarioViewModel> Respuestas { get; set; }
     }
 }

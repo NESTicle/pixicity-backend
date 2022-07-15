@@ -463,6 +463,7 @@ namespace Pixicity.Service.Implementations
             {
                 model.UsuarioId = _currentUser.Id;
                 model.IP = _currentUser.IP;
+                model.FechaComentario = DateTime.Now;
 
                 _dbContext.Comentario.Add(model);
                 _dbContext.SaveChanges();
@@ -615,20 +616,62 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public List<Comentario> GetComentariosByPostId(long postId)
+        public List<ComentarioViewModel> GetComentariosByPostId(long postId)
         {
             try
             {
-                return _dbContext.Comentario
-                    .AsNoTracking()
-                    .Include(x => x.Usuario)
-                    .Where(x => x.Eliminado == false && x.PostId == postId)
-                    .OrderBy(x => x.FechaComentario)
-                    .ToList();
+                var query = (from q in _dbContext.Comentario.Include(x => x.Usuario)
+                             where q.Eliminado == false && q.ComentarioId == null && q.PostId == postId
+                             select new ComentarioViewModel()
+                             {
+                                 Id = q.Id,
+                                 Contenido = q.Contenido,
+                                 FechaComentario = q.FechaComentario,
+                                 Eliminado = q.Eliminado,
+                                 Usuario = q.Usuario != null ? q.Usuario.UserName : "",
+                                 Avatar = q.Usuario != null ? q.Usuario.Avatar : ""
+                             })
+                             .ToList();
+
+                if(query.Count > 0)
+                {
+                    foreach (var comentario in query)
+                    {
+                        comentario.Respuestas = GetRespuestasByComentarioId(comentario.Id);
+                    }
+                }
+
+                return query;
             }
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public List<ComentarioViewModel> GetRespuestasByComentarioId(long comentarioId)
+        {
+            try
+            {
+                var query = _dbContext.Comentario
+                    .Include(x => x.Usuario)
+                    .Where(x => x.ComentarioId == comentarioId)
+                    .Select(x => new ComentarioViewModel()
+                    {
+                        Id = x.Id,
+                        Contenido = x.Contenido,
+                        FechaComentario = x.FechaComentario,
+                        Eliminado = x.Eliminado,
+                        Usuario = x.Usuario != null ? x.Usuario.UserName : "",
+                        Avatar = x.Usuario != null ? x.Usuario.Avatar : ""
+                    })
+                    .ToList();
+
+                return query;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
