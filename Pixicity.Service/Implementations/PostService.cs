@@ -419,7 +419,7 @@ namespace Pixicity.Service.Implementations
             }
         }
 
-        public bool DeletePost(long postId)
+        public bool DeletePost(long postId, string razon)
         {
             try
             {
@@ -442,7 +442,7 @@ namespace Pixicity.Service.Implementations
                     SaveHistorial(new Historial()
                     {
                         Accion = "Eliminado",
-                        Razon = "Pendiente",
+                        Razon = razon ?? "",
                         TipoId = post.Id,
                         Tipo = TipoHistorial.Post,
                         IP = _currentUser.IP

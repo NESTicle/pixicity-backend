@@ -437,7 +437,7 @@ namespace Pixicity.Web.Controllers.Posts
         [HttpDelete]
         [Route(nameof(DeletePost))]
         [TypeFilter(typeof(PixicitySecurityFilter), Arguments = new[] { "Jwt" })]
-        public async Task<JSONObjectResult> DeletePost([FromQuery] long postId)
+        public async Task<JSONObjectResult> DeletePost([FromQuery] long postId, [FromQuery] string razon)
         {
             JSONObjectResult result = new JSONObjectResult
             {
@@ -446,7 +446,7 @@ namespace Pixicity.Web.Controllers.Posts
 
             try
             {
-                result.Data = _postService.DeletePost(postId);
+                result.Data = _postService.DeletePost(postId, razon);
             }
             catch (Exception e)
             {

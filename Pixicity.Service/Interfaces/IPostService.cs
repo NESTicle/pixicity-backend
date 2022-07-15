@@ -121,7 +121,7 @@ namespace Pixicity.Service.Interfaces
         /// </summary>
         /// <param name="postId">Id del Post</param>
         /// <returns></returns>
-        bool DeletePost(long postId);
+        bool DeletePost(long postId, string razon);
 
         /// <summary>
         /// Método para agregar comentario al Post
